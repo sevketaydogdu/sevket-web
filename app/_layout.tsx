@@ -1,9 +1,17 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { ThemeProvider } from '@react-navigation/native';
+import SHeader from 'components/customHeader';
+import ResponsiveLayout from 'components/layouts/responsiveLayout';
+import Colors from 'constants/Colors';
+import { DarkTheme } from 'constants/navigatiorTheme';
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
+import { Slot, SplashScreen, Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { Platform, StyleSheet, View, Text, ScrollView } from 'react-native';
+import { Main, TamaguiProvider, Theme } from 'tamagui';
+
+import config from '../tamagui.config';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -21,6 +29,11 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SatoshiBlack: require('../assets/fonts/Satoshi-Black.ttf'),
+    SatoshiRegular: require('../assets/fonts/Satoshi-Regular.ttf'),
+    SatoshiBold: require('../assets/fonts/Satoshi-Bold.ttf'),
+    SatoshiLight: require('../assets/fonts/Satoshi-Light.ttf'),
+    SatoshiVariable: require('../assets/fonts/Satoshi-Variable.ttf'),
     ...FontAwesome.font,
   });
 
@@ -39,18 +52,47 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
+    <ThemeProvider value={DarkTheme}>
+      <TamaguiProvider config={config}>
+        <Theme name="dark">
+          <>
+            {Platform.OS === 'web' ? (
+              <>
+                <ScrollView style={styles.container} contentContainerStyle={styles.container}>
+                  <ResponsiveLayout>
+                    <SHeader />
+                    <Main>
+                      <Slot />
+                    </Main>
+                  </ResponsiveLayout>
+                  <View style={{ backgroundColor: 'red' }}>
+                    <Text>footer</Text>
+                  </View>
+                </ScrollView>
+              </>
+            ) : (
+              <>
+                <StatusBar style="light" />
+                <Stack>
+                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                  <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+                </Stack>
+              </>
+            )}
+          </>
+        </Theme>
+      </TamaguiProvider>
     </ThemeProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.dark.black[100],
+    flexDirection: 'column',
+    // justifyContent: "space-between",
+  },
+});
+// StyleSheet.flatten([styles.container, globalStyles.webkitScrollbar]);
