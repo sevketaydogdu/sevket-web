@@ -7,9 +7,15 @@ import { DarkTheme } from 'constants/navigatiorTheme';
 import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import { Platform, StyleSheet, View, Text, ScrollView } from 'react-native';
-import { Main, TamaguiProvider, Theme } from 'tamagui';
+import { useEffect, useRef } from 'react';
+import {
+  Platform,
+  StyleSheet,
+  ScrollView,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+} from 'react-native';
+import { Header, Main, TamaguiProvider, Theme, Text, View } from 'tamagui';
 
 import config from '../tamagui.config';
 
@@ -36,7 +42,7 @@ export default function RootLayout() {
     SatoshiVariable: require('../assets/fonts/Satoshi-Variable.ttf'),
     ...FontAwesome.font,
   });
-
+  const scrollRef = useRef<number | undefined>(undefined);
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
@@ -59,9 +65,12 @@ export default function RootLayout() {
           <>
             {Platform.OS === 'web' ? (
               <>
-                <ScrollView style={styles.container} contentContainerStyle={styles.container}>
+                <SHeader scrollRef={scrollRef} />
+                <ScrollView
+                  style={styles.container}
+                  contentContainerStyle={styles.container}
+                  onScroll={(e) => scrollRef.current === e.nativeEvent.targetContentOffset?.y}>
                   <ResponsiveLayout>
-                    <SHeader />
                     <Main>
                       <Slot />
                     </Main>

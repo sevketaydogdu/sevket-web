@@ -2,7 +2,7 @@ import HoverButton from 'components/buttons/hoverButton';
 import Colors from 'constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Dimensions, Image, Platform } from 'react-native';
 import Animated, {
   Easing,
@@ -25,7 +25,7 @@ export default function WebHomeScreen() {
     <View key={rowIndex}>
       <XStack space={16}>
         {Array.from({ length: cardRowForResponsive }).map((item, colIndex) => (
-          <CardComp key={colIndex} />
+          <CardComp key={colIndex} index={colIndex} />
         ))}
       </XStack>
       {rowIndex < 2 - 1 && <View h={16} />}
@@ -36,6 +36,9 @@ export default function WebHomeScreen() {
     <View f={1}>
       {/* Top section */}
       <TopSection />
+      <View als="center" p="$4" bg={'gold'} pos="sticky">
+        <Text>Menu test sticky</Text>
+      </View>
       <SeperatorLine />
       <View mt={128}>{rows}</View>
     </View>
@@ -92,15 +95,21 @@ const TopSection = () => {
   );
 };
 
-export const CardComp = () => {
+export const CardComp = ({ index }: { index: number }) => {
   return (
     <Card
       ov="hidden"
+      br="$8"
       bg={Colors.dark.black[200]}
       hoverStyle={{ scale: 0.97 }}
       pressStyle={{ scale: 0.97 }}
-      animation="quick"
-      f={1}>
+      f={1}
+      animation="lazy"
+      enterStyle={{
+        transitionDelay: '10000ms',
+        opacity: 0,
+        y: +20,
+      }}>
       <Card.Header bg={Colors.dark.black[200]} space="$0">
         <SText col={Colors.dark.white[200]}>sads asd asdas asdasdasdasd as</SText>
       </Card.Header>

@@ -1,10 +1,11 @@
-import React, { ReactElement, ReactNode, useState } from 'react';
+import Colors from 'constants/Colors';
+import React from 'react';
 import { Platform, Pressable } from 'react-native';
+import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { View, Text } from 'tamagui';
+
 const AnimatedView = Animated.createAnimatedComponent(View);
 const AnimatedText = Animated.createAnimatedComponent(Text);
-import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
-import Colors from '../../constants/Colors';
 
 interface IHoverButtonProps extends React.ComponentProps<typeof View> {
   children: string;
@@ -37,6 +38,7 @@ const HoverButton: React.FC<IHoverButtonProps> = (prop, { ...props }) => {
       backgroundColor: withTiming(isHover.value ? bgHover : bgDefault),
     };
   });
+
   const animatedTextColorChange = useAnimatedStyle(() => {
     return {
       color: withTiming(isHover.value ? textHover : textDefault),
