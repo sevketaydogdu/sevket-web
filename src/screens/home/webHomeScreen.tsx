@@ -3,7 +3,7 @@ import Colors from 'constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import React, { useMemo } from 'react';
-import { Dimensions, Image, Platform } from 'react-native';
+import { Image, Platform, useWindowDimensions } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -11,15 +11,14 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import { Card, Section, Text, View, XStack, styled } from 'tamagui';
+import { Card, H3, Section, Text, View, XStack, YStack, styled } from 'tamagui';
 
 import { Title } from '../../../tamagui.config';
-
-const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
+import { Button } from 'components/buttons/styledButton';
 
 export default function WebHomeScreen() {
-  const cardRowForResponsive = useMemo(() => (screenWidth > 960 ? 3 : 2), [screenWidth]);
+  const { width: screenWidth } = useWindowDimensions();
+  const cardRowForResponsive = useMemo(() => (screenWidth > 960 ? 4 : 2), [screenWidth]);
 
   const rows = Array.from({ length: 2 }).map((row, rowIndex) => (
     <View key={rowIndex}>
@@ -36,16 +35,16 @@ export default function WebHomeScreen() {
     <View f={1}>
       {/* Top section */}
       <TopSection />
-      <View als="center" p="$4" bg={'gold'} pos="sticky">
-        <Text>Menu test sticky</Text>
-      </View>
       <SeperatorLine />
       <View mt={128}>{rows}</View>
+      {/* Before bottom section  */}
+      <CountSection />
     </View>
   );
 }
 
 const TopSection = () => {
+  const { height: screenHeight } = useWindowDimensions();
   return (
     <Section
       style={{
@@ -53,7 +52,6 @@ const TopSection = () => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text>asdas</Text>
       <Title
         col="white"
         fos={84}
@@ -72,24 +70,12 @@ const TopSection = () => {
         based in Turkey.
       </Title>
       <XStack mt="$6" space="$2">
-        <HoverButton
-          onPress={() => router.push('/works/')}
-          bgDefault={Colors.dark.white[100]}
-          bgHover={Colors.dark.pink}
-          textDefault={Colors.dark.black[100]}
-          textHover={Colors.dark.white[100]}>
+        <Button white onPress={() => router.push('/works/')}>
           Get In Touch
-        </HoverButton>
-        <HoverButton
-          border
-          bgDefault="transparent"
-          bgHover="transparent"
-          textDefault={Colors.dark.white[100]}
-          textHover={Colors.dark.white[100]}
-          borderDefault="transparent"
-          borderHover={Colors.dark.white[200]}>
+        </Button>
+        <Button outlined onPress={() => router.push('/works/')}>
           View All Works
-        </HoverButton>
+        </Button>
       </XStack>
     </Section>
   );
@@ -99,10 +85,10 @@ export const CardComp = ({ index }: { index: number }) => {
   return (
     <Card
       ov="hidden"
-      br="$8"
-      bg={Colors.dark.black[200]}
+      br="$12"
+      $md={{ br: '$8' }}
+      bg={Colors.dark.black[300]}
       hoverStyle={{ scale: 0.97 }}
-      pressStyle={{ scale: 0.97 }}
       f={1}
       animation="lazy"
       enterStyle={{
@@ -110,8 +96,18 @@ export const CardComp = ({ index }: { index: number }) => {
         opacity: 0,
         y: +20,
       }}>
-      <Card.Header bg={Colors.dark.black[200]} space="$0">
-        <SText col={Colors.dark.white[200]}>sads asd asdas asdasdasdasd as</SText>
+      <Card.Header
+        bg={Colors.dark.black[200]}
+        space="$0"
+        ai="center"
+        p="$6"
+        $md={{
+          ai: 'baseline',
+        }}>
+        <H3 ta="center" $md={{ ta: 'left' }}>
+          sads asd asdas asdasdasdasd as
+        </H3>
+        <Subtitle mt="$3">Subtitle goes here</Subtitle>
       </Card.Header>
       <Card.Footer>
         <Image
@@ -128,9 +124,71 @@ export const CardComp = ({ index }: { index: number }) => {
     </Card>
   );
 };
+const CountSection = () => {
+  const { width: screenWidth } = useWindowDimensions();
+
+  const isMobile = screenWidth < 960;
+  return (
+    <View
+      $md={{
+        fd: 'column',
+        ai: 'baseline',
+        space: '$2',
+        br: '$8',
+      }}
+      fd="row"
+      my="$12"
+      p="$10"
+      f={1}
+      ai="center"
+      space="$12"
+      br="$12"
+      bg={Colors.dark.black[300]}>
+      <YStack f={1}>
+        <Text $gtSm={{ fos: '$6' }} fos="$10" ff="$heading" col={Colors.dark.orange[100]}>
+          Sevket Aydogdu
+        </Text>
+        <Text
+          fos="$11"
+          ff="$heading"
+          $md={{
+            fos: '$8',
+          }}>
+          React Native{'\n'}Developer
+        </Text>
+      </YStack>
+      <YStack f={1}>
+        <Text ff="$heading" fos="$8" $md={{ fos: '$6' }}>
+          Lorem ipsum dolor sit amet consectetur. Malesuada nibh iaculis eu posuere nisl aliquam
+          sed. Sed vitae amet egestas aliquet dui netus.
+        </Text>
+        <Text ff="$heading" fos="$6" fow="200">
+          Lorem ipsum dolor sit amet consectetur. Malesuada nibh iaculis eu posuere nisl aliquam
+          sed. Sed vitae amet egestas aliquet dui netus.
+        </Text>
+        <XStack space="$6">
+          <YStack mt="$4">
+            <Text>Projects Done</Text>
+            <Text ff="$heading" fos="$10" fow="200">
+              5+
+            </Text>
+          </YStack>
+          <YStack mt="$4">
+            <Text>Experience</Text>
+            <Text ff="$heading" fos="$10" fow="200">
+              2+ Years
+            </Text>
+          </YStack>
+        </XStack>
+      </YStack>
+    </View>
+  );
+};
 
 const AnimatedXStack = Animated.createAnimatedComponent(XStack);
 export const SeperatorLine = () => {
+  const { width: screenWidth } = useWindowDimensions();
+
   const translateX = useSharedValue(-screenWidth);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -178,37 +236,46 @@ export const SeperatorLine = () => {
           ai="center"
           jc="center">
           <AnimatedXStack style={animatedStyle} space="$4">
-            <SText>Discover</SText>
-            <SText>Learn</SText>
-            <SText>Design</SText>
-            <SText>Develop</SText>
-            <SText>React Native</SText>
-            <SText>Expo</SText>
-            <SText>Tamagui</SText>
-            <SText>Discover</SText>
-            <SText>Learn</SText>
-            <SText>Design</SText>
-            <SText>Develop</SText>
-            <SText>React Native</SText>
-            <SText>Expo</SText>
-            <SText>Tamagui</SText>
-            <SText>Discover</SText>
-            <SText>Learn</SText>
-            <SText>Design</SText>
-            <SText>Develop</SText>
-            <SText>React Native</SText>
-            <SText>Expo</SText>
-            <SText>Tamagui</SText>
+            <AnimateText>Discover</AnimateText>
+            <AnimateText>Learn</AnimateText>
+            <AnimateText>Design</AnimateText>
+            <AnimateText>Develop</AnimateText>
+            <AnimateText>React Native</AnimateText>
+            <AnimateText>Expo</AnimateText>
+            <AnimateText>Tamagui</AnimateText>
+            <AnimateText>Discover</AnimateText>
+            <AnimateText>Learn</AnimateText>
+            <AnimateText>Design</AnimateText>
+            <AnimateText>Develop</AnimateText>
+            <AnimateText>React Native</AnimateText>
+            <AnimateText>Expo</AnimateText>
+            <AnimateText>Tamagui</AnimateText>
+            <AnimateText>Discover</AnimateText>
+            <AnimateText>Learn</AnimateText>
+            <AnimateText>Design</AnimateText>
+            <AnimateText>Develop</AnimateText>
+            <AnimateText>React Native</AnimateText>
+            <AnimateText>Expo</AnimateText>
+            <AnimateText>Tamagui</AnimateText>
           </AnimatedXStack>
         </XStack>
       </LinearGradient>
     </View>
   );
 };
-
+const AnimateText = styled(Text, {
+  col: 'black',
+  fos: '$6',
+  fow: '$12',
+});
 const SText = styled(Text, {
-  ff: '$body',
-  fow: 'bold',
-  fos: Platform.OS === 'web' ? '$7' : '$5',
+  ff: '$heading',
+  fow: '600',
+  fos: Platform.OS === 'web' ? '$8' : '$4',
   col: Colors.dark.black[100],
+});
+
+const Subtitle = styled(Text, {
+  fow: '800',
+  col: Colors.dark.gray[100],
 });

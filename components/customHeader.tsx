@@ -1,7 +1,8 @@
+import { Button } from 'components/buttons/styledButton';
 import { router, useSegments } from 'expo-router';
 import React, { MutableRefObject } from 'react';
-import { Pressable, Image, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
-import { XStack, Header, ScrollView, Nav, View } from 'tamagui';
+import { Pressable, Image } from 'react-native';
+import { XStack, Header, View, Text, styled } from 'tamagui';
 
 import HoverButton from './buttons/hoverButton';
 import Colors from '../constants/Colors';
@@ -11,7 +12,7 @@ interface IHeaderProps {
 }
 const SHeader: React.FC<IHeaderProps> = (props) => {
   const { scrollRef } = props;
-  const segments = useSegments();
+  // const segments = useSegments();
 
   const handlePressHome = () => {
     // if (segments.length === 0) {
@@ -26,58 +27,51 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
       t="$0"
       w="100%"
       zIndex={999}
-      bg={scrollRef?.current ? 'red' : '$blue10Light'}>
+      // bg={scrollRef?.current ? 'red' : '$blue10Light'}
+      // overflow="hidden"
+    >
       <XStack
         f={1}
         jc="space-between"
+        bg={Colors.dark.black[200]}
+        px="$5"
+        py="$4"
+        br="$12"
+        mt="$4"
         $gtLg={{
-          mx: `20rem`,
-          // px: `2rem`,
-          // mt: "$2",
+          mx: '15rem',
         }}
-        $gtMd={{
-          mx: `5rem`,
-          // p: "$2",
-          // mt: "$2",
-        }}
-        $gtSm={{ p: '$2', mx: '$2', mt: '$2' }}
-        $gtXs={{ p: '$2', mx: '$2', mt: '$2' }}
-        $xs={{ p: '$2', mt: '$2' }}>
+        // $gtLg={{
+        //   mx: `15rem`,
+        //   // px: `2rem`,
+        // }}
+        // $gtMd={{
+        //   mx: `5rem`,
+        //   // p: "$2",
+        //   mt: '$2',
+        // }}
+        // $gtSm={{
+        //   p: '$2',
+        //   mt: '$2',
+        // }}
+        // $gtXs={{ p: '$2', mt: '$2' }}
+        // $xs={{ p: '$2', mt: '$2' }}
+        ai="center">
         <Pressable onPress={() => handlePressHome()}>
           <Image
             source={require('../assets/images/logo-white.png')}
             style={{
-              marginLeft: 16,
               width: 110,
               height: 40,
             }}
             resizeMode="cover"
           />
         </Pressable>
-        <XStack space="$2">
-          <HoverButton
-            bgDefault="transparent"
-            textDefault={Colors.dark.white[200]}
-            textHover={Colors.dark.black[100]}
-            bgHover={Colors.dark.white[100]}>
-            About Me
-          </HoverButton>
-          <HoverButton
-            onPress={() => router.push('/works/')}
-            bgDefault="transparent"
-            textDefault={Colors.dark.white[200]}
-            textHover={Colors.dark.black[100]}
-            bgHover={Colors.dark.white[100]}>
-            Works
-          </HoverButton>
+        <XStack ai="center">
+          <Button>About Me</Button>
+          <Button>Projects</Button>
         </XStack>
-        <HoverButton
-          bgDefault={Colors.dark.white[200]}
-          textDefault={Colors.dark.black[200]}
-          textHover={Colors.dark.black[100]}
-          bgHover={Colors.dark.pink}>
-          Contact
-        </HoverButton>
+        <Button filled>Contact</Button>
       </XStack>
     </Header>
   );

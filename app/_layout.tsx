@@ -8,14 +8,8 @@ import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  ScrollView,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-} from 'react-native';
-import { Header, Main, TamaguiProvider, Theme, Text, View } from 'tamagui';
+import { Platform, StyleSheet, ScrollView } from 'react-native';
+import { Main, TamaguiProvider, Theme, Text, View } from 'tamagui';
 
 import config from '../tamagui.config';
 
@@ -101,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.dark.black[100],
     flexDirection: 'column',
-    // justifyContent: "space-between",
+    // justifyContent: 'space-between',
   },
 });
 // StyleSheet.flatten([styles.container, globalStyles.webkitScrollbar]);
