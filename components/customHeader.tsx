@@ -13,7 +13,15 @@ interface IHeaderProps {
 const SHeader: React.FC<IHeaderProps> = (props) => {
   const { scrollRef } = props;
   // const segments = useSegments();
-
+  const handlePressAboutMe = () => {
+    router.push('/aboutme/');
+  };
+  const handlePressProjects = () => {
+    router.push('/projects/');
+  };
+  const handlePressContact = () => {
+    router.push('/contact/');
+  };
   const handlePressHome = () => {
     // if (segments.length === 0) {
     //   if (scrollRef?.current) scrollRef.current.scrollTo({ y: 0, animated: true });
@@ -29,7 +37,7 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
       zIndex={999}
       // bg={scrollRef?.current ? 'red' : '$blue10Light'}
       // overflow="hidden"
-    >
+      mb="$6">
       <XStack
         f={1}
         jc="space-between"
@@ -67,11 +75,16 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
             resizeMode="cover"
           />
         </Pressable>
-        <XStack ai="center">
-          <Button>About Me</Button>
-          <Button>Projects</Button>
+        <XStack ai="center" $md={{ display: 'none' }}>
+          <Button onPress={handlePressAboutMe}>About Me</Button>
+          <Button onPress={handlePressProjects}>Projects</Button>
         </XStack>
-        <Button filled>Contact</Button>
+        <Button filled $md={{ display: 'none' }} onPress={handlePressContact}>
+          Contact
+        </Button>
+        <Button filled $gtMd={{ display: 'none' }}>
+          Mobile Menu
+        </Button>
       </XStack>
     </Header>
   );

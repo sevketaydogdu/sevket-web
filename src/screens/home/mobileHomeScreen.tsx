@@ -1,9 +1,10 @@
-import { Dimensions, Platform } from 'react-native';
-import { ScrollView, Text, View, XStack, YStack } from 'tamagui';
-import Colors from '../../../constants/Colors';
-import { CardComp, SeperatorLine } from './webHomeScreen';
-import HoverButton from '../../../components/buttons/hoverButton';
+import HoverButton from 'components/buttons/hoverButton';
+import Colors from 'constants/Colors';
 import { router } from 'expo-router';
+import { Dimensions } from 'react-native';
+import { ScrollView, Text, View, XStack, YStack } from 'tamagui';
+
+import { CardComp, SeperatorLine } from './webHomeScreen';
 const screenHeight = Dimensions.get('window').height;
 
 export default function MobileHomeScreen() {
@@ -13,7 +14,7 @@ export default function MobileHomeScreen() {
     <View key={rowIndex}>
       <XStack space={16}>
         {Array.from({ length: cardsPerRow }).map((item, colIndex) => (
-          <CardComp key={colIndex} />
+          <CardComp key={colIndex} index={colIndex} />
         ))}
       </XStack>
       {rowIndex < 2 - 1 && <View h={16} />}
@@ -25,7 +26,7 @@ export default function MobileHomeScreen() {
         {/* Top section */}
         <TopSection />
 
-        <YStack onPress={() => router.push('/(tabs)/works')} p="$4" bg={'$blue10Light'}>
+        <YStack onPress={() => router.push('/(tabs)/projects')} p="$4">
           <Text>BUTON TEST</Text>
         </YStack>
         <SeperatorLine />

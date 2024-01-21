@@ -8,10 +8,11 @@ import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef } from 'react';
-import { Platform, StyleSheet, ScrollView } from 'react-native';
-import { Main, TamaguiProvider, Theme, Text, View } from 'tamagui';
+import { Platform, StyleSheet } from 'react-native';
+import { Main, TamaguiProvider, Theme, ScrollView, View } from 'tamagui';
 
 import config from '../tamagui.config';
+import Footer from 'components/footer';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -60,19 +61,21 @@ export default function RootLayout() {
             {Platform.OS === 'web' ? (
               <>
                 <SHeader scrollRef={scrollRef} />
-                <ScrollView
-                  style={styles.container}
-                  contentContainerStyle={styles.container}
-                  onScroll={(e) => scrollRef.current === e.nativeEvent.targetContentOffset?.y}>
+
+                <View
+                  // onScroll={(e) => scrollRef.current === e.nativeEvent.targetContentOffset?.y}
+                  jc="space-between"
+                  fd="column"
+                  f={1}
+                  //
+                >
                   <ResponsiveLayout>
                     <Main>
                       <Slot />
                     </Main>
                   </ResponsiveLayout>
-                  <View style={{ backgroundColor: 'red' }}>
-                    <Text>footer</Text>
-                  </View>
-                </ScrollView>
+                  <Footer />
+                </View>
               </>
             ) : (
               <>

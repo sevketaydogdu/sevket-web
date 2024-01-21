@@ -1,4 +1,4 @@
-import HoverButton from 'components/buttons/hoverButton';
+import { Button } from 'components/buttons/styledButton';
 import Colors from 'constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
@@ -14,7 +14,6 @@ import Animated, {
 import { Card, H3, Section, Text, View, XStack, YStack, styled } from 'tamagui';
 
 import { Title } from '../../../tamagui.config';
-import { Button } from 'components/buttons/styledButton';
 
 export default function WebHomeScreen() {
   const { width: screenWidth } = useWindowDimensions();
@@ -34,6 +33,7 @@ export default function WebHomeScreen() {
   return (
     <View f={1}>
       {/* Top section */}
+
       <TopSection />
       <SeperatorLine />
       <View mt={128}>{rows}</View>
@@ -45,31 +45,38 @@ export default function WebHomeScreen() {
 
 const TopSection = () => {
   const { height: screenHeight } = useWindowDimensions();
+  console.log('🚀 ~ TopSection ~ screenHeight:', screenHeight);
   return (
-    <Section
-      style={{
-        height: screenHeight / 1.2,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+    <View h={screenHeight / 1.2} jc="center" ai="center" bg="red">
       <Title
         col="white"
-        fos={84}
-        // fow="$8"
+        fos="$13"
+        $xs={{
+          fos: '$9',
+          lh: '$9',
+        }}
         ta="center"
         enterStyle={{
-          // opacity: 0,
+          opacity: 0,
           scale: 1.5,
           y: -10,
         }}
         animation="lazy">
-        <Title col={Colors.dark.orange[100]}>Hello, I am Sevket,</Title>
+        <Title
+          col={Colors.dark.orange[100]}
+          fos="$13"
+          $xs={{
+            fos: '$9',
+            lh: '$9',
+          }}>
+          Hello, I am Sevket,
+        </Title>
         <br />
         react-native developer
         <br />
         based in Turkey.
       </Title>
-      <XStack mt="$6" space="$2">
+      <XStack mt="$6" space="$2" als="center">
         <Button white onPress={() => router.push('/works/')}>
           Get In Touch
         </Button>
@@ -77,7 +84,7 @@ const TopSection = () => {
           View All Works
         </Button>
       </XStack>
-    </Section>
+    </View>
   );
 };
 
@@ -125,9 +132,6 @@ export const CardComp = ({ index }: { index: number }) => {
   );
 };
 const CountSection = () => {
-  const { width: screenWidth } = useWindowDimensions();
-
-  const isMobile = screenWidth < 960;
   return (
     <View
       $md={{
@@ -145,12 +149,15 @@ const CountSection = () => {
       br="$12"
       bg={Colors.dark.black[300]}>
       <YStack f={1}>
-        <Text $gtSm={{ fos: '$6' }} fos="$10" ff="$heading" col={Colors.dark.orange[100]}>
+        <Text $gtSm={{ fos: '$6' }} fos="$10" ff="$heading" col={Colors.dark.orange[200]}>
           Sevket Aydogdu
         </Text>
         <Text
           fos="$11"
           ff="$heading"
+          $gtLg={{
+            fos: '$10',
+          }}
           $md={{
             fos: '$8',
           }}>
@@ -166,16 +173,16 @@ const CountSection = () => {
           Lorem ipsum dolor sit amet consectetur. Malesuada nibh iaculis eu posuere nisl aliquam
           sed. Sed vitae amet egestas aliquet dui netus.
         </Text>
-        <XStack space="$6">
-          <YStack mt="$4">
+        <XStack space="$8" mt="$6">
+          <YStack>
             <Text>Projects Done</Text>
-            <Text ff="$heading" fos="$10" fow="200">
+            <Text ff="$heading" fos="$10" fow="200" col={Colors.dark.orange[200]}>
               5+
             </Text>
           </YStack>
-          <YStack mt="$4">
+          <YStack>
             <Text>Experience</Text>
-            <Text ff="$heading" fos="$10" fow="200">
+            <Text ff="$heading" fos="$10" fow="200" col={Colors.dark.orange[200]}>
               2+ Years
             </Text>
           </YStack>

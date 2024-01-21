@@ -55,14 +55,14 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="works/index"
+        name="projects/index"
         options={{
-          title: 'Works',
+          title: 'projects',
           tabBarIcon: ({ color }) => <TabBarIcon name="wpexplorer" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="works/botras/botras"
+        name="projects/botras/botras"
         options={{
           href: null,
         }}
