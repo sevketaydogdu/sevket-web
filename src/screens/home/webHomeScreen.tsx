@@ -47,7 +47,7 @@ const TopSection = () => {
   const { height: screenHeight } = useWindowDimensions();
   console.log('🚀 ~ TopSection ~ screenHeight:', screenHeight);
   return (
-    <View h={screenHeight / 1.2} jc="center" ai="center" bg="red">
+    <View h={screenHeight / 1.2} jc="center" ai="center">
       <Title
         col="white"
         fos="$13"
