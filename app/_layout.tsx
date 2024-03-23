@@ -1,18 +1,18 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { ThemeProvider } from '@react-navigation/native';
-import SHeader from 'components/customHeader';
-import ResponsiveLayout from 'components/layouts/responsiveLayout';
-import Colors from 'constants/Colors';
-import { DarkTheme } from 'constants/navigatiorTheme';
 import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef } from 'react';
-import { Platform, StyleSheet } from 'react-native';
-import { Main, TamaguiProvider, Theme, ScrollView, View } from 'tamagui';
+import { Platform } from 'react-native';
+import { Main, TamaguiProvider, Theme, View } from 'tamagui';
 
 import config from '../tamagui.config';
-import Footer from 'components/footer';
+
+import SHeader from '@/components/customHeader';
+import Footer from '@/components/footer';
+import ResponsiveLayout from '@/components/layouts/responsiveLayout';
+import { DarkTheme } from '@/constants/navigatiorTheme';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -60,22 +60,28 @@ export default function RootLayout() {
           <>
             {Platform.OS === 'web' ? (
               <>
-                <SHeader scrollRef={scrollRef} />
+                <ResponsiveLayout>
+                  <View
+                    // onScroll={(e) => scrollRef.current === e.nativeEvent.targetContentOffset?.y}
+                    jc="space-between"
+                    fd="column"
+                    f={1}
+                    $gtLg={
+                      {
+                        // maxWidth: 1200,
+                      }
+                    }
+                    //
+                  >
+                    <SHeader scrollRef={scrollRef} />
 
-                <View
-                  // onScroll={(e) => scrollRef.current === e.nativeEvent.targetContentOffset?.y}
-                  jc="space-between"
-                  fd="column"
-                  f={1}
-                  //
-                >
-                  <ResponsiveLayout>
                     <Main>
                       <Slot />
                     </Main>
-                  </ResponsiveLayout>
-                  <Footer />
-                </View>
+
+                    <Footer />
+                  </View>
+                </ResponsiveLayout>
               </>
             ) : (
               <>
@@ -86,6 +92,7 @@ export default function RootLayout() {
                 </Stack>
               </>
             )}
+            {/* <MainModal /> */}
           </>
         </Theme>
       </TamaguiProvider>
@@ -93,12 +100,4 @@ export default function RootLayout() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.dark.black[100],
-    flexDirection: 'column',
-    // justifyContent: 'space-between',
-  },
-});
 // StyleSheet.flatten([styles.container, globalStyles.webkitScrollbar]);

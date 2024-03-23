@@ -1,4 +1,4 @@
-import Colors from 'constants/Colors';
+import Colors from '@/constants/Colors';
 import { Text, styled } from 'tamagui';
 
 export const Button = styled(Text, {

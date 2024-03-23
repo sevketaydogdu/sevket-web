@@ -1,5 +1,3 @@
-import { Button } from 'components/buttons/styledButton';
-import Colors from 'constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import React, { useMemo } from 'react';
@@ -11,43 +9,57 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import { Card, H3, Section, Text, View, XStack, YStack, styled } from 'tamagui';
+import { Card, H2, H4, Text, View, XStack, styled } from 'tamagui';
 
 import { Title } from '../../../tamagui.config';
 
+import { Button } from '@/components/buttons/styledButton';
+import Colors from '@/constants/Colors';
+import projects from '@/constants/projects.json';
+import { IProjectTypes } from '@/types/projectTypes';
+import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
+
 export default function WebHomeScreen() {
   const { width: screenWidth } = useWindowDimensions();
-  const cardRowForResponsive = useMemo(() => (screenWidth > 960 ? 4 : 2), [screenWidth]);
-
-  const rows = Array.from({ length: 2 }).map((row, rowIndex) => (
-    <View key={rowIndex}>
-      <XStack space={16}>
-        {Array.from({ length: cardRowForResponsive }).map((item, colIndex) => (
-          <CardComp key={colIndex} index={colIndex} />
-        ))}
-      </XStack>
-      {rowIndex < 2 - 1 && <View h={16} />}
-    </View>
-  ));
+  const cardRowForResponsive = useMemo(() => (screenWidth > 960 ? 2 : 2), [screenWidth]);
+  const numRows = Math.ceil(projects.length / cardRowForResponsive);
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <View f={1}>
       {/* Top section */}
-
       <TopSection />
+
       <SeperatorLine />
-      <View mt={128}>{rows}</View>
-      {/* Before bottom section  */}
-      <CountSection />
+      <H2 mt="$16" mb="$8" als="center" col={Colors.dark.orange[100]}>
+        Projects
+      </H2>
+
+      {Array.from({ length: numRows }).map((row, rowIndex) => (
+        <>
+          <XStack key={rowIndex} space={16} f={1} fd="row">
+            {/* Slice the projects array for the current row */}
+            {projects
+              .slice(rowIndex * cardRowForResponsive, (rowIndex + 1) * cardRowForResponsive)
+              .map((item) => (
+                <>
+                  <CardComp key={item.id.toString() + rowIndex.toString()} item={item} />
+                </>
+              ))}
+          </XStack>
+          {rowIndex < 2 - 1 && <View h={16} />}
+        </>
+      ))}
     </View>
   );
 }
 
 const TopSection = () => {
   const { height: screenHeight } = useWindowDimensions();
-  console.log('🚀 ~ TopSection ~ screenHeight:', screenHeight);
   return (
-    <View h={screenHeight / 1.2} jc="center" ai="center" bg="red">
+    <View h={screenHeight / 1.2} jc="center" ai="center">
       <Title
         col="white"
         fos="$13"
@@ -88,16 +100,21 @@ const TopSection = () => {
   );
 };
 
-export const CardComp = ({ index }: { index: number }) => {
+export const CardComp = ({ index, item }: { index?: number; item: IProjectTypes }) => {
+  const { title, subtitle, imagePath } = item;
+  const uri = clearSpacesAndSpecialCharacters(title);
   return (
     <Card
+      cursor="pointer"
+      onPress={() => router.push(`/projects/${uri}`)}
+      f={1}
       ov="hidden"
-      br="$12"
-      $md={{ br: '$8' }}
+      br="$1"
+      w="100%"
+      $md={{ br: '$2' }}
+      animation="bouncy"
       bg={Colors.dark.black[300]}
       hoverStyle={{ scale: 0.97 }}
-      f={1}
-      animation="lazy"
       enterStyle={{
         transitionDelay: '10000ms',
         opacity: 0,
@@ -107,88 +124,28 @@ export const CardComp = ({ index }: { index: number }) => {
         bg={Colors.dark.black[200]}
         space="$0"
         ai="center"
-        p="$6"
+        p="$5"
         $md={{
           ai: 'baseline',
         }}>
-        <H3 ta="center" $md={{ ta: 'left' }}>
-          sads asd asdas asdasdasdasd as
-        </H3>
-        <Subtitle mt="$3">Subtitle goes here</Subtitle>
+        <H4 ta="center" $md={{ ta: 'left' }} numberOfLines={1}>
+          {title}
+        </H4>
+        <Subtitle mt="$2" numberOfLines={1}>
+          {subtitle}
+        </Subtitle>
       </Card.Header>
       <Card.Footer>
         <Image
-          source={require('../../../assets/images/icon.png')}
+          source={{ uri: imagePath }}
           style={{
-            width: '100%',
-            // height: "auto",
-            height: '100%',
             aspectRatio: 1,
-            resizeMode: 'center',
+            // width: '100%',
+            flex: 1,
           }}
         />
       </Card.Footer>
     </Card>
-  );
-};
-const CountSection = () => {
-  return (
-    <View
-      $md={{
-        fd: 'column',
-        ai: 'baseline',
-        space: '$2',
-        br: '$8',
-      }}
-      fd="row"
-      my="$12"
-      p="$10"
-      f={1}
-      ai="center"
-      space="$12"
-      br="$12"
-      bg={Colors.dark.black[300]}>
-      <YStack f={1}>
-        <Text $gtSm={{ fos: '$6' }} fos="$10" ff="$heading" col={Colors.dark.orange[200]}>
-          Sevket Aydogdu
-        </Text>
-        <Text
-          fos="$11"
-          ff="$heading"
-          $gtLg={{
-            fos: '$10',
-          }}
-          $md={{
-            fos: '$8',
-          }}>
-          React Native{'\n'}Developer
-        </Text>
-      </YStack>
-      <YStack f={1}>
-        <Text ff="$heading" fos="$8" $md={{ fos: '$6' }}>
-          Lorem ipsum dolor sit amet consectetur. Malesuada nibh iaculis eu posuere nisl aliquam
-          sed. Sed vitae amet egestas aliquet dui netus.
-        </Text>
-        <Text ff="$heading" fos="$6" fow="200">
-          Lorem ipsum dolor sit amet consectetur. Malesuada nibh iaculis eu posuere nisl aliquam
-          sed. Sed vitae amet egestas aliquet dui netus.
-        </Text>
-        <XStack space="$8" mt="$6">
-          <YStack>
-            <Text>Projects Done</Text>
-            <Text ff="$heading" fos="$10" fow="200" col={Colors.dark.orange[200]}>
-              5+
-            </Text>
-          </YStack>
-          <YStack>
-            <Text>Experience</Text>
-            <Text ff="$heading" fos="$10" fow="200" col={Colors.dark.orange[200]}>
-              2+ Years
-            </Text>
-          </YStack>
-        </XStack>
-      </YStack>
-    </View>
   );
 };
 
@@ -211,7 +168,7 @@ export const SeperatorLine = () => {
   }, []);
   return (
     <View
-      $gtLg={Platform.select({ web: { mx: `-22rem` } })}
+      $gtLg={Platform.select({ web: { mx: `-55rem` } })}
       $gtMd={Platform.select({
         web: {
           mx: `-5rem`,
@@ -275,14 +232,15 @@ const AnimateText = styled(Text, {
   fos: '$6',
   fow: '$12',
 });
-const SText = styled(Text, {
-  ff: '$heading',
-  fow: '600',
-  fos: Platform.OS === 'web' ? '$8' : '$4',
-  col: Colors.dark.black[100],
-});
+// const SText = styled(Text, {
+//   ff: '$heading',
+//   fow: '600',
+//   fos: Platform.OS === 'web' ? '$8' : '$4',
+//   col: Colors.dark.black[100],
+// });
 
 const Subtitle = styled(Text, {
   fow: '800',
   col: Colors.dark.gray[100],
+  fontSize: '$4',
 });

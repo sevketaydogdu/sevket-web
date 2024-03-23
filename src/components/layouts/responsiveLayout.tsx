@@ -7,10 +7,15 @@ const ResponsiveLayout: FC<IResponsiveLayout> = ({ children }) => {
   return (
     <ScrollView>
       <YStack
+        f={1}
         // f={1}
         // overflow="hidden"
+        // bg="$red10"
         $gtLg={{
-          mx: `15rem`,
+          // mx: `15rem`,
+          maw: 1200,
+          mx: 'auto',
+
           // px: `2rem`,
         }}
         $gtMd={{

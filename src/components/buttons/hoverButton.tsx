@@ -1,4 +1,4 @@
-import Colors from 'constants/Colors';
+import Colors from '@/constants/Colors';
 import React from 'react';
 import { Platform, Pressable } from 'react-native';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';

@@ -1,10 +1,10 @@
-import HoverButton from 'components/buttons/hoverButton';
-import Colors from 'constants/Colors';
+import HoverButton from '@/components/buttons/hoverButton';
+import Colors from '@/constants/Colors';
 import { router } from 'expo-router';
 import { Dimensions } from 'react-native';
-import { ScrollView, Text, View, XStack, YStack } from 'tamagui';
+import { Button, ScrollView, Text, View, XStack, YStack } from 'tamagui';
 
-import { CardComp, SeperatorLine } from './webHomeScreen';
+import { CardComp, SeperatorLine } from './home.web';
 const screenHeight = Dimensions.get('window').height;
 
 export default function MobileHomeScreen() {
@@ -25,7 +25,7 @@ export default function MobileHomeScreen() {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         {/* Top section */}
         <TopSection />
-
+        <Button onPress={() => router.push('/download-zikirmatik')}></Button>
         <YStack onPress={() => router.push('/(tabs)/projects')} p="$4">
           <Text>BUTON TEST</Text>
         </YStack>

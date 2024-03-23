@@ -1,5 +1,5 @@
 const createExpoWebpackConfigAsync = require('@expo/webpack-config');
-const { TamaguiPlugin } = require('tamagui-loader')
+const { TamaguiPlugin } = require('tamagui-loader');
 
 module.exports = async function (env, argv) {
   const config = await createExpoWebpackConfigAsync(env, argv);
@@ -7,15 +7,11 @@ module.exports = async function (env, argv) {
   return config;
 };
 
+// eslint-disable-next-line no-undef
 config.plugins.push(
-
   new TamaguiPlugin({
-
     config: './src/tamagui.config.ts',
 
     components: ['tamagui'], // matching the yarn add you chose above
-
-  }),
-
-)
- 
+  })
+);
