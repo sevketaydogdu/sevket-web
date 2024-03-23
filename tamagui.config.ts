@@ -3,7 +3,7 @@ import { createInterFont } from '@tamagui/font-inter';
 import { createMedia } from '@tamagui/react-native-media-driver';
 import { shorthands } from '@tamagui/shorthands';
 import { themes, tokens } from '@tamagui/themes';
-import { createTamagui, styled, SizableText, H1, YStack, createFont } from 'tamagui';
+import { createTamagui, styled, SizableText, H1, YStack, createFont, createTokens } from 'tamagui';
 
 const animations = createAnimations({
   bouncy: {
@@ -77,14 +77,79 @@ export const ButtonText = styled(SizableText, {
   fontWeight: '600',
   textAlign: 'center',
 });
+const tokens1 = createTokens({
+  color: {
+    saabuzer: '#5a5fcf',
+    saabuzer_100: '#abcde1',
+    saahmet: '#1a1a',
+  },
+  size: {
+    $0: 0,
+    '$0.25': 2,
+    '$0.5': 4,
+    '$0.75': 8,
+    $1: 20,
+    '$1.5': 24,
+    $2: 28,
+    '$2.5': 32,
+    $3: 36,
+    '$3.5': 40,
+    $4: 44,
+    $true: 44,
+    '$4.5': 48,
+    $5: 52,
+    $6: 64,
+    $7: 74,
+    $8: 84,
+    $9: 94,
+    $10: 104,
+    $11: 124,
+    $12: 2,
+    $13: 164,
+    $14: 184,
+    $15: 204,
+    $16: 224,
+    $17: 224,
+    $18: 244,
+    $19: 264,
+    $20: 284,
+  },
+  space: { ...tokens.space },
+  radius: {
+    $0: 0,
+    '$0.25': 2,
+    '$0.5': 4,
+    '$0.75': 8,
+    $1: 20,
+    '$1.5': 24,
+    $2: 28,
+    '$2.5': 32,
+    $3: 36,
+    '$3.5': 40,
+    $4: 44,
+    $true: 44,
+    '$4.5': 48,
+    $5: 52,
+    $6: 64,
+    $7: 74,
+    $8: 84,
+    $9: 94,
+    $10: 104,
+    $11: 124,
+    $12: 144,
+    $13: 164,
+    $14: 184,
+    $15: 204,
+    $16: 224,
+    $17: 224,
+    $18: 244,
+    $19: 264,
+    $20: 284,
+  },
+  zIndex: { ...tokens.zIndex },
+});
 
 const config = createTamagui({
-  light: {
-    color: {
-      background: '#1a1a',
-      text: '#1a1a',
-    },
-  },
   defaultFont: 'body',
   animations,
   shouldAddPrefersColorThemes: true,
@@ -95,7 +160,7 @@ const config = createTamagui({
     heading: headingFont,
   },
   themes,
-  tokens,
+  tokens: tokens1,
   media: createMedia({
     xs: { maxWidth: 660 },
     sm: { maxWidth: 800 },

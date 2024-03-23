@@ -1,17 +1,17 @@
-import { Button } from 'components/buttons/styledButton';
-import { router, useSegments } from 'expo-router';
+import { router } from 'expo-router';
 import React, { MutableRefObject } from 'react';
 import { Pressable, Image } from 'react-native';
-import { XStack, Header, View, Text, styled } from 'tamagui';
+import { XStack, Header } from 'tamagui';
 
-import HoverButton from './buttons/hoverButton';
 import Colors from '../constants/Colors';
+
+import { Button } from '@/components/buttons/styledButton';
 
 interface IHeaderProps {
   scrollRef?: MutableRefObject<number | undefined>;
 }
 const SHeader: React.FC<IHeaderProps> = (props) => {
-  const { scrollRef } = props;
+  // const { scrollRef } = props;
   // const segments = useSegments();
   const handlePressAboutMe = () => {
     router.push('/aboutme/');
@@ -33,7 +33,6 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
     <Header
       pos="sticky"
       t="$0"
-      w="100%"
       zIndex={999}
       // bg={scrollRef?.current ? 'red' : '$blue10Light'}
       // overflow="hidden"
@@ -46,9 +45,9 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
         py="$4"
         br="$12"
         mt="$4"
-        $gtLg={{
-          mx: '15rem',
-        }}
+        // $gtLg={{
+        //   mx: '15rem',
+        // }}
         // $gtLg={{
         //   mx: `15rem`,
         //   // px: `2rem`,
@@ -67,7 +66,7 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
         ai="center">
         <Pressable onPress={() => handlePressHome()}>
           <Image
-            source={require('../assets/images/logo-white.png')}
+            source={require('../../assets/images/logo-white.png')}
             style={{
               width: 110,
               height: 40,
@@ -80,7 +79,7 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
           <Button onPress={handlePressProjects}>Projects</Button>
         </XStack>
         <Button filled $md={{ display: 'none' }} onPress={handlePressContact}>
-          Contact
+          Contact asd
         </Button>
         <Button filled $gtMd={{ display: 'none' }}>
           Mobile Menu

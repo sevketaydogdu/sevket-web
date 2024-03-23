@@ -14,12 +14,11 @@ const globalStyles = StyleSheet.create({
     '::-webkit-scrollbar-thumb:hover': {
       backgroundColor: '#555',
     },
-   body: {
+    body: {
       overflowY: 'scroll', // Ensure scrollbar is always present
       scrollbarWidth: 'thin',
       scrollbarColor: '#888 #f5f5f5',
     },
-
   },
 });
 

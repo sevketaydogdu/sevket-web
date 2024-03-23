@@ -2,7 +2,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Slot, Tabs } from 'expo-router';
 import { Platform, Pressable, useColorScheme } from 'react-native';
 
-import Colors from '../../constants/Colors';
+import Colors from '../../src/constants/Colors';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -59,12 +59,6 @@ export default function TabLayout() {
         options={{
           title: 'projects',
           tabBarIcon: ({ color }) => <TabBarIcon name="wpexplorer" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="projects/botras/botras"
-        options={{
-          href: null,
         }}
       />
     </Tabs>
