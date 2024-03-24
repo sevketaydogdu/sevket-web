@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Image, LayoutChangeEvent, Platform, useWindowDimensions } from 'react-native';
 import Animated, {
   Easing,
@@ -14,7 +14,7 @@ import { Title } from '../../../tamagui.config';
 
 import { Button } from '@/components/buttons/styledButton';
 import Colors from '@/constants/Colors';
-import projects from '@/constants/projects.json';
+import { projects } from '@/constants/projects';
 import { IProjectTypes } from '@/types/projectTypes';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
 
@@ -149,8 +149,8 @@ export const CardComp = ({ item }: { item: IProjectTypes }) => {
           source={{ uri: imagePath }}
           style={{
             aspectRatio: 1,
-            // width: '100%',
-            flex: 1,
+            width: '100%',
+            // flex: 1,
           }}
         />
       </Card.Footer>

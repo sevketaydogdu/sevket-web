@@ -1,10 +1,9 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Linking } from 'react-native';
-import { H1, H6, Image, ScrollView, Text, View, XStack, YStack } from 'tamagui';
+import { H1, H6, Image, Text, View, XStack } from 'tamagui';
 
-import { Link, StoreButton } from '@/components/buttons/storeButton';
-import projects from '@/constants/projects.json';
+import { projects } from '@/constants/projects';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
 
 const ProjectDetailScreen = () => {
@@ -13,11 +12,15 @@ const ProjectDetailScreen = () => {
   const project = projects.find(
     (project) => clearSpacesAndSpecialCharacters(project.title) === name
   );
-  console.log('🚀 ~ ProjectDetailScreen ~ project:', project);
   const appleBadge = '../../../../assets/images/appleBadge.png';
   const googleBadge = '../../../../assets/images/googleBadge.png';
   if (!project) {
-    return <H1>Project not found</H1>;
+    return (
+      <View ai="center" f={1} jc="center">
+        <H1>Project not found</H1>
+        <Text fos="$6">{name}</Text>
+      </View>
+    );
   }
   return (
     <XStack f={1}>
