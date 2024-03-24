@@ -1,6 +1,5 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Image, LayoutChangeEvent, Platform, useWindowDimensions } from 'react-native';
 import Animated, {
   Easing,
@@ -9,9 +8,8 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import { Card, H1, H2, H4, Text, View, XStack, styled } from 'tamagui';
+import { Card, H2, H4, Text, View, XStack, styled } from 'tamagui';
 
-import GithubBadge from './components/githubBadge';
 import { Title } from '../../../tamagui.config';
 
 import { Button } from '@/components/buttons/styledButton';
@@ -21,9 +19,6 @@ import { IProjectTypes } from '@/types/projectTypes';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
 
 export default function WebHomeScreen() {
-  const [captured, setCaptured] = useState<boolean>(false);
-  const [layoutChangeData, setLayoutChangeData] = useState<LayoutChangeEvent>();
-
   const { width: screenWidth, height } = useWindowDimensions();
 
   const cardRowForResponsive = useMemo(() => (screenWidth > 960 ? 2 : 2), [screenWidth]);
@@ -31,13 +26,6 @@ export default function WebHomeScreen() {
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const _handleChangeLayout = (layout: LayoutChangeEvent) => {
-    if (!captured) {
-      setLayoutChangeData(layout);
-      setCaptured(true);
-    }
-  };
 
   return (
     <View
@@ -48,13 +36,7 @@ export default function WebHomeScreen() {
       }}
       animation="lazy">
       {/* Top section */}
-      <View
-        h={height * 0.5}
-        mih={500}
-        onLayout={(layout) => _handleChangeLayout(layout)}
-        bg={Colors.dark.black[200]}
-        br="$6"
-        jc="center">
+      <View h={height * 0.5} mih={500} bg={Colors.dark.black[200]} br="$6" jc="center">
         <>
           <Title
             col="white"
