@@ -1,5 +1,6 @@
-import Colors from '@/constants/Colors';
 import { Text, styled } from 'tamagui';
+
+import Colors from '@/constants/Colors';
 
 export const Button = styled(Text, {
   fos: '$6',

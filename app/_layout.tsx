@@ -11,8 +11,8 @@ import config from '../tamagui.config';
 
 import SHeader from '@/components/customHeader';
 import Footer from '@/components/footer';
-import ResponsiveLayout from '@/components/layouts/responsiveLayout';
 import { DarkTheme } from '@/constants/navigatiorTheme';
+import GithubBadge from '@/screens/home/components/githubBadge';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -49,54 +49,71 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  useEffect(() => {
+    document.title = 'Sevket Ayodgdu - React Native Developer';
+  });
   if (!loaded) {
     return null;
   }
 
   return (
-    <ThemeProvider value={DarkTheme}>
-      <TamaguiProvider config={config}>
-        <Theme name="dark">
-          <>
-            {Platform.OS === 'web' ? (
-              <>
-                <ResponsiveLayout>
+    <>
+      <ThemeProvider value={DarkTheme}>
+        <TamaguiProvider config={config}>
+          <Theme name="dark">
+            <>
+              {Platform.OS === 'web' ? (
+                <>
                   <View
-                    // onScroll={(e) => scrollRef.current === e.nativeEvent.targetContentOffset?.y}
-                    jc="space-between"
-                    fd="column"
+                    overflowY="scroll"
                     f={1}
-                    $gtLg={
-                      {
-                        // maxWidth: 1200,
-                      }
-                    }
-                    //
-                  >
+                    fd="column"
+                    // f={1}
+                    overflow="hidden"
+                    // bg="$red10"
+                    $gtLg={{
+                      // mx: `15rem`,
+                      maw: 1200,
+                      mx: 'auto',
+                    }}
+                    $gtMd={{
+                      mx: `5rem`,
+                      // p: "$2",
+                      mt: '$2',
+                    }}
+                    $gtSm={{ p: '$2', mt: '$2' }}
+                    $gtXs={{ p: '$2', mt: '$2' }}
+                    $xs={{ p: '$2', mt: '$2' }}>
                     <SHeader scrollRef={scrollRef} />
 
-                    <Main>
-                      <Slot />
+                    <Main f={1}>
+                      <Slot
+                        screenOptions={({ route }) => ({
+                          title: route.name,
+                        })}
+                      />
                     </Main>
 
                     <Footer />
                   </View>
-                </ResponsiveLayout>
-              </>
-            ) : (
-              <>
-                <StatusBar style="light" />
-                <Stack>
-                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                  <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-                </Stack>
-              </>
-            )}
-            {/* <MainModal /> */}
-          </>
-        </Theme>
-      </TamaguiProvider>
-    </ThemeProvider>
+
+                  <GithubBadge />
+                </>
+              ) : (
+                <>
+                  <StatusBar style="light" />
+                  <Stack>
+                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                    <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+                  </Stack>
+                </>
+              )}
+              {/* <MainModal /> */}
+            </>
+          </Theme>
+        </TamaguiProvider>
+      </ThemeProvider>
+    </>
   );
 }
 

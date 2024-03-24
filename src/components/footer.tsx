@@ -6,8 +6,8 @@ import Colors from '@/constants/Colors';
 const Footer = () => {
   return (
     <FooterTamagui
-      mb="$4"
-      pb="$4"
+      // mb="$4"
+      // pb="$4"
       //   f={1}
       asChild
       bg={Colors.dark.black[200]}
@@ -15,6 +15,7 @@ const Footer = () => {
       // $gtLg={{
       //   mx: '15rem',
       // }}
+
       $md={{
         fd: 'column',
         ai: 'baseline',
@@ -22,9 +23,8 @@ const Footer = () => {
         br: '$8',
       }}
       fd="row"
-      my="$12"
+      mt="$12"
       p="$10"
-      f={1}
       ai="center"
       space="$12"
       br="$2"
