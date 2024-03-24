@@ -1,7 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import React, { useEffect, useMemo, useState } from 'react';
-import { Image, LayoutChangeEvent, Platform, useWindowDimensions } from 'react-native';
+import React, { useMemo } from 'react';
+import { Image, Platform, useWindowDimensions } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -21,92 +21,20 @@ import { IProjectTypes } from '@/types/projectTypes';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
 
 export default function WebHomeScreen() {
-  const [captured, setCaptured] = useState<boolean>(false);
-  const [layoutChangeData, setLayoutChangeData] = useState<LayoutChangeEvent>();
-
-  const { width: screenWidth, height } = useWindowDimensions();
-
+  const { width: screenWidth } = useWindowDimensions();
   const cardRowForResponsive = useMemo(() => (screenWidth > 960 ? 2 : 2), [screenWidth]);
   const numRows = Math.ceil(projects.length / cardRowForResponsive);
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const _handleChangeLayout = (layout: LayoutChangeEvent) => {
-    if (!captured) {
-      setLayoutChangeData(layout);
-      setCaptured(true);
-    }
-  };
-
   return (
-    <View
-      f={1}
-      enterStyle={{
-        opacity: 0,
-        y: 10,
-      }}
-      animation="lazy">
+    <View f={1}>
       {/* Top section */}
-      <View
-        h={height * 0.5}
-        mih={500}
-        onLayout={(layout) => _handleChangeLayout(layout)}
-        bg={Colors.dark.black[200]}
-        br="$6"
-        jc="center">
-        <>
-          <Title
-            col="white"
-            fos="$13"
-            $xs={{
-              fos: '$9',
-              lh: '$9',
-            }}
-            ta="center"
-            enterStyle={{
-              opacity: 0,
-              scale: 1.5,
-              y: 128,
-            }}
-            animation="lazy">
-            <Text
-              col={Colors.dark.orange[100]}
-              fos="$13"
-              fow="900"
-              $xs={{
-                fos: '$9',
-                lh: '$9',
-              }}>
-              Hello, I am Sevket,
-            </Text>
-            <br />
-            react-native developer
-            <br />
-            based in Turkey.
-          </Title>
-          <XStack
-            mt="$6"
-            space="$2"
-            als="center"
-            enterStyle={{
-              opacity: 0,
-              scale: 1.5,
-              y: 128,
-            }}
-            animation="lazy">
-            <Button white onPress={() => router.push('/works/')}>
-              Get In Touch
-            </Button>
-            <Button outlined onPress={() => router.push('/works/')}>
-              View All Projects
-            </Button>
-          </XStack>
-        </>
-        {/* <SeperatorLineNew layoutChangeData={layoutChangeData} /> */}
-      </View>
+      <TopSection />
 
-      <H2 mt="$10" mb="$8" als="center" col={Colors.dark.orange[100]}>
+      <SeperatorLine />
+      <H2 mt="$16" mb="$8" als="center" col={Colors.dark.orange[100]}>
         Projects
       </H2>
 
@@ -127,7 +55,52 @@ export default function WebHomeScreen() {
   );
 }
 
-export const CardComp = ({ item }: { item: IProjectTypes }) => {
+const TopSection = () => {
+  const { height: screenHeight } = useWindowDimensions();
+  return (
+    <View h={screenHeight / 1.2} jc="center" ai="center">
+      <Title
+        col="white"
+        fos="$13"
+        $xs={{
+          fos: '$9',
+          lh: '$9',
+        }}
+        ta="center"
+        enterStyle={{
+          opacity: 0,
+          scale: 1.5,
+          y: -10,
+        }}
+        animation="lazy">
+        <Text
+          col={Colors.dark.orange[100]}
+          fos="$13"
+          fow="900"
+          $xs={{
+            fos: '$9',
+            lh: '$9',
+          }}>
+          Hello, I am Sevket,
+        </Text>
+        <br />
+        react-native developer
+        <br />
+        based in Turkey.
+      </Title>
+      <XStack mt="$6" space="$2" als="center">
+        <Button white onPress={() => router.push('/works/')}>
+          Get In Touch
+        </Button>
+        <Button outlined onPress={() => router.push('/works/')}>
+          View All Projects
+        </Button>
+      </XStack>
+    </View>
+  );
+};
+
+export const CardComp = ({ index, item }: { index?: number; item: IProjectTypes }) => {
   const { title, subtitle, imagePath } = item;
   const uri = clearSpacesAndSpecialCharacters(title);
   return (
@@ -177,13 +150,8 @@ export const CardComp = ({ item }: { item: IProjectTypes }) => {
 };
 
 const AnimatedXStack = Animated.createAnimatedComponent(XStack);
-
-export const SeperatorLineNew = ({ layoutChangeData }: { layoutChangeData: LayoutChangeEvent }) => {
-  console.log('🚀 ~ SeperatorLineNew ~ layoutChangeData:', layoutChangeData);
-  const { nativeEvent } = layoutChangeData;
-  const { layout } = nativeEvent;
-  const { width: screenWidth } = layout;
-  // const { width: screenWidth } = useWindowDimensions();
+export const SeperatorLine = () => {
+  const { width: screenWidth } = useWindowDimensions();
 
   const translateX = useSharedValue(-screenWidth);
 
@@ -200,7 +168,7 @@ export const SeperatorLineNew = ({ layoutChangeData }: { layoutChangeData: Layou
   }, []);
   return (
     <View
-      $gtLg={Platform.select({ web: { mx: `-55rem` } })}
+      $gtLg={Platform.select({ web: { mx: `-55rem`, bg: 'red' } })}
       $gtMd={Platform.select({
         web: {
           mx: `-5rem`,
@@ -218,36 +186,49 @@ export const SeperatorLineNew = ({ layoutChangeData }: { layoutChangeData: Layou
       // w={screenWidth * 1.1}
       // transform={[translateX:'-2deg']}
     >
-      <XStack f={1} ai="center" jc="center">
-        <AnimatedXStack style={animatedStyle} space="$4">
-          <AnimateText>Discover</AnimateText>
-          <AnimateText>Learn</AnimateText>
-          <AnimateText>Design</AnimateText>
-          <AnimateText>Develop</AnimateText>
-          <AnimateText>React Native</AnimateText>
-          <AnimateText>Expo</AnimateText>
-          <AnimateText>Tamagui</AnimateText>
-          <AnimateText>Discover</AnimateText>
-          <AnimateText>Learn</AnimateText>
-          <AnimateText>Design</AnimateText>
-          <AnimateText>Develop</AnimateText>
-          <AnimateText>React Native</AnimateText>
-          <AnimateText>Expo</AnimateText>
-          <AnimateText>Tamagui</AnimateText>
-          <AnimateText>Discover</AnimateText>
-          <AnimateText>Learn</AnimateText>
-          <AnimateText>Design</AnimateText>
-          <AnimateText>Develop</AnimateText>
-          <AnimateText>React Native</AnimateText>
-          <AnimateText>Expo</AnimateText>
-          <AnimateText>Tamagui</AnimateText>
-        </AnimatedXStack>
-      </XStack>
+      <LinearGradient
+        colors={['#B16CEA', '#FF5E69', '#FF8A56', '#FFA84B']}
+        start={{ x: -90, y: 0 }}
+        style={{
+          height: Platform.OS === 'web' ? 80 : 40,
+          overflow: 'visible',
+        }}>
+        <XStack
+          f={1}
+          bg={Colors.dark.white[100]}
+          rotate={Platform.select({ native: '-2deg', web: '-1deg' })}
+          ai="center"
+          jc="center">
+          <AnimatedXStack style={animatedStyle} space="$4">
+            <AnimateText>Discover</AnimateText>
+            <AnimateText>Learn</AnimateText>
+            <AnimateText>Design</AnimateText>
+            <AnimateText>Develop</AnimateText>
+            <AnimateText>React Native</AnimateText>
+            <AnimateText>Expo</AnimateText>
+            <AnimateText>Tamagui</AnimateText>
+            <AnimateText>Discover</AnimateText>
+            <AnimateText>Learn</AnimateText>
+            <AnimateText>Design</AnimateText>
+            <AnimateText>Develop</AnimateText>
+            <AnimateText>React Native</AnimateText>
+            <AnimateText>Expo</AnimateText>
+            <AnimateText>Tamagui</AnimateText>
+            <AnimateText>Discover</AnimateText>
+            <AnimateText>Learn</AnimateText>
+            <AnimateText>Design</AnimateText>
+            <AnimateText>Develop</AnimateText>
+            <AnimateText>React Native</AnimateText>
+            <AnimateText>Expo</AnimateText>
+            <AnimateText>Tamagui</AnimateText>
+          </AnimatedXStack>
+        </XStack>
+      </LinearGradient>
     </View>
   );
 };
 const AnimateText = styled(Text, {
-  col: 'white',
+  col: 'black',
   fos: '$6',
   fow: '$12',
 });

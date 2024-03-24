@@ -5,29 +5,30 @@ interface IResponsiveLayout {
 }
 const ResponsiveLayout: FC<IResponsiveLayout> = ({ children }) => {
   return (
-    <ScrollView>
-      <YStack
-        f={1}
-        // f={1}
-        // overflow="hidden"
-        // bg="$red10"
-        $gtLg={{
-          // mx: `15rem`,
-          maw: 1200,
-          mx: 'auto',
+    <ScrollView
+      f={1}
+      jc="space-between"
+      fd="column"
+      bg="rebeccapurple"
+      // f={1}
+      // overflow="hidden"
+      // bg="$red10"
+      $gtLg={{
+        // mx: `15rem`,
+        maw: 1200,
+        mx: 'auto',
 
-          // px: `2rem`,
-        }}
-        $gtMd={{
-          mx: `5rem`,
-          // p: "$2",
-          mt: '$2',
-        }}
-        $gtSm={{ p: '$2', mt: '$2' }}
-        $gtXs={{ p: '$2', mt: '$2' }}
-        $xs={{ p: '$2', mt: '$2' }}>
-        {children}
-      </YStack>
+        // px: `2rem`,
+      }}
+      $gtMd={{
+        mx: `5rem`,
+        // p: "$2",
+        mt: '$2',
+      }}
+      $gtSm={{ p: '$2', mt: '$2' }}
+      $gtXs={{ p: '$2', mt: '$2' }}
+      $xs={{ p: '$2', mt: '$2' }}>
+      {children}
     </ScrollView>
   );
 };
