@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { Link, router } from 'expo-router';
 import React from 'react';
-import { Image, Linking } from 'react-native';
+import { Image, Linking, Text as RNText } from 'react-native';
 import { H1, Text, View, XStack, YStack } from 'tamagui';
 
 import { Button } from '@/components/buttons/styledButton';
@@ -64,6 +64,11 @@ const AboutMeWeb = () => {
             px: '$5',
           }}>
           <H1>About Me</H1>
+          <RNText>
+            Lorem ipsum dolor,{'\n'} sit amet consectetur adipisicing elit.{'\n'} Fugiat quibusdam
+            expedita suscipit magnam veniam itaque alias vel deleniti nobis dignissimos, cumque quo
+            facilis velit natus voluptatibus enim soluta repellendus perspiciatis?
+          </RNText>
           <Text style={{ color: 'white' }} mt="$2" fos="$5">
             Welcome to my corner of the web! I'm{' '}
             <Text col="orange" fow="900">
