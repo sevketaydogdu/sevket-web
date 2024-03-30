@@ -111,6 +111,7 @@ export default function WebHomeScreen() {
 
 export const CardComp = ({ item }: { item: IProjectTypes }) => {
   const { title, subtitle, imagePath } = item;
+  console.log('🚀 ~ CardComp ~ imagePath:', imagePath);
   const uri = clearSpacesAndSpecialCharacters(title);
   return (
     <Card
@@ -146,10 +147,11 @@ export const CardComp = ({ item }: { item: IProjectTypes }) => {
       </Card.Header>
       <Card.Footer>
         <Image
-          source={{ uri: imagePath }}
+          source={imagePath as any}
           style={{
             aspectRatio: 1,
             width: '100%',
+            height: '100%',
             // flex: 1,
           }}
         />

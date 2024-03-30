@@ -12,8 +12,6 @@ const ProjectDetailScreen = () => {
   const project = projects.find(
     (project) => clearSpacesAndSpecialCharacters(project.title) === name
   );
-  const appleBadge = '../../../../assets/images/appleBadge.png';
-  const googleBadge = '../../../../assets/images/googleBadge.png';
   if (!project) {
     return (
       <View ai="center" f={1} jc="center">
@@ -44,7 +42,7 @@ const ProjectDetailScreen = () => {
           <View cursor="pointer" onPress={() => Linking.openURL(project?.storeLinks?.apple)}>
             <Image
               // cursor="pointer"
-              source={{ uri: appleBadge }}
+              source={require('../../../../assets/images/appleBadge.png')}
               style={{
                 width: 135,
                 height: 40,
@@ -54,7 +52,7 @@ const ProjectDetailScreen = () => {
           <View cursor="pointer" onPress={() => Linking.openURL(project?.storeLinks?.google)}>
             <Image
               //
-              source={{ uri: googleBadge }}
+              source={require('../../../../assets/images/googlebadge.png')}
               style={{
                 width: 135,
                 height: 40,
