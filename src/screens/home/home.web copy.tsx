@@ -16,7 +16,7 @@ import { Title } from '../../../tamagui.config';
 
 import { Button } from '@/components/buttons/styledButton';
 import Colors from '@/constants/Colors';
-import projects from '@/constants/projects.json';
+import projects from '@/constants/projects';
 import { IProjectTypes } from '@/types/projectTypes';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
 

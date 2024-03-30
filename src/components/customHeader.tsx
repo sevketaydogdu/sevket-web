@@ -1,8 +1,19 @@
 import { AntDesign } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { MutableRefObject } from 'react';
-import { Pressable, Image, Linking } from 'react-native';
-import { XStack, Header, View } from 'tamagui';
+import { Pressable, Image, Linking, Button as RNButton, Text, Platform } from 'react-native';
+import {
+  Button as TButton,
+  Tooltip,
+  XStack,
+  Header,
+  View,
+  Paragraph,
+  TooltipProps,
+  TooltipGroup,
+  YStack,
+  TooltipSimple,
+} from 'tamagui';
 
 import Colors from '../constants/Colors';
 
@@ -11,6 +22,7 @@ const socialButtons = [
   {
     name: 'twitter',
     href: 'https://www.twitter.com/sevketaydogdu',
+    title: 'Twitter',
   },
   // {
   //   name: 'instagram',
@@ -19,6 +31,7 @@ const socialButtons = [
   {
     name: 'github',
     href: 'https://www.github.com/sevketaydogdu',
+    title: 'GitHub',
   },
 ];
 interface IHeaderProps {
@@ -45,7 +58,7 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
   };
   return (
     <Header
-      pos="sticky"
+      pos="static"
       // t="$0"
       zIndex={999}
       // overflow="hidden"
@@ -97,20 +110,30 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
         <XStack gap="$2">
           {socialButtons.map((item) => {
             return (
-              <View
-                aria-label={item.name}
-                id={item.name}
-                onPress={() => Linking.openURL(item.href)}
-                p="$2"
-                key={item.name}
-                br="$4"
-                cursor="pointer"
-                accessibilityLabel="github"
-                hoverStyle={{
-                  bg: Colors.dark.black[100],
-                }}>
-                <AntDesign name={item.name as any} size={16} color="white" />
-              </View>
+              <>
+                {Platform.select({
+                  web: (
+                    <div title={item.title}>
+                      <TButton
+                        onHoverIn={(event) => console.log('event', event)}
+                        key={item.title}
+                        onPress={() => Linking.openURL(item.href)}
+                        icon={<AntDesign name={item.name as any} size={16} color="white" />}
+                        circular
+                      />
+                    </div>
+                  ),
+                  native: (
+                    <TButton
+                      onHoverIn={(event) => console.log('event', event)}
+                      key={item.title}
+                      onPress={() => Linking.openURL(item.href)}
+                      icon={<AntDesign name={item.name as any} size={16} color="white" />}
+                      circular
+                    />
+                  ),
+                })}
+              </>
             );
           })}
         </XStack>
