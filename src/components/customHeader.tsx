@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { MutableRefObject } from 'react';
-import { Pressable, Image, Linking } from 'react-native';
+import { Pressable, Image, Linking, Button as RNButton, Text, Platform } from 'react-native';
 import {
   Button as TButton,
   Tooltip,
@@ -110,13 +110,30 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
         <XStack gap="$2">
           {socialButtons.map((item) => {
             return (
-              <TButton
-                onHoverIn={(event) => console.log('event', event)}
-                key={item.title}
-                onPress={() => Linking.openURL(item.href)}
-                icon={<AntDesign name={item.name as any} size={16} color="white" />}
-                circular
-              />
+              <>
+                {Platform.select({
+                  web: (
+                    <div title={item.title}>
+                      <TButton
+                        onHoverIn={(event) => console.log('event', event)}
+                        key={item.title}
+                        onPress={() => Linking.openURL(item.href)}
+                        icon={<AntDesign name={item.name as any} size={16} color="white" />}
+                        circular
+                      />
+                    </div>
+                  ),
+                  native: (
+                    <TButton
+                      onHoverIn={(event) => console.log('event', event)}
+                      key={item.title}
+                      onPress={() => Linking.openURL(item.href)}
+                      icon={<AntDesign name={item.name as any} size={16} color="white" />}
+                      circular
+                    />
+                  ),
+                })}
+              </>
             );
           })}
         </XStack>

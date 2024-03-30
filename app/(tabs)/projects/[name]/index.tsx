@@ -23,18 +23,20 @@ const ProjectDetailScreen = () => {
   return (
     <XStack f={1}>
       <View f={1} ov="hidden" ai="flex-start" jc="flex-start" w="30%">
-        <Image
-          source={{ uri: project?.imagePath }}
-          style={{
-            width: '100%',
-            aspectRatio: 1,
-            borderRadius: 16,
-          }}
-          resizeMode="cover"
-        />
+        <View aspectRatio={1} w="100%" br="$5">
+          <Image
+            source={project?.imagePath}
+            style={{
+              width: '100%',
+              height: '100%',
+              borderRadius: 32,
+            }}
+            resizeMode="cover"
+          />
+        </View>
       </View>
 
-      <View f={1} w="70%" p="$6">
+      <View f={1} w="70%" pl="$6">
         <H1>{project?.title}</H1>
         <H6 mt="$2">{project?.subtitle}</H6>
         <Text mt="$4">{project?.description}</Text>
