@@ -58,12 +58,15 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
   };
   return (
     <Header
-      pos="static"
       // t="$0"
       zIndex={999}
-      // overflow="hidden"
-      mb="$6">
+      overflow="hidden"
+      //
+    >
       <XStack
+        pos="sticky"
+        top={0}
+        left={0}
         f={1}
         jc="space-between"
         bg={Colors.dark.black[200]}
@@ -71,6 +74,7 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
         py="$4"
         br="$12"
         mt="$4"
+        mb="$6"
         // $gtLg={{
         //   mx: '15rem',
         // }}

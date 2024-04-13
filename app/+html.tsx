@@ -37,7 +37,8 @@ export default function Root({ children }: { children: React.ReactNode }) {
 const responsiveBackground = `
 body {
   background-color: #fff;
-  overflow-y: scroll; 
+  // overflow-y: scroll; 
+  overflow:initial !important
 }
 @media (prefers-color-scheme: dark) {
   body {

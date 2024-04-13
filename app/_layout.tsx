@@ -5,7 +5,7 @@ import { Slot, SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
-import { Main, TamaguiProvider, Theme, View } from 'tamagui';
+import { Main, ScrollView, TamaguiProvider, Theme, View } from 'tamagui';
 
 import config from '../tamagui.config';
 
@@ -65,7 +65,7 @@ export default function RootLayout() {
               {Platform.OS === 'web' ? (
                 <>
                   <View
-                    overflowY="scroll"
+                    pos="relative"
                     f={1}
                     fd="column"
                     // f={1}
@@ -84,7 +84,9 @@ export default function RootLayout() {
                     $gtSm={{ p: '$2', mt: '$2' }}
                     $gtXs={{ p: '$2', mt: '$2' }}
                     $xs={{ p: '$2', mt: '$2' }}>
-                    <SHeader scrollRef={scrollRef} />
+                    <View ov="hidden" pos="sticky">
+                      <SHeader scrollRef={scrollRef} />
+                    </View>
 
                     <Main f={1}>
                       <Slot
