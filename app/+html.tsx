@@ -40,6 +40,10 @@ body {
   // overflow-y: scroll; 
   overflow:initial !important
 }
+  html {
+    overflow: -moz-scrollbars-vertical; 
+    overflow-y: scroll;
+}
 @media (prefers-color-scheme: dark) {
   body {
     background-color: #000;

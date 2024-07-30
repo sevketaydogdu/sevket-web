@@ -1,23 +1,13 @@
 import { AntDesign } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import React, { MutableRefObject } from 'react';
+import React, { Fragment, MutableRefObject } from 'react';
 import { Pressable, Image, Linking, Button as RNButton, Text, Platform } from 'react-native';
-import {
-  Button as TButton,
-  Tooltip,
-  XStack,
-  Header,
-  View,
-  Paragraph,
-  TooltipProps,
-  TooltipGroup,
-  YStack,
-  TooltipSimple,
-} from 'tamagui';
-
+import { Button as TButton, Tooltip, XStack, Header } from 'tamagui';
+import { BlurView } from 'expo-blur';
 import Colors from '../constants/Colors';
 
 import { Button } from '@/components/buttons/styledButton';
+import { StyleSheet } from 'react-native';
 const socialButtons = [
   {
     name: 'twitter',
@@ -68,66 +58,45 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
         top={0}
         left={0}
         f={1}
-        jc="space-between"
         bg={Colors.dark.black[200]}
         px="$5"
         py="$4"
         br="$12"
         mt="$4"
         mb="$6"
-        // $gtLg={{
-        //   mx: '15rem',
-        // }}
-        // $gtLg={{
-        //   mx: `15rem`,
-        //   // px: `2rem`,
-        // }}
-        // $gtMd={{
-        //   mx: `5rem`,
-        //   // p: "$2",
-        //   mt: '$2',
-        // }}
-        // $gtSm={{
-        //   p: '$2',
-        //   mt: '$2',
-        // }}
-        // $gtXs={{ p: '$2', mt: '$2' }}
-        // $xs={{ p: '$2', mt: '$2' }}
         ai="center">
-        <Pressable onPress={() => handlePressHome()}>
-          <Image
-            source={require('../../assets/images/logo-white.png')}
-            style={{
-              width: 110,
-              height: 40,
-            }}
-            resizeMode="cover"
-          />
-        </Pressable>
-        <XStack ai="center" $md={{ display: 'none' }}>
-          <Button onPress={handlePressAboutMe} ta="center" jc="center" ai="center">
-            About Me
-          </Button>
-          <Button onPress={handlePressProjects}>Projects</Button>
-          <Button onPress={handlePressContact}>Contact asd</Button>
-        </XStack>
-        <XStack gap="$2">
-          {socialButtons.map((item) => {
-            return (
-              <>
-                {Platform.select({
-                  web: (
-                    <div title={item.title}>
+        <BlurView intensity={70} style={styles.blurContainer}>
+          <Pressable onPress={() => handlePressHome()}>
+            <Image
+              source={require('../../assets/images/logo-white.png')}
+              style={{
+                width: 110,
+                height: 40,
+              }}
+              resizeMode="cover"
+            />
+          </Pressable>
+          <XStack ai="center" $md={{ display: 'none' }}>
+            <Button onPress={handlePressAboutMe} ta="center" jc="center" ai="center">
+              About Me
+            </Button>
+            <Button onPress={handlePressProjects}>Projects</Button>
+            <Button onPress={handlePressContact}>Contact asd</Button>
+          </XStack>
+          <XStack gap="$2">
+            {socialButtons.map((item) => {
+              return (
+                <Fragment key={item.title}>
+                  {Platform.OS === 'web' ? (
+                    <div key={item.title} title={item.title}>
                       <TButton
                         onHoverIn={(event) => console.log('event', event)}
-                        key={item.title}
                         onPress={() => Linking.openURL(item.href)}
                         icon={<AntDesign name={item.name as any} size={16} color="white" />}
                         circular
                       />
                     </div>
-                  ),
-                  native: (
+                  ) : (
                     <TButton
                       onHoverIn={(event) => console.log('event', event)}
                       key={item.title}
@@ -135,18 +104,35 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
                       icon={<AntDesign name={item.name as any} size={16} color="white" />}
                       circular
                     />
-                  ),
-                })}
-              </>
-            );
-          })}
-        </XStack>
-        <Button filled $gtMd={{ display: 'none' }}>
-          Mobile Menu
-        </Button>
+                  )}
+                </Fragment>
+              );
+            })}
+          </XStack>
+          <Button filled $gtMd={{ display: 'none' }}>
+            Mobile Menu
+          </Button>
+        </BlurView>
       </XStack>
     </Header>
   );
 };
 
 export default SHeader;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  blurContainer: {
+    flex: 1,
+    flexDirection: 'row',
+
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    // margin: 16,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    overflow: 'hidden',
+    borderRadius: 60,
+  },
+});

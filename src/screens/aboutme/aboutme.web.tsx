@@ -64,11 +64,7 @@ const AboutMeWeb = () => {
             px: '$5',
           }}>
           <H1>About Me</H1>
-          <RNText>
-            Lorem ipsum dolor,{'\n'} sit amet consectetur adipisicing elit.{'\n'} Fugiat quibusdam
-            expedita suscipit magnam veniam itaque alias vel deleniti nobis dignissimos, cumque quo
-            facilis velit natus voluptatibus enim soluta repellendus perspiciatis?
-          </RNText>
+
           <Text style={{ color: 'white' }} mt="$2" fos="$5">
             Welcome to my corner of the web! I'm{' '}
             <Text col="orange" fow="900">

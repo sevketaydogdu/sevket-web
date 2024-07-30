@@ -19,7 +19,7 @@ const Footer = () => {
         // $gtLg={{
         //   mx: '15rem',
         // }}
-        $md={{
+        $sm={{
           fd: 'column',
           ai: 'baseline',
           space: '$2',
@@ -30,8 +30,8 @@ const Footer = () => {
         ai="center"
         space="$12"
         br="$2">
-        <YStack f={1} bg="rebeccapurple">
-          <Text $gtSm={{ fos: '$6' }} fos="$10" ff="$heading" col={Colors.dark.orange[200]}>
+        <YStack f={1}>
+          <Text $gtMd={{ fos: '$6' }} fos="$10" ff="$heading" col={Colors.dark.orange[200]}>
             Sevket Aydogdu
           </Text>
           <Text
