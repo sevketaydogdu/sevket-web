@@ -58,9 +58,9 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
         top={0}
         left={0}
         f={1}
-        bg={Colors.dark.black[200]}
-        px="$5"
-        py="$4"
+        // bg={Colors.dark.black[200]}
+        // px="$5"
+        // py="$4"
         br="$12"
         mt="$4"
         mb="$6"
