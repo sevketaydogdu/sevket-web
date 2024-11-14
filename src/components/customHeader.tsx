@@ -1,13 +1,22 @@
 import { AntDesign } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
 import { router } from 'expo-router';
 import React, { Fragment, MutableRefObject } from 'react';
-import { Pressable, Image, Linking, Button as RNButton, Text, Platform } from 'react-native';
+import {
+  Pressable,
+  Image,
+  Linking,
+  Button as RNButton,
+  Text,
+  Platform,
+  StyleSheet,
+} from 'react-native';
 import { Button as TButton, Tooltip, XStack, Header } from 'tamagui';
-import { BlurView } from 'expo-blur';
+
 import Colors from '../constants/Colors';
 
 import { Button } from '@/components/buttons/styledButton';
-import { StyleSheet } from 'react-native';
+
 const socialButtons = [
   {
     name: 'twitter',
@@ -28,7 +37,7 @@ interface IHeaderProps {
   scrollRef?: MutableRefObject<number | undefined>;
 }
 const SHeader: React.FC<IHeaderProps> = (props) => {
-  // const { scrollRef } = props;
+  const { scrollRef } = props;
   // const segments = useSegments();
   const handlePressAboutMe = () => {
     router.push('/aboutme/');
@@ -65,7 +74,9 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
         mt="$4"
         mb="$6"
         ai="center">
-        <BlurView intensity={70} style={styles.blurContainer}>
+        <BlurView
+          intensity={scrollRef && scrollRef?.current && scrollRef?.current > 120 ? 70 : 0}
+          style={styles.blurContainer}>
           <Pressable onPress={() => handlePressHome()}>
             <Image
               source={require('../../assets/images/logo-white.png')}
@@ -90,7 +101,6 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
                   {Platform.OS === 'web' ? (
                     <div key={item.title} title={item.title}>
                       <TButton
-                        onHoverIn={(event) => console.log('event', event)}
                         onPress={() => Linking.openURL(item.href)}
                         icon={<AntDesign name={item.name as any} size={16} color="white" />}
                         circular
@@ -98,7 +108,6 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
                     </div>
                   ) : (
                     <TButton
-                      onHoverIn={(event) => console.log('event', event)}
                       key={item.title}
                       onPress={() => Linking.openURL(item.href)}
                       icon={<AntDesign name={item.name as any} size={16} color="white" />}

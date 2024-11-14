@@ -3,7 +3,7 @@ import { ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Platform } from 'react-native';
 import { Main, TamaguiProvider, Theme, View } from 'tamagui';
 
@@ -37,6 +37,8 @@ export default function RootLayout() {
     SatoshiVariable: require('../assets/fonts/Satoshi-Variable.ttf'),
     ...FontAwesome.font,
   });
+  const [scrollY, setScrollY] = useState(0);
+
   const scrollRef = useRef<number | undefined>(undefined);
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -48,7 +50,17 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
+  useEffect(() => {
+    if (Platform.OS === 'web') {
+      const handleScroll = () => {
+        scrollRef.current = window.scrollY;
+        setScrollY(window.scrollY); // Update state to trigger re-render if needed
+      };
+      window.addEventListener('scroll', handleScroll);
 
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
   useEffect(() => {
     document.title = 'Sevket Ayodgdu - React Native Developer';
   });
