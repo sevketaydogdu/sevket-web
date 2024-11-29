@@ -34,10 +34,10 @@ const socialButtons = [
   },
 ];
 interface IHeaderProps {
-  scrollRef?: MutableRefObject<number | undefined>;
+  scrollY?: number;
 }
 const SHeader: React.FC<IHeaderProps> = (props) => {
-  const { scrollRef } = props;
+  const { scrollY } = props;
   // const segments = useSegments();
   const handlePressAboutMe = () => {
     router.push('/aboutme/');
@@ -72,11 +72,9 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
         // py="$4"
         br="$12"
         mt="$4"
-        mb="$6"
+        mb="$4"
         ai="center">
-        <BlurView
-          intensity={scrollRef && scrollRef?.current && scrollRef?.current > 120 ? 70 : 0}
-          style={styles.blurContainer}>
+        <BlurView intensity={scrollY && scrollY > 90 ? 70 : 0} style={styles.blurContainer}>
           <Pressable onPress={() => handlePressHome()}>
             <Image
               source={require('../../assets/images/logo-white.png')}

@@ -15,10 +15,12 @@ import { Title } from '../../../tamagui.config';
 import { Button } from '@/components/buttons/styledButton';
 import Colors from '@/constants/Colors';
 import { projects } from '@/constants/projects';
+import { useMainScroll } from '@/context/main-scroll-provider';
 import { IProjectTypes } from '@/types/projectTypes';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
 
 export default function WebHomeScreen() {
+  const { scrollY } = useMainScroll();
   const { width: screenWidth, height } = useWindowDimensions();
 
   const cardRowForResponsive = useMemo(() => (screenWidth > 960 ? 2 : 2), [screenWidth]);
@@ -27,6 +29,7 @@ export default function WebHomeScreen() {
     window.scrollTo(0, 0);
   }, []);
 
+  const onBeginScreen = scrollY <= 0;
   return (
     <View
       f={1}
@@ -36,7 +39,7 @@ export default function WebHomeScreen() {
       }}
       animation="lazy">
       {/* Top section */}
-      <View h={height * 0.5} mih={500} bg={Colors.dark.black[200]} br="$6" jc="center">
+      <View h={height * 0.5} mih={500} br="$6" jc="center">
         <>
           <Title
             col="white"
@@ -111,7 +114,6 @@ export default function WebHomeScreen() {
 
 export const CardComp = ({ item }: { item: IProjectTypes }) => {
   const { title, subtitle, imagePath } = item;
-  console.log('🚀 ~ CardComp ~ imagePath:', imagePath);
   const uri = clearSpacesAndSpecialCharacters(title);
   return (
     <Card
@@ -163,7 +165,6 @@ export const CardComp = ({ item }: { item: IProjectTypes }) => {
 const AnimatedXStack = Animated.createAnimatedComponent(XStack);
 
 export const SeperatorLineNew = ({ layoutChangeData }: { layoutChangeData: LayoutChangeEvent }) => {
-  console.log('🚀 ~ SeperatorLineNew ~ layoutChangeData:', layoutChangeData);
   const { nativeEvent } = layoutChangeData;
   const { layout } = nativeEvent;
   const { width: screenWidth } = layout;

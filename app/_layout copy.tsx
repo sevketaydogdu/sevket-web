@@ -11,9 +11,7 @@ import config from '../tamagui.config';
 
 import SHeader from '@/components/customHeader';
 import Footer from '@/components/footer';
-import { ResponsiveView } from '@/components/responsive-view';
 import { DarkTheme } from '@/constants/navigatiorTheme';
-import { MainScrollProvider, useMainScroll } from '@/context/main-scroll-provider';
 import GithubBadge from '@/screens/home/components/githubBadge';
 
 export {
@@ -72,52 +70,13 @@ export default function RootLayout() {
 
   return (
     <>
-      <MainScrollProvider scrollY={scrollY}>
-        <ThemeProvider value={DarkTheme}>
-          <TamaguiProvider config={config}>
-            <Theme name="dark">
-              <InnerLayout />
-            </Theme>
-          </TamaguiProvider>
-        </ThemeProvider>
-      </MainScrollProvider>
-    </>
-  );
-}
-
-const InnerLayout = () => {
-  const { scrollY } = useMainScroll();
-  return (
-    <>
-      {Platform.OS === 'web' ? (
-        <>
-          <ResponsiveView
-            style={{
-              paddingHorizontal: 16,
-              marginTop: 16,
-
-              // backgroundColor: 'blue',
-            }}
-            $gtLg={{
-              maxWidth: 1024,
-              marginHorizontal: 'auto',
-              // backgroundColor: 'blue',
-            }}
-            $gtMd={
-              {
-                // marginHorizontal: `5rem`,
-                // backgroundColor: 'orange',
-              }
-            }
-            $gtSm={{
-              padding: 16,
-              // backgroundColor: 'purple',
-            }}
-            $xs={{
-              // padding: 16,
-              marginTop: 16,
-            }}>
-            {/* <View
+      <ThemeProvider value={DarkTheme}>
+        <TamaguiProvider config={config}>
+          <Theme name="dark">
+            <>
+              {Platform.OS === 'web' ? (
+                <>
+                  <View
                     f={1}
                     // fd="column"
                     // f={1}
@@ -135,44 +94,45 @@ const InnerLayout = () => {
                     }}
                     $gtSm={{ p: '$2', mt: '$2' }}
                     $gtXs={{ p: '$2', mt: '$2' }}
-                    $xs={{ p: '$2', mt: '$2' }}> */}
-            <div
-              style={{
-                position: 'sticky',
-                top: 0,
-                zIndex: 111,
-              }}>
-              <SHeader scrollY={scrollY} />
-            </div>
+                    $xs={{ p: '$2', mt: '$2' }}>
+                    <div
+                      style={{
+                        position: 'sticky',
+                        top: 0,
+                        zIndex: 111,
+                      }}>
+                      <SHeader scrollRef={scrollRef} />
+                    </div>
 
-            <ResponsiveView
-              style={{
-                flex: 1,
-                minHeight: '50vh' as any,
-              }}>
-              <Slot
-                screenOptions={({ route }) => ({
-                  title: route.name,
-                })}
-              />
-            </ResponsiveView>
+                    <Main f={1}>
+                      <Slot
+                        screenOptions={({ route }) => ({
+                          title: route.name,
+                        })}
+                      />
+                    </Main>
 
-            <Footer />
-          </ResponsiveView>
-          {/* </View> */}
+                    <Footer />
+                  </View>
 
-          <GithubBadge />
-        </>
-      ) : (
-        <>
-          <StatusBar style="light" />
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-          </Stack>
-        </>
-      )}
-      {/* <MainModal /> */}
+                  <GithubBadge />
+                </>
+              ) : (
+                <>
+                  <StatusBar style="light" />
+                  <Stack>
+                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                    <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+                  </Stack>
+                </>
+              )}
+              {/* <MainModal /> */}
+            </>
+          </Theme>
+        </TamaguiProvider>
+      </ThemeProvider>
     </>
   );
-};
+}
+
+// StyleSheet.flatten([styles.container, globalStyles.webkitScrollbar]);

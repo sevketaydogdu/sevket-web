@@ -23,7 +23,7 @@ const Footer = () => {
           fd: 'column',
           ai: 'baseline',
           space: '$2',
-          br: '$8',
+          br: '$1',
         }}
         mt="$12"
         p="$10"
