@@ -1,9 +1,7 @@
 import { Link } from 'expo-router';
 import React from 'react';
 import { Pressable } from 'react-native';
-import { Text, Footer as FooterTamagui, View, XStack, YStack, styled } from 'tamagui';
-
-import { FooterText, FooterTitleText } from './ui/text';
+import { Text, Footer as FooterTamagui, View, XStack, YStack } from 'tamagui';
 
 import Colors from '@/constants/Colors';
 import { menuItems } from '@/constants/menu';

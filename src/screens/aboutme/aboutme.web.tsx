@@ -1,19 +1,19 @@
 import { AntDesign } from '@expo/vector-icons';
-import { Link, useNavigation } from 'expo-router';
+import { Link } from 'expo-router';
 import Head from 'expo-router/head';
 import React from 'react';
 import { Image, Pressable } from 'react-native';
-import Markdown from 'react-native-markdown-display';
 import { Text, View, XStack, YStack } from 'tamagui';
 
 import { Button } from '@/components/buttons/styledButton';
+import LinkButton from '@/components/ui/link-button';
 import { FooterText, FooterTitleText, ParagraphText } from '@/components/ui/text';
 import Colors from '@/constants/Colors';
 import { socialButtons } from '@/constants/menu';
 
 const aboutMeText = `
 a passionate React Native developer with a love for turning ideas into reality through
-code. With over 2 years of experience in mobile development, I've had the pleasure of
+code. With over 5 years of experience in mobile development, I've had the pleasure of
 working on 5+ projects spanning various industries.
 
 
@@ -149,6 +149,25 @@ const AboutMeWeb = () => {
             </ParagraphText>
             {aboutMeText}
           </ParagraphText>
+          <Link href="/contact" asChild>
+            <Pressable>
+              {({ hovered }) => (
+                <Text
+                  style={{
+                    backgroundColor: hovered ? Colors.dark.white[200] : Colors.dark.orange[200],
+                    padding: 10,
+                    borderRadius: 10,
+                    color: Colors.dark.black[200],
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    marginTop: 20,
+                    cursor: 'pointer',
+                  }}>
+                  Hire Me
+                </Text>
+              )}
+            </Pressable>
+          </Link>
           <ParagraphText fontWeight="bold" fontFamily="$heading" mt="$4">
             Used Tech.
           </ParagraphText>

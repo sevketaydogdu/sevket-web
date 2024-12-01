@@ -26,8 +26,6 @@ const LinkButton: FC<LinkButtonProps> = ({
   containerStyles = {},
   targetBlank = false,
 }) => {
-  console.log('🚀 ~ typeof fontStyles:', fontStyles);
-
   return (
     <Link
       href={href as `http${string}`}
