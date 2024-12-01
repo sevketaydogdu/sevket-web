@@ -69,7 +69,14 @@ const CopyItem: FC<ContactItemCopyProps> = ({ label, text }) => {
                       {label}:
                     </SizableText>
                   )}
-                  <ParagraphText textAlign="left" fontWeight="900">
+                  <ParagraphText
+                    textAlign="left"
+                    fontWeight="900"
+                    numberOfLines={1}
+                    $md={{
+                      fontSize: 16,
+                    }}
+                    allowFontScaling>
                     {text}
                   </ParagraphText>
                 </YStack>
@@ -129,7 +136,15 @@ const LinkItem: FC<ContatItemLinkProps> = ({ label, text, url, iconName = 'link'
                     size={24}
                     color={Colors.dark.white[100]}
                   />
-                  <ParagraphText textAlign="left" fontWeight="900" cursor="pointer">
+                  <ParagraphText
+                    textAlign="left"
+                    fontWeight="900"
+                    cursor="pointer"
+                    numberOfLines={1}
+                    $md={{
+                      fontSize: 16,
+                    }}
+                    allowFontScaling>
                     {text}
                   </ParagraphText>
                 </XStack>

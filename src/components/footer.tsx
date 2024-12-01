@@ -6,25 +6,8 @@ import { Text, Footer as FooterTamagui, View, XStack, YStack, styled } from 'tam
 import { FooterText, FooterTitleText } from './ui/text';
 
 import Colors from '@/constants/Colors';
+import { menuItems } from '@/constants/menu';
 
-const FooterItems = [
-  {
-    title: 'Home',
-    href: '/',
-  },
-  {
-    title: 'About Me',
-    href: '/aboutme',
-  },
-  {
-    title: 'Projects',
-    href: '/projects',
-  },
-  {
-    title: 'Contact',
-    href: '/contact',
-  },
-];
 const Footer = () => {
   return (
     <FooterTamagui
@@ -74,7 +57,7 @@ const Footer = () => {
           $md={{
             flexDirection: 'column',
           }}>
-          {FooterItems.map((item) => (
+          {menuItems.map((item) => (
             <Link key={item.title} href={item.href as `http${string}`} asChild>
               <Pressable>
                 {({ hovered }) => (

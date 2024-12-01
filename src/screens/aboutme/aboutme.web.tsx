@@ -9,24 +9,8 @@ import { Text, View, XStack, YStack } from 'tamagui';
 import { Button } from '@/components/buttons/styledButton';
 import { FooterText, FooterTitleText, ParagraphText } from '@/components/ui/text';
 import Colors from '@/constants/Colors';
+import { socialButtons } from '@/constants/menu';
 
-const socialButtons = [
-  {
-    name: 'github',
-    title: 'GitHub',
-    href: 'https://github.com/sevketaydogdu',
-  },
-  {
-    name: 'twitter',
-    title: 'Twitter',
-    href: 'https://twitter.com/sevketaydogdu',
-  },
-  {
-    name: 'linkedin-square',
-    title: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/sevketaydogdu/',
-  },
-];
 const aboutMeText = `
 a passionate React Native developer with a love for turning ideas into reality through
 code. With over 2 years of experience in mobile development, I've had the pleasure of

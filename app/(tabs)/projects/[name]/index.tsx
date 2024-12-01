@@ -7,6 +7,7 @@ import Markdown from 'react-native-markdown-display';
 import { H1, H2, H6, Text, View } from 'tamagui';
 
 import { ParagraphText } from '@/components/ui/text';
+import Colors from '@/constants/Colors';
 import { projects } from '@/constants/projects';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
 
@@ -32,6 +33,23 @@ const ProjectDetailScreen = () => {
       <Head>
         <title>{project.title} | Sevket Aydogdu - React Native Developer</title>
       </Head>
+      <Link href="/projects" asChild>
+        <Pressable style={{ alignSelf: 'flex-start' }}>
+          <View
+            $gtMd={{
+              display: 'none',
+            }}
+            gap={8}
+            bg={Colors.dark.black[300]}
+            padding="$4"
+            borderRadius="$1"
+            flexDirection="row"
+            alignItems="center">
+            <Feather name="arrow-left" size={24} color="white" />
+            <Text color="white">Back</Text>
+          </View>
+        </Pressable>
+      </Link>
       <View f={1} ov="hidden" ai="flex-start" jc="flex-start" w="30%">
         <View aspectRatio={1} w="100%" br="$5">
           <Image

@@ -93,7 +93,6 @@ const InnerLayout = () => {
       {Platform.OS === 'web' ? (
         <>
           <ResponsiveView
-            log
             style={{
               paddingHorizontal: 16,
               marginTop: 16,

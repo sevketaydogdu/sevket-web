@@ -35,7 +35,15 @@ const WebContactScreen = () => {
         }}
         flexDirection="column">
         <View maxWidth="100%">
-          <H2 textAlign="center">You Can Reach Me from these adresses</H2>
+          <H2
+            textAlign="center"
+            $md={{
+              fontSize: 20,
+              lineHeight: 24,
+            }}
+            allowFontScaling>
+            You Can Reach Me from these adresses
+          </H2>
         </View>
         <View f={1} gap="$4" mt="$4">
           {contactItems.map((item, index) => (
