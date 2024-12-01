@@ -1,5 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
-import { Link } from 'expo-router';
+import { Link, useNavigation } from 'expo-router';
 import Head from 'expo-router/head';
 import React from 'react';
 import { Image, Pressable } from 'react-native';
@@ -109,6 +109,11 @@ const AboutMeWeb = () => {
         gap="$4"
         my="$6"
         alignSelf="center"
+        $sm={{
+          flexDirection: 'column',
+          gap: '$4',
+          flex: 1,
+        }}
         animation="quick"
         enterStyle={{ opacity: 0, x: -200 }}
         exitStyle={{ opacity: 0, x: -200 }}>
@@ -125,7 +130,7 @@ const AboutMeWeb = () => {
               <Pressable>
                 <Button white>
                   <XStack gap="$2">
-                    <AntDesign name={item.name as any} color={Colors.dark.black[100]} size={24} />{' '}
+                    <AntDesign name={item.name as any} color={Colors.dark.black[100]} size={24} />
                     <Text col="black">{item.title}</Text>
                   </XStack>
                 </Button>
@@ -162,16 +167,24 @@ const AboutMeWeb = () => {
           </ParagraphText>
           <ParagraphText fontWeight="bold" fontFamily="$heading" mt="$4">
             Used Tech.
+          </ParagraphText>
+          <View f={1} width="100%" flexGrow={1}>
             {Object.keys(categorizedTech).map((key) => {
               return (
                 <View key={key} gap="$4" mt="$4">
                   <ParagraphText fontWeight="bold" fontSize={20} fontFamily="$heading">
-                    {key.toWellFormed()}
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
                   </ParagraphText>
-                  <XStack gap="$4" alignSelf="center">
+                  <XStack
+                    gap="$2"
+                    flexWrap="wrap"
+                    justifyContent="center"
+                    $md={{
+                      gap: '$1',
+                    }}>
                     {categorizedTech[key as TechCategory].map((item) => {
                       return (
-                        <Button key={item} white cursor="inherit">
+                        <Button key={item} textAlign="center" white cursor="inherit" margin="$1">
                           {item}
                         </Button>
                       );
@@ -180,7 +193,7 @@ const AboutMeWeb = () => {
                 </View>
               );
             })}
-          </ParagraphText>
+          </View>
         </YStack>
       </View>
     </View>

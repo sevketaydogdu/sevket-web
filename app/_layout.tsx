@@ -93,28 +93,34 @@ const InnerLayout = () => {
       {Platform.OS === 'web' ? (
         <>
           <ResponsiveView
+            log
             style={{
               paddingHorizontal: 16,
               marginTop: 16,
-
               // backgroundColor: 'blue',
             }}
             $gtLg={{
+              flex: 1,
+              minWidth: 1024,
               maxWidth: 1024,
               marginHorizontal: 'auto',
               // backgroundColor: 'blue',
             }}
-            $gtMd={
-              {
-                // marginHorizontal: `5rem`,
-                // backgroundColor: 'orange',
-              }
-            }
+            $gtMd={{
+              flex: 1,
+
+              // marginHorizontal: `5rem`,
+              // backgroundColor: 'orange',
+            }}
             $gtSm={{
+              flex: 1,
+
               padding: 16,
               // backgroundColor: 'purple',
             }}
             $xs={{
+              flex: 1,
+
               // padding: 16,
               marginTop: 16,
             }}>
@@ -149,7 +155,7 @@ const InnerLayout = () => {
             <ResponsiveView
               style={{
                 flex: 1,
-                minHeight: '50vh' as any,
+                // minHeight: '50vh' as any,
               }}>
               <Slot
                 screenOptions={({ route }) => ({

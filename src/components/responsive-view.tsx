@@ -74,8 +74,9 @@ const ResponsiveView: React.FC<
     $gtSm?: ViewStyle;
     $gtXs?: ViewStyle;
     $xs?: ViewStyle;
+    log?: boolean;
   }
-> = ({ $gtLg, $gtMd, $gtSm, $gtXs, $xs, style, ...props }) => {
+> = ({ $gtLg, $gtMd, $gtSm, $gtXs, $xs, log = false, style, ...props }) => {
   // Combine all responsive styles into a single object
   const responsiveStyleObject: ResponsiveStyleObject = {
     $gtLg,
@@ -87,6 +88,7 @@ const ResponsiveView: React.FC<
 
   // Get responsive styles
   const responsiveStyle = useResponsiveStyle(responsiveStyleObject);
+  if (log) console.log('🚀 ~ responsiveStyle:', responsiveStyle);
 
   // Combine styles: priority order is style prop > responsive style > component-specific styles
   return <View {...props} style={[responsiveStyle, style]} />;

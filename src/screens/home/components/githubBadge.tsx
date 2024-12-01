@@ -1,7 +1,8 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Feather } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { Text, View, XStack, YStack, useWindowDimensions } from 'tamagui';
 
@@ -11,6 +12,8 @@ import { useMainScroll } from '@/context/main-scroll-provider';
 const GithubBadge = () => {
   const { scrollY } = useMainScroll();
   const isVisible = useSharedValue(true);
+  const translateX = useSharedValue(0);
+
   useEffect(() => {
     if (Math.abs(scrollY) > 150) {
       isVisible.value = false;
@@ -18,7 +21,6 @@ const GithubBadge = () => {
       isVisible.value = true;
     }
   }, [scrollY]);
-
   const animatedStyle = useAnimatedStyle(() => {
     'worklet';
     return {
@@ -31,6 +33,18 @@ const GithubBadge = () => {
 
   return (
     <Animated.View style={[animatedStyle, { position: 'fixed', bottom: 0 }]}>
+      <View
+        br={32}
+        onPress={() => (isVisible.value = false)}
+        p="$2"
+        bg="white"
+        alignSelf="center"
+        pos="absolute"
+        right={12}
+        top={12}
+        zIndex={99}>
+        <Feather name="x" />
+      </View>
       <Link
         href="https://github.com/sevketaydogdu/sevket-web"
         asChild

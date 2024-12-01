@@ -1,10 +1,30 @@
+import { Link } from 'expo-router';
 import React from 'react';
+import { Pressable } from 'react-native';
 import { Text, Footer as FooterTamagui, View, XStack, YStack, styled } from 'tamagui';
 
 import { FooterText, FooterTitleText } from './ui/text';
 
 import Colors from '@/constants/Colors';
 
+const FooterItems = [
+  {
+    title: 'Home',
+    href: '/',
+  },
+  {
+    title: 'About Me',
+    href: '/aboutme',
+  },
+  {
+    title: 'Projects',
+    href: '/projects',
+  },
+  {
+    title: 'Contact',
+    href: '/contact',
+  },
+];
 const Footer = () => {
   return (
     <FooterTamagui
@@ -29,15 +49,16 @@ const Footer = () => {
           p: '$4',
         }}
         mt="$12"
-        p="$10"
+        px="$6"
+        py="$2"
         ai="center"
         space="$12"
         br="$2">
         <YStack f={1}>
-          <Text $gtMd={{ fos: '$4' }} fos="$7" ff="$heading" col={Colors.dark.orange[200]}>
+          <Text $gtMd={{ fos: '$8' }} fos="$7" ff="$heading" col={Colors.dark.orange[200]}>
             Sevket Aydogdu
           </Text>
-          <Text
+          {/* <Text
             fos="$8"
             ff="$heading"
             $gtLg={{
@@ -47,9 +68,37 @@ const Footer = () => {
               fos: '$8',
             }}>
             React Native{'\n'}Developer
-          </Text>
+          </Text> */}
         </YStack>
-        <YStack f={1}>
+        <XStack
+          $md={{
+            flexDirection: 'column',
+          }}>
+          {FooterItems.map((item) => (
+            <Link key={item.title} href={item.href as `http${string}`} asChild>
+              <Pressable>
+                {({ hovered }) => (
+                  <View
+                    style={{
+                      backgroundColor: hovered ? Colors.dark.orange[100] : undefined,
+                      padding: 12,
+                      borderRadius: 32,
+                    }}>
+                    <Text
+                      style={{
+                        color: hovered ? Colors.dark.black[200] : Colors.dark.white[100],
+                        fontWeight: '600',
+                        fontSize: 16,
+                      }}>
+                      {item.title}
+                    </Text>
+                  </View>
+                )}
+              </Pressable>
+            </Link>
+          ))}
+        </XStack>
+        {/* <YStack f={1}>
           <Text f={1} ff="$heading" fos="$8" $md={{ fos: '$6' }}>
             Lorem ipsum dolor sit amet consectetur. Malesuada nibh iaculis eu posuere nisl aliquam
             sed. Sed vitae amet egestas aliquet dui netus.
@@ -76,7 +125,7 @@ const Footer = () => {
               <FooterText fos="$4">+5 Years</FooterText>
             </YStack>
           </View>
-        </YStack>
+        </YStack> */}
       </View>
     </FooterTamagui>
   );

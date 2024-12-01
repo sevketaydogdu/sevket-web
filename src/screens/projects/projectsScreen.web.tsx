@@ -6,11 +6,13 @@ import ProjectListRenderer from '@/components/project-list/project-list-renderer
 
 const ProjectsScreenWeb = () => {
   return (
-    <View f={1}>
+    <View>
       <Head>
         <title>Projects | Sevket Aydogdu - React Native Developer</title>
       </Head>
-      <ProjectListRenderer />
+      <View flex={1}>
+        <ProjectListRenderer />
+      </View>
     </View>
   );
 };
