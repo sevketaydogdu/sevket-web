@@ -9,7 +9,6 @@ export const Button = styled(Text, {
   py: '$2',
   br: '$12',
   hoverStyle: { animation: 'lazy', bg: Colors.dark.orange[100] },
-  selectable: false,
   cursor: 'pointer',
 
   variants: {

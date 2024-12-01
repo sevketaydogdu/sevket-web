@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, Footer as FooterTamagui, View, XStack, YStack } from 'tamagui';
+import { Text, Footer as FooterTamagui, View, XStack, YStack, styled } from 'tamagui';
+
+import { FooterText, FooterTitleText } from './ui/text';
 
 import Colors from '@/constants/Colors';
 
@@ -19,11 +21,12 @@ const Footer = () => {
         // $gtLg={{
         //   mx: '15rem',
         // }}
-        $sm={{
+        $md={{
           fd: 'column',
           ai: 'baseline',
           space: '$2',
           br: '$1',
+          p: '$4',
         }}
         mt="$12"
         p="$10"
@@ -31,7 +34,7 @@ const Footer = () => {
         space="$12"
         br="$2">
         <YStack f={1}>
-          <Text $gtMd={{ fos: '$6' }} fos="$10" ff="$heading" col={Colors.dark.orange[200]}>
+          <Text $gtMd={{ fos: '$4' }} fos="$7" ff="$heading" col={Colors.dark.orange[200]}>
             Sevket Aydogdu
           </Text>
           <Text
@@ -55,24 +58,24 @@ const Footer = () => {
             Lorem ipsum dolor sit amet consectetur. Malesuada nibh iaculis eu posuere nisl aliquam
             sed. Sed vitae amet egestas aliquet dui netus.
           </Text>
-          <XStack space="$8" mt="$6">
+          <View
+            $gtSm={{
+              flexDirection: 'row',
+              gap: '$8',
+            }}
+            gap="$2"
+            flexDirection="column"
+            f={1}
+            mt="$6">
             <YStack>
-              <Text fow="800" col={Colors.dark.gray[100]}>
-                Projects Done
-              </Text>
-              <Text ff="$heading" fos="$10" fow="200" col={Colors.dark.orange[200]}>
-                5+
-              </Text>
+              <FooterTitleText>Experience</FooterTitleText>
+              <FooterText fos="$4">+5 Years</FooterText>
             </YStack>
             <YStack>
-              <Text fow="800" col={Colors.dark.gray[100]}>
-                Experience
-              </Text>
-              <Text ff="$heading" fos="$10" fow="200" col={Colors.dark.orange[200]}>
-                2+ Years
-              </Text>
+              <FooterTitleText>Projects</FooterTitleText>
+              <FooterText fos="$4">+5 Years</FooterText>
             </YStack>
-          </XStack>
+          </View>
         </YStack>
       </View>
     </FooterTamagui>

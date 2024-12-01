@@ -2,6 +2,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, Stack } from 'expo-router';
+import Head from 'expo-router/head';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState } from 'react';
 import { Platform } from 'react-native';
@@ -15,7 +16,6 @@ import { ResponsiveView } from '@/components/responsive-view';
 import { DarkTheme } from '@/constants/navigatiorTheme';
 import { MainScrollProvider, useMainScroll } from '@/context/main-scroll-provider';
 import GithubBadge from '@/screens/home/components/githubBadge';
-
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -63,9 +63,7 @@ export default function RootLayout() {
       return () => window.removeEventListener('scroll', handleScroll);
     }
   }, []);
-  useEffect(() => {
-    document.title = 'Sevket Ayodgdu - React Native Developer';
-  });
+
   if (!loaded) {
     return null;
   }
@@ -76,6 +74,9 @@ export default function RootLayout() {
         <ThemeProvider value={DarkTheme}>
           <TamaguiProvider config={config}>
             <Theme name="dark">
+              <Head>
+                <title>Sevket Aydogdu - React Native Developer</title>
+              </Head>
               <InnerLayout />
             </Theme>
           </TamaguiProvider>

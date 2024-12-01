@@ -1,10 +1,16 @@
+import Head from 'expo-router/head';
 import React from 'react';
-import { View, Text } from 'tamagui';
+import { View } from 'tamagui';
+
+import ProjectListRenderer from '@/components/project-list/project-list-renderer';
 
 const ProjectsScreenWeb = () => {
   return (
     <View f={1}>
-      <Text>ProjectsScreenWeb</Text>
+      <Head>
+        <title>Projects | Sevket Aydogdu - React Native Developer</title>
+      </Head>
+      <ProjectListRenderer />
     </View>
   );
 };

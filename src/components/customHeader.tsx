@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
-import { router } from 'expo-router';
+import { Link, router } from 'expo-router';
 import React, { Fragment, MutableRefObject } from 'react';
 import {
   Pressable,
@@ -10,6 +10,7 @@ import {
   Text,
   Platform,
   StyleSheet,
+  View,
 } from 'react-native';
 import { Button as TButton, Tooltip, XStack, Header } from 'tamagui';
 
@@ -17,16 +18,30 @@ import Colors from '../constants/Colors';
 
 import { Button } from '@/components/buttons/styledButton';
 
+const mainMenu = [
+  {
+    id: 'about',
+    name: 'About Me',
+    href: '/aboutme/',
+  },
+  {
+    id: 'projects',
+    name: 'Projects',
+    href: '/projects/',
+  },
+  {
+    id: 'contact',
+    name: 'Contact',
+    href: '/contact/',
+  },
+];
+
 const socialButtons = [
   {
     name: 'twitter',
     href: 'https://www.twitter.com/sevketaydogdu',
     title: 'Twitter',
   },
-  // {
-  //   name: 'instagram',
-  //   href: 'https://www.instagram.com/aydogdusevket',
-  // },
   {
     name: 'github',
     href: 'https://www.github.com/sevketaydogdu',
@@ -39,15 +54,7 @@ interface IHeaderProps {
 const SHeader: React.FC<IHeaderProps> = (props) => {
   const { scrollY } = props;
   // const segments = useSegments();
-  const handlePressAboutMe = () => {
-    router.push('/aboutme/');
-  };
-  const handlePressProjects = () => {
-    router.push('/projects/');
-  };
-  const handlePressContact = () => {
-    router.push('/contact/');
-  };
+
   const handlePressHome = () => {
     // if (segments.length === 0) {
     //   if (scrollRef?.current) scrollRef.current.scrollTo({ y: 0, animated: true });
@@ -75,22 +82,44 @@ const SHeader: React.FC<IHeaderProps> = (props) => {
         mb="$4"
         ai="center">
         <BlurView intensity={scrollY && scrollY > 90 ? 70 : 0} style={styles.blurContainer}>
-          <Pressable onPress={() => handlePressHome()}>
-            <Image
-              source={require('../../assets/images/logo-white.png')}
-              style={{
-                width: 110,
-                height: 40,
-              }}
-              resizeMode="cover"
-            />
-          </Pressable>
-          <XStack ai="center" $md={{ display: 'none' }}>
-            <Button onPress={handlePressAboutMe} ta="center" jc="center" ai="center">
-              About Me
-            </Button>
-            <Button onPress={handlePressProjects}>Projects</Button>
-            <Button onPress={handlePressContact}>Contact asd</Button>
+          <Link href="/" asChild>
+            <Pressable>
+              <Image
+                source={require('../../assets/images/logo-white.png')}
+                style={{
+                  width: 110,
+                  height: 40,
+                }}
+                resizeMode="cover"
+              />
+            </Pressable>
+          </Link>
+          <XStack ai="center" gap="$4" $md={{ display: 'none' }}>
+            {mainMenu.map((item) => {
+              return (
+                <Link key={item.id} href={item.href as `http${string}`} asChild>
+                  <Pressable>
+                    {({ hovered }) => (
+                      <View
+                        style={{
+                          backgroundColor: hovered ? Colors.dark.orange[100] : undefined,
+                          padding: 12,
+                          borderRadius: 32,
+                        }}>
+                        <Text
+                          style={{
+                            color: hovered ? Colors.dark.black[200] : Colors.dark.white[100],
+                            fontWeight: '600',
+                            fontSize: 16,
+                          }}>
+                          {item.name}
+                        </Text>
+                      </View>
+                    )}
+                  </Pressable>
+                </Link>
+              );
+            })}
           </XStack>
           <XStack gap="$2">
             {socialButtons.map((item) => {

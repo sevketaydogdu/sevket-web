@@ -1,9 +1,10 @@
 import { Feather } from '@expo/vector-icons';
 import { Link, useLocalSearchParams } from 'expo-router';
+import Head from 'expo-router/head';
 import React, { ReactNode } from 'react';
-import { Linking, Image, View as RNView, Platform, StyleSheet, Pressable } from 'react-native';
+import { Image, View as RNView, Platform, StyleSheet, Pressable } from 'react-native';
 import Markdown from 'react-native-markdown-display';
-import { H1, H2, H6, Text, View, XStack, YStack } from 'tamagui';
+import { H1, H2, H6, Text, View } from 'tamagui';
 
 import { ParagraphText } from '@/components/ui/text';
 import { projects } from '@/constants/projects';
@@ -28,6 +29,9 @@ const ProjectDetailScreen = () => {
   }
   return (
     <RNView style={styles.mainContainer}>
+      <Head>
+        <title>{project.title} | Sevket Aydogdu - React Native Developer</title>
+      </Head>
       <View f={1} ov="hidden" ai="flex-start" jc="flex-start" w="30%">
         <View aspectRatio={1} w="100%" br="$5">
           <Image
