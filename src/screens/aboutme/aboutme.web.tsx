@@ -1,13 +1,11 @@
 import { AntDesign } from '@expo/vector-icons';
-import { useScrollToTop } from '@react-navigation/native';
 import { Link } from 'expo-router';
 import Head from 'expo-router/head';
-import React, { useRef } from 'react';
-import { Image, Pressable, ScrollView } from 'react-native';
+import React from 'react';
+import { Image, Pressable } from 'react-native';
 import { Text, View, XStack, YStack } from 'tamagui';
 
 import { Button } from '@/components/buttons/styledButton';
-import LinkButton from '@/components/ui/link-button';
 import { FooterText, FooterTitleText, ParagraphText } from '@/components/ui/text';
 import Colors from '@/constants/Colors';
 import { socialButtons } from '@/constants/menu';
