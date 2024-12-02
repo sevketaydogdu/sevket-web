@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { Text, Footer as FooterTamagui, View, XStack, YStack } from 'tamagui';
 
 import Colors from '@/constants/Colors';
@@ -59,20 +59,8 @@ const Footer = () => {
             <Link key={item.title} href={item.href as `http${string}`} asChild>
               <Pressable>
                 {({ hovered }) => (
-                  <View
-                    style={{
-                      backgroundColor: hovered ? Colors.dark.orange[100] : undefined,
-                      padding: 12,
-                      borderRadius: 32,
-                    }}>
-                    <Text
-                      style={{
-                        color: hovered ? Colors.dark.black[200] : Colors.dark.white[100],
-                        fontWeight: '600',
-                        fontSize: 16,
-                      }}>
-                      {item.title}
-                    </Text>
+                  <View style={styles(hovered).buttonContainer}>
+                    <Text style={styles(hovered).buttonText}>{item.title}</Text>
                   </View>
                 )}
               </Pressable>
@@ -113,3 +101,17 @@ const Footer = () => {
 };
 
 export default Footer;
+
+const styles = (hovered: boolean) =>
+  StyleSheet.create({
+    buttonContainer: {
+      backgroundColor: hovered ? Colors.dark.orange[100] : undefined,
+      padding: 12,
+      borderRadius: 32,
+    },
+    buttonText: {
+      color: hovered ? Colors.dark.black[200] : Colors.dark.white[100],
+      fontWeight: '600',
+      fontSize: 16,
+    },
+  });

@@ -1,10 +1,9 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Pressable } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import { Text, View, XStack, YStack, useWindowDimensions } from 'tamagui';
+import { Text, View, YStack } from 'tamagui';
 
 import Colors from '@/constants/Colors';
 import { useMainScroll } from '@/context/main-scroll-provider';
@@ -12,7 +11,6 @@ import { useMainScroll } from '@/context/main-scroll-provider';
 const GithubBadge = () => {
   const { scrollY } = useMainScroll();
   const isVisible = useSharedValue(true);
-  const translateX = useSharedValue(0);
 
   useEffect(() => {
     if (Math.abs(scrollY) > 150) {
@@ -32,80 +30,71 @@ const GithubBadge = () => {
   });
 
   return (
-    <Animated.View style={[animatedStyle, { position: 'fixed', bottom: 0 }]}>
-      <View
-        br={32}
-        onPress={() => (isVisible.value = false)}
-        p="$2"
-        bg="white"
-        alignSelf="center"
-        pos="absolute"
-        right={12}
-        top={12}
-        zIndex={99}>
-        <Feather name="x" />
-      </View>
-      <Link
-        href="https://github.com/sevketaydogdu/sevket-web"
-        asChild
-        hrefAttrs={{
-          target: '_blank',
-          rel: 'noopener noreferrer',
-        }}>
-        <Pressable>
-          {({ hovered }) => {
-            return (
-              <Animated.View
-                style={{
-                  backgroundColor: hovered ? Colors.dark.black[400] : Colors.dark.black[200],
-                  transform: [
-                    {
-                      scale: hovered ? 0.95 : 1,
-                    },
-                  ],
-                  gap: 2,
-                  paddingHorizontal: 24,
-                  paddingVertical: 12,
-                  flexDirection: 'row',
-                  borderRadius: 32,
-                  alignItems: 'center',
-                  margin: 16,
-                }}>
-                <AntDesign name="github" color={Colors.dark.white[100]} size={24} />
-                <YStack
-                  enterStyle={{
-                    x: -50,
-                    o: 0,
-                  }}
-                  exitStyle={{
-                    x: -50,
-                    o: 0,
-                  }}
-                  animation="lazy">
-                  <Text fos="$4" ml="$3">
-                    This web site developed with React-Native (Expo)
-                  </Text>
-                  <Text fos="$3" col={Colors.dark.gray[200]} ml="$3">
-                    Click here to see codes of this site
-                  </Text>
-                </YStack>
-              </Animated.View>
-            );
-          }}
-        </Pressable>
-      </Link>
-      {/* <Button
-            pos="fixed"
-            b="$0"
-            bg={Colors.dark.black[300]}
-            m="$4"
-            gap="$4"
-            ai="center"
-            hoverStyle={{
-              bg: Colors.dark.black[400],
+    isVisible.value && (
+      <Animated.View style={[animatedStyle, { position: 'fixed', bottom: 0 }]}>
+        <View
+          br={32}
+          onPress={() => (isVisible.value = false)}
+          p="$2"
+          bg="white"
+          alignSelf="center"
+          pos="absolute"
+          right={12}
+          top={12}
+          zIndex={99}>
+          <Feather name="x" />
+        </View>
+        <Link
+          href="https://github.com/sevketaydogdu/sevket-web"
+          asChild
+          hrefAttrs={{
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          }}>
+          <Pressable>
+            {({ hovered }) => {
+              return (
+                <Animated.View
+                  style={{
+                    backgroundColor: hovered ? Colors.dark.black[400] : Colors.dark.black[200],
+                    transform: [
+                      {
+                        scale: hovered ? 0.95 : 1,
+                      },
+                    ],
+                    gap: 2,
+                    paddingHorizontal: 24,
+                    paddingVertical: 12,
+                    flexDirection: 'row',
+                    borderRadius: 32,
+                    alignItems: 'center',
+                    margin: 16,
+                  }}>
+                  <AntDesign name="github" color={Colors.dark.white[100]} size={24} />
+                  <YStack
+                    enterStyle={{
+                      x: -50,
+                      o: 0,
+                    }}
+                    exitStyle={{
+                      x: -50,
+                      o: 0,
+                    }}
+                    animation="lazy">
+                    <Text fos="$4" ml="$3">
+                      This web site developed with React-Native (Expo)
+                    </Text>
+                    <Text fos="$3" col={Colors.dark.gray[200]} ml="$3">
+                      Click here to see codes of this site
+                    </Text>
+                  </YStack>
+                </Animated.View>
+              );
             }}
-          /> */}
-    </Animated.View>
+          </Pressable>
+        </Link>
+      </Animated.View>
+    )
   );
 };
 

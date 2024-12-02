@@ -2,7 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import Head from 'expo-router/head';
 import React from 'react';
-import { Image, Pressable } from 'react-native';
+import { Image, Pressable, ScrollView } from 'react-native';
 import { Text, View, XStack, YStack } from 'tamagui';
 
 import { Button } from '@/components/buttons/styledButton';
@@ -33,13 +33,22 @@ adventures together. Let's create something amazing!
 `;
 export const categorizedTech = {
   framework: ['React Native', 'Next.js'],
-  development: ['TypeScript', 'Es6', 'Expo', 'Expo Router', 'React Navigation', 'Expo Libraries'],
+  development: [
+    'TypeScript',
+    'Es6',
+    'Expo',
+    'Expo Router',
+    'React Navigation',
+    'Expo Libraries',
+    'GitHub',
+  ],
   stateManagement: ['Redux', 'Redux Toolkit', 'Redux Persist', 'Redux Thunk', 'Context API'],
   navigation: ['React Navigation'],
   styling: ['Styled Components', 'Tamagui', 'Native Base'],
   firebase: ['Firebase Analytics', 'Firebase Crashlytics', 'Firebase Firestore'],
   features: ['In App Purchase', 'Reanimated', 'Monorepo'],
   libraries: [
+    'Rest API',
     'lottie',
     'netinfo',
     'expo vector icons',
@@ -79,6 +88,8 @@ export const categorizedTech = {
     'react-native-gifted-charts',
     'react-query',
     'swr',
+    'react-native-apple-authentication',
+    'react-native-google-signin',
   ],
 };
 type TechCategory = keyof typeof categorizedTech;

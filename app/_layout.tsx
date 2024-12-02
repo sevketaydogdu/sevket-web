@@ -4,9 +4,9 @@ import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, Stack } from 'expo-router';
 import Head from 'expo-router/head';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
-import { Main, TamaguiProvider, Theme, View } from 'tamagui';
+import { TamaguiProvider, Theme } from 'tamagui';
 
 import config from '../tamagui.config';
 
@@ -41,8 +41,6 @@ export default function RootLayout() {
   });
   const [scrollY, setScrollY] = useState(0);
 
-  const scrollRef = useRef<number | undefined>(undefined);
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
@@ -55,8 +53,7 @@ export default function RootLayout() {
   useEffect(() => {
     if (Platform.OS === 'web') {
       const handleScroll = () => {
-        scrollRef.current = window.scrollY;
-        setScrollY(window.scrollY); // Update state to trigger re-render if needed
+        setScrollY(window.scrollY);
       };
       window.addEventListener('scroll', handleScroll);
 
