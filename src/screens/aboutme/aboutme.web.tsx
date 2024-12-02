@@ -1,8 +1,9 @@
 import { AntDesign } from '@expo/vector-icons';
+import { useScrollToTop } from '@react-navigation/native';
 import { Link } from 'expo-router';
 import Head from 'expo-router/head';
-import React from 'react';
-import { Image, Pressable } from 'react-native';
+import React, { useRef } from 'react';
+import { Image, Pressable, ScrollView } from 'react-native';
 import { Text, View, XStack, YStack } from 'tamagui';
 
 import { Button } from '@/components/buttons/styledButton';
@@ -13,7 +14,7 @@ import { socialButtons } from '@/constants/menu';
 
 const aboutMeText = `
 a passionate React Native developer with a love for turning ideas into reality through
-code. With over 5 years of experience in mobile development, I've had the pleasure of
+code. With over +4 years of experience in mobile development, I've had the pleasure of
 working on 5+ projects spanning various industries.
 
 
@@ -40,6 +41,40 @@ export const categorizedTech = {
   styling: ['Styled Components', 'Tamagui', 'Native Base'],
   firebase: ['Firebase Analytics', 'Firebase Crashlytics', 'Firebase Firestore'],
   features: ['In App Purchase', 'Reanimated'],
+  libraries: [
+    'Lottie',
+    'React Native Vector Icons',
+    'React Native Svg',
+    'React Native Svg Transformer',
+    'i18n',
+    'react-native-localize',
+    'Haptics',
+    'react-native-screens',
+    'react-native-safe-area-context',
+    'react-native-reanimated',
+    'react-native-gesture-handler',
+    'async-storage',
+    'react-native-clipboard',
+    'react-native-device-info',
+    'react-native-secure-key-store',
+    'react-native-splash-screen',
+    'react-native-webview',
+    'react-native-onesignal',
+    'react-native-firebase',
+    'react-native-geolocation-service',
+    'react-native-image-picker',
+    'yup',
+    'moment',
+    'patch-package',
+    'expo-sqlite',
+    'expo-av',
+    'expo-notifications',
+    'expo-updates',
+    'axios',
+    'signalr',
+    'flash-list',
+    'react-hook-form',
+  ],
 };
 type TechCategory = keyof typeof categorizedTech;
 

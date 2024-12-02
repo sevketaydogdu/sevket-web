@@ -75,7 +75,7 @@ export const projects = [
   {
     id: 3,
     title: 'SkorSever',
-    subtitle: 'Easily Manage Your Dhikrs',
+    subtitle: 'Live Scores and Match Results',
     imagePath: require('../../assets/images/skorsever.png'),
     technicalDetails: ``,
 
