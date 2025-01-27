@@ -3,16 +3,15 @@ import { ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useRef } from 'react';
-import { Platform } from 'react-native';
-import { Main, TamaguiProvider, Theme, View } from 'tamagui';
-
-import config from '../tamagui.config';
+import React, { useEffect, useRef } from 'react';
+import { Platform, View } from 'react-native';
 
 import SHeader from '@/components/customHeader';
 import Footer from '@/components/footer';
 import { DarkTheme } from '@/constants/navigatiorTheme';
 import GithubBadge from '@/screens/home/components/githubBadge';
+import { TamaguiProvider, Theme } from 'tamagui';
+import config from 'tamagui.config';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -57,42 +56,41 @@ export default function RootLayout() {
   }
 
   return (
-    <>
-      <ThemeProvider value={DarkTheme}>
-        <TamaguiProvider config={config}>
-          <Theme name="dark">
+    <TamaguiProvider config={config}>
+      <>
+        <ThemeProvider value={DarkTheme}>
+          <Theme name={'dark'}>
             <>
               {Platform.OS === 'web' ? (
                 <>
                   <View
-                    overflowY="scroll"
-                    f={1}
-                    fd="column"
-                    // f={1}
-                    overflow="hidden"
-                    // bg="$red10"
-                    $gtLg={{
-                      // mx: `15rem`,
-                      maw: 1200,
-                      mx: 'auto',
-                    }}
-                    $gtMd={{
-                      mx: `5rem`,
-                      // p: "$2",
-                      mt: '$2',
-                    }}
-                    $gtSm={{ p: '$2', mt: '$2' }}
-                    $gtXs={{ p: '$2', mt: '$2' }}
-                    $xs={{ p: '$2', mt: '$2' }}>
+                  // overflowY="scroll"
+                  // f={1}
+                  // fd="column"
+                  // // f={1}
+                  // overflow="hidden"
+                  // // bg="$red10"
+                  // $gtLg={{
+                  //   // mx: `15rem`,
+                  //   maw: 1200,
+                  //   mx: 'auto',
+                  // }}
+                  // $gtMd={{
+                  //   mx: `5rem`,
+                  //   // p: "$2",
+                  //   mt: '$2',
+                  // }}
+                  // $gtSm={{ p: '$2', mt: '$2' }}
+                  // $gtXs={{ p: '$2', mt: '$2' }}
+                  // $xs={{ p: '$2', mt: '$2' }}
+                  >
                     <SHeader scrollRef={scrollRef} />
 
-                    <Main f={1}>
-                      <Slot
-                        screenOptions={({ route }) => ({
-                          title: route.name,
-                        })}
-                      />
-                    </Main>
+                    <Slot
+                      screenOptions={({ route }) => ({
+                        title: route.name,
+                      })}
+                    />
 
                     <Footer />
                   </View>
@@ -111,9 +109,9 @@ export default function RootLayout() {
               {/* <MainModal /> */}
             </>
           </Theme>
-        </TamaguiProvider>
-      </ThemeProvider>
-    </>
+        </ThemeProvider>
+      </>
+    </TamaguiProvider>
   );
 }
 

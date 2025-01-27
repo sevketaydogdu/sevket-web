@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import Head from 'expo-router/head';
 import React, { useMemo } from 'react';
 import { Image, LayoutChangeEvent, Platform, useWindowDimensions } from 'react-native';
 import Animated, {
@@ -35,6 +36,9 @@ export default function WebHomeScreen() {
         y: 10,
       }}
       animation="lazy">
+      <Head>
+        <title>Sevket Aydogdu Personal Website</title>
+      </Head>
       {/* Top section */}
       <View h={height * 0.5} mih={500} bg={Colors.dark.black[200]} br="$6" jc="center">
         <>
