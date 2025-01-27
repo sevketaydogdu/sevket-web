@@ -8,7 +8,8 @@ export const Button = styled(Text, {
   px: '$4',
   py: '$2',
   br: '$12',
-  hoverStyle: { animation: 'lazy', bg: Colors.dark.orange[100] },
+
+  hoverStyle: { animation: 'lazy', bg: '#FF8A56' },
   selectable: false,
   cursor: 'pointer',
 
