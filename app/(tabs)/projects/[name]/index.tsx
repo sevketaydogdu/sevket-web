@@ -1,5 +1,5 @@
 import { Feather } from '@expo/vector-icons';
-import { Href, Link, useLocalSearchParams } from 'expo-router';
+import { Href, Link, router, useLocalSearchParams } from 'expo-router';
 import Head from 'expo-router/head';
 import React, { ReactNode } from 'react';
 import { Image, View as RNView, Platform, StyleSheet, Pressable } from 'react-native';
@@ -36,22 +36,22 @@ const ProjectDetailScreen = () => {
       <Head>
         <title>{project.title} | Sevket Aydogdu - React Native Developer</title>
       </Head>
-      <Link href="/projects" asChild>
-        <Pressable style={{ alignSelf: 'flex-start' }}>
-          <View
-            $gtMd={{
-              display: 'flex',
-            }}
-            gap={8}
-            padding="$4"
-            borderRadius="$1"
-            flexDirection="row"
-            alignItems="center">
-            <Feather name="arrow-left" size={24} color="white" />
-            <Text color="white">Back</Text>
-          </View>
-        </Pressable>
-      </Link>
+      <Pressable
+        onPress={() => router.back()}
+        className="self-start hover:scale-98  absolute   left-2 z-50">
+        <View
+          className="self-start hover:scale-98 bg-background2 rounded-xl hover:bg-selected "
+          $gtMd={{
+            display: 'flex',
+          }}
+          gap={8}
+          padding="$4"
+          flexDirection="row"
+          alignItems="center">
+          <Feather name="arrow-left" size={24} color="white" />
+          <Text color="white">Back</Text>
+        </View>
+      </Pressable>
       <View f={1} ov="hidden" ai="flex-start" jc="flex-start">
         <View aspectRatio={1} className="self-center" br="$5">
           <Image
@@ -69,15 +69,18 @@ const ProjectDetailScreen = () => {
         </View>
         <View className="self-center">
           <H1
-            numberOfLines={1}
+            // numberOfLines={1}
             marginTop="$6"
             style={{
+              flex: 1,
               alignSelf: 'center',
+              textAlign: 'center',
             }}>
             {project?.title}
           </H1>
 
           <Text
+            className="text-xl"
             style={{
               alignSelf: 'center',
             }}
@@ -92,6 +95,7 @@ const ProjectDetailScreen = () => {
         <StoreButtons links={project?.storeLinks} />
 
         <Text
+          className="text-lg"
           mt="$4"
           whiteSpace={Platform.OS === 'web' ? 'pre-line' : 'normal'}
           style={{
