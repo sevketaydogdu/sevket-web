@@ -1,21 +1,18 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { ThemeProvider } from '@react-navigation/native';
+import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, Stack } from 'expo-router';
 import Head from 'expo-router/head';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Platform } from 'react-native';
+import { Appearance, ColorSchemeName, Platform, useColorScheme, View } from 'react-native';
 import { TamaguiProvider, Theme } from 'tamagui';
 
 import config from '../tamagui.config';
 
-import SHeader from '@/components/customHeader';
-import Footer from '@/components/footer';
-import { ResponsiveView } from '@/components/responsive-view';
 import { DarkTheme } from '@/constants/navigatiorTheme';
-import { MainScrollProvider, useMainScroll } from '@/context/main-scroll-provider';
-import GithubBadge from '@/screens/home/components/githubBadge';
+import '../global.css';
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -39,8 +36,7 @@ export default function RootLayout() {
     SatoshiVariable: require('../assets/fonts/Satoshi-Variable.ttf'),
     ...FontAwesome.font,
   });
-  const [scrollY, setScrollY] = useState(0);
-
+  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
@@ -50,132 +46,87 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
-  useEffect(() => {
-    if (Platform.OS === 'web') {
-      const handleScroll = () => {
-        setScrollY(window.scrollY);
-      };
-      window.addEventListener('scroll', handleScroll);
-
-      return () => window.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
 
   if (!loaded) {
     return null;
   }
 
-  return (
-    <>
-      <MainScrollProvider scrollY={scrollY}>
-        <ThemeProvider value={DarkTheme}>
-          <TamaguiProvider config={config}>
-            <Theme name="dark">
-              <Head>
-                <title>Sevket Aydogdu - React Native Developer</title>
-              </Head>
-              <InnerLayout />
-            </Theme>
-          </TamaguiProvider>
-        </ThemeProvider>
-      </MainScrollProvider>
-    </>
-  );
+  return <InnerRootLayout />;
 }
+const InnerRootLayout = () => {
+  const colorScheme = useColorScheme();
+  if (Platform.OS === 'web') {
+    Appearance.setColorScheme = (scheme) => {
+      if (scheme) {
+        document.documentElement.setAttribute('data-theme', scheme);
+      }
+    };
 
-const InnerLayout = () => {
-  const { scrollY } = useMainScroll();
+    Appearance.getColorScheme = (): ColorSchemeName => {
+      const systemValue = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light';
+      const userValue = document.documentElement.getAttribute('data-theme');
+      return (userValue && userValue !== 'null' ? userValue : systemValue) as ColorSchemeName;
+    };
+
+    Appearance.addChangeListener = (listener) => {
+      // Listen for changes of system value
+      interface ColorSchemeChangeListener {
+        (event: { colorScheme: ColorSchemeName }): void;
+      }
+
+      interface SystemValueListenerEvent {
+        matches: boolean;
+      }
+
+      const systemValueListener = (e: SystemValueListenerEvent): void => {
+        const newSystemValue: ColorSchemeName = e.matches ? 'dark' : 'light';
+        const userValue = document.documentElement.getAttribute('data-theme');
+        listener({
+          colorScheme:
+            userValue && userValue !== 'null' ? (userValue as ColorSchemeName) : newSystemValue,
+        });
+      };
+      const systemValue = window.matchMedia('(prefers-color-scheme: dark)');
+      systemValue.addEventListener('change', systemValueListener);
+
+      // Listen for changes of user set value
+      const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+          if (mutation.attributeName === 'data-theme') {
+            listener({ colorScheme: Appearance.getColorScheme() });
+          }
+        }
+      });
+      observer.observe(document.documentElement, { attributes: true });
+
+      function remove(): void {
+        systemValue.removeEventListener('change', systemValueListener);
+        observer.disconnect();
+      }
+
+      return { remove };
+    };
+  }
   return (
-    <>
-      {Platform.OS === 'web' ? (
-        <>
-          <ResponsiveView
-            style={{
-              paddingHorizontal: 16,
-              marginTop: 16,
-              // backgroundColor: 'blue',
-            }}
-            $gtLg={{
-              flex: 1,
-              minWidth: 1024,
-              maxWidth: 1024,
-              marginHorizontal: 'auto',
-              // backgroundColor: 'blue',
-            }}
-            $gtMd={{
-              flex: 1,
-
-              // marginHorizontal: `5rem`,
-              // backgroundColor: 'orange',
-            }}
-            $gtSm={{
-              flex: 1,
-
-              padding: 16,
-              // backgroundColor: 'purple',
-            }}
-            $xs={{
-              flex: 1,
-
-              // padding: 16,
-              marginTop: 16,
-            }}>
-            {/* <View
-                    f={1}
-                    // fd="column"
-                    // f={1}
-                    // overflow="hidden"
-                    // bg="$red10"
-                    $gtLg={{
-                      // mx: `15rem`,
-                      maw: 1200,
-                      mx: 'auto',
-                    }}
-                    $gtMd={{
-                      mx: `5rem`,
-                      // p: "$2",
-                      mt: '$2',
-                    }}
-                    $gtSm={{ p: '$2', mt: '$2' }}
-                    $gtXs={{ p: '$2', mt: '$2' }}
-                    $xs={{ p: '$2', mt: '$2' }}> */}
-            <div
-              style={{
-                position: 'sticky',
-                top: 0,
-                zIndex: 111,
-              }}>
-              <SHeader scrollY={scrollY} />
-            </div>
-
-            <ResponsiveView
-              style={{
-                flex: 1,
-                // minHeight: '50vh' as any,
-              }}>
-              <Slot
-                screenOptions={({ route }) => ({
-                  title: route.name,
-                })}
-              />
-            </ResponsiveView>
-
-            <Footer />
-          </ResponsiveView>
-          {/* </View> */}
-
-          <GithubBadge />
-        </>
-      ) : (
-        <>
-          <StatusBar style="light" />
-          <Stack>
+    <View className=" flex-1">
+      <TamaguiProvider config={config}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Theme name="dark">
+            <Slot
+              screenOptions={({ route }) => ({
+                title: route.name,
+              })}
+            />
+            {/* <>
+            <StatusBar style="light" />
+            <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-          </Stack>
-        </>
-      )}
-      {/* <MainModal /> */}
-    </>
+            </Stack>
+            </> */}
+          </Theme>
+        </ThemeProvider>
+      </TamaguiProvider>
+    </View>
   );
 };

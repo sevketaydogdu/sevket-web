@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 import { Text, useWindowDimensions, View, XStack } from 'tamagui';
 
+import { CardComp } from './card-comp';
+
 import { projects } from '@/constants/projects';
-import { CardComp } from '@/screens/home/components/project-render-item';
 
 const ProjectListRenderer = () => {
-  const { width: screenWidth, height } = useWindowDimensions();
+  const { width: screenWidth } = useWindowDimensions();
 
   const cardRowForResponsive = useMemo(() => (screenWidth > 960 ? 2 : 2), [screenWidth]);
   const numRows = Math.ceil(projects.length / cardRowForResponsive);
@@ -14,7 +15,7 @@ const ProjectListRenderer = () => {
     <View f={1}>
       {Array.from({ length: numRows }).map((row, rowIndex) => (
         <View key={rowIndex}>
-          <XStack space={16} f={1} fd="row">
+          <XStack gap={16} f={1} fd="row">
             {/* Slice the projects array for the current row */}
             {projects
               .slice(rowIndex * cardRowForResponsive, (rowIndex + 1) * cardRowForResponsive)

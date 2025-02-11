@@ -1,8 +1,8 @@
 import { Link } from 'expo-router';
 import Head from 'expo-router/head';
 import React from 'react';
-import { Pressable, useWindowDimensions } from 'react-native';
-import { H2, Text, View, XStack } from 'tamagui';
+import { Text, Pressable, useWindowDimensions } from 'react-native';
+import { H2, View, XStack } from 'tamagui';
 
 import { Title } from '../../../tamagui.config';
 
@@ -18,22 +18,18 @@ export default function WebHomeScreen() {
   }, []);
 
   return (
-    <View
-      f={1}
-      enterStyle={{
-        opacity: 0,
-        y: 10,
-      }}
-      animation="lazy">
+    <View className="flex-1  ">
       <Head>
         <title>Sevket Aydogdu - React Native Developer</title>
       </Head>
+
       {/* Top section */}
-      <View h={height * 0.5} mih={500} br="$6" jc="center">
+      <View
+        className={`h-[${height * 500}px] py-32 min-h-[500px] bg-background2 rounded-3xl  justify-center`}>
         <>
           <Title
             col="white"
-            fos="$13"
+            fos="$12"
             $xs={{
               fos: '$9',
               lh: '$9',
@@ -46,13 +42,15 @@ export default function WebHomeScreen() {
             }}
             animation="lazy">
             <Text
-              col={Colors.dark.orange[100]}
-              fos="$13"
-              fow="900"
-              $xs={{
-                fos: '$9',
-                lh: '$9',
-              }}>
+              className="font-bold  color-orange-400"
+
+              // fos="$13"
+              // fow="900"
+              // $xs={{
+              //   fos: '$9',
+              //   lh: '$9',
+              // }}
+            >
               Hello, I am Sevket,
             </Text>
             <br />
@@ -94,12 +92,33 @@ export default function WebHomeScreen() {
                 </Button>
               </Pressable>
             </Link>
+            <Link href="/contact/" asChild>
+              <Pressable>
+                <Button
+                  white
+                  // onPress={() => router.push()}
+                  textAlign="center">
+                  Get In Touch
+                </Button>
+              </Pressable>
+            </Link>
+            <Link href="/projects/" asChild>
+              <Pressable>
+                <Button
+                  outlined
+                  //  onPress={() => router.push()}
+                >
+                  View All Projects
+                </Button>
+              </Pressable>
+            </Link>
           </XStack>
         </>
       </View>
       <H2 mt="$10" mb="$8" als="center" col={Colors.dark.orange[100]}>
         Projects
       </H2>
+      <ProjectListRenderer />
       <ProjectListRenderer />
     </View>
   );

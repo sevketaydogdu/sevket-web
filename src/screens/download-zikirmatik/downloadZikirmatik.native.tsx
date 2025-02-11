@@ -19,7 +19,7 @@ const DownloadZikirmatikNative = () => {
         <XStack space="$8" $gtLg={{ flexDirection: 'row' }} $md={{ flexDirection: 'column' }} f={1}>
           <View ov="hidden" br="$12" w="30%" $md={{ w: '100%', aspectRatio: 1 }}>
             <Image
-              source={require('../../../assets/images/zikirmatikLogo.png')}
+              source={require('../../../assets/images/zikirmatikLogo1.png')}
               style={{
                 width: '100%',
                 height: '100%',

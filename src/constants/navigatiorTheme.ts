@@ -25,9 +25,9 @@ const DefaultTheme: Theme = {
 const DarkTheme: Theme = {
   dark: false,
   colors: {
-    primary: 'rgb(255, 255, 255)',
+    primary: 'rgb(1, 1, 1)',
     background: 'rgb(1, 1, 1)',
-    card: 'rgb(255, 255, 255)',
+    card: 'rgb(1, 1, 1)',
     // text: 'rgb(1, 150, 150)',
     text: 'rgb(255,1,1)',
     border: 'rgb(216, 216, 216)',

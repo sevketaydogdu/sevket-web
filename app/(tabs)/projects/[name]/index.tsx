@@ -1,12 +1,11 @@
 import { Feather } from '@expo/vector-icons';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { Href, Link, useLocalSearchParams } from 'expo-router';
 import Head from 'expo-router/head';
 import React, { ReactNode } from 'react';
 import { Image, View as RNView, Platform, StyleSheet, Pressable } from 'react-native';
 import Markdown from 'react-native-markdown-display';
-import { H1, H2, H6, Text, View } from 'tamagui';
+import { H1, H2, Text, View } from 'tamagui';
 
-import { ParagraphText } from '@/components/ui/text';
 import Colors from '@/constants/Colors';
 import { projects } from '@/constants/projects';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
@@ -16,6 +15,10 @@ const ProjectDetailScreen = () => {
   const project = projects.find(
     (project) => clearSpacesAndSpecialCharacters(project.title) === name
   );
+
+  React.useEffect(() => {
+    if (window !== undefined) window.scrollTo(0, 0);
+  }, []);
 
   React.useEffect(() => {
     if (window !== undefined) window.scrollTo(0, 0);
@@ -37,10 +40,9 @@ const ProjectDetailScreen = () => {
         <Pressable style={{ alignSelf: 'flex-start' }}>
           <View
             $gtMd={{
-              display: 'none',
+              display: 'flex',
             }}
             gap={8}
-            bg={Colors.dark.black[300]}
             padding="$4"
             borderRadius="$1"
             flexDirection="row"
@@ -50,32 +52,53 @@ const ProjectDetailScreen = () => {
           </View>
         </Pressable>
       </Link>
-      <View f={1} ov="hidden" ai="flex-start" jc="flex-start" w="30%">
-        <View aspectRatio={1} w="100%" br="$5">
+      <View f={1} ov="hidden" ai="flex-start" jc="flex-start">
+        <View aspectRatio={1} className="self-center" br="$5">
           <Image
             source={project?.imagePath}
             style={{
-              width: '100%',
-              height: '100%',
-              borderRadius: 32,
+              width: 128,
+              height: 128,
+              // height: '50%',
+              borderRadius: 24,
+              borderWidth: StyleSheet.hairlineWidth * 2,
+              borderColor: Colors.dark.orange[100],
             }}
             resizeMode="cover"
           />
         </View>
-      </View>
-      <H1 numberOfLines={1} marginTop="$6">
-        {project?.title}
-      </H1>
+        <View className="self-center">
+          <H1
+            numberOfLines={1}
+            marginTop="$6"
+            style={{
+              alignSelf: 'center',
+            }}>
+            {project?.title}
+          </H1>
 
-      <H6 mt="$2" numberOfLines={1}>
-        {project?.subtitle}
-      </H6>
+          <Text
+            style={{
+              alignSelf: 'center',
+            }}
+            mt="$2"
+            ta="center">
+            {project?.subtitle}
+          </Text>
+        </View>
+      </View>
+
       <RNView style={[styles.contentContainer]}>
         <StoreButtons links={project?.storeLinks} />
 
-        <ParagraphText mt="$4" whiteSpace={Platform.OS === 'web' ? 'pre-line' : 'normal'}>
+        <Text
+          mt="$4"
+          whiteSpace={Platform.OS === 'web' ? 'pre-line' : 'normal'}
+          style={{
+            textAlign: 'center',
+          }}>
           {project?.description}
-        </ParagraphText>
+        </Text>
         {project.technicalDetails && (
           <View justifyContent="flex-start" w="100%">
             <H2 marginTop="$6" textAlign="center">
@@ -140,14 +163,7 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
   const renderItem: ReactNode[] = [];
   if (links.apple) {
     renderItem.push(
-      <Link
-        key={links.apple + 1}
-        href={links.apple as `http${string}`}
-        asChild
-        hrefAttrs={{
-          target: '_blank',
-          rel: 'noopener noreferrer',
-        }}>
+      <Link key={links.apple + 1} href={links.apple as Href} asChild target="_blank">
         <Pressable>
           <View cursor="pointer">
             <Image
@@ -166,14 +182,7 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
 
   if (links.google) {
     renderItem.push(
-      <Link
-        key={links.google + 2}
-        href={links.google as `http${string}`}
-        asChild
-        hrefAttrs={{
-          target: '_blank',
-          rel: 'noopener noreferrer',
-        }}>
+      <Link key={links.google + 2} href={links.google as Href} asChild target="_blank">
         <Pressable>
           <View cursor="pointer">
             <Image
@@ -191,14 +200,7 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
   }
   if (links.web) {
     renderItem.push(
-      <Link
-        key={links.web + 3}
-        href={links.web as `http${string}`}
-        asChild
-        hrefAttrs={{
-          target: '_blank',
-          rel: 'noopener noreferrer',
-        }}>
+      <Link key={links.web + 3} href={links.web as Href} asChild target="_blank">
         <Pressable>
           <RNView
             style={{

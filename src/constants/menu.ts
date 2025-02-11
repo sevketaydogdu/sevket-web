@@ -1,4 +1,4 @@
-import { AntDesignIconName } from '@/components/ui/link-button';
+import { AntDesign } from '@expo/vector-icons';
 
 export const menuItems = [
   {
@@ -24,7 +24,7 @@ export const menuItems = [
 ];
 
 type SocialButtonTypes = {
-  name: AntDesignIconName;
+  name: keyof typeof AntDesign.glyphMap;
 
   title: string;
   href: string;
