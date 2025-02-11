@@ -7,7 +7,8 @@
     "start-web": "expo start -c",
     "android": "yarn expo run:android",
     "ios": "yarn expo run:ios",
-    "web": "expo start --web -c"
+    "web": "expo start --web -c",
+    "reinstall": "rm -rf node_modules && rm -rf yarn.lock && rm -rf .expo &&rm -rf .tamagui && yarn install"
   },
   "jest": {
     "preset": "jest-expo"
@@ -59,8 +60,9 @@
     "typescript": "^5.1.3"
   },
   "eslintConfig": {
-  "eslintConfig": {
-    "extends": "universe/native"
-  },
-  "private": true
+    "eslintConfig": {
+      "extends": "universe/native"
+    },
+    "private": true
+  }
 }

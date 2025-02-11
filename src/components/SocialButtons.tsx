@@ -149,7 +149,7 @@ export default function SocialButtons({
       {/* <div className="flex flex-col gap-2 p-2 mt-4"> */}
       {showGithub && (
         <a
-          href="https://github.com/saulamsal/apple-news-ui"
+          href="https://github.com/sevketaydogdu/sevket-web"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-between px-3 py-2  hover:bg-[#e5e7eb] rounded text-gray-300 hover:text-gray-600 transition-colors">

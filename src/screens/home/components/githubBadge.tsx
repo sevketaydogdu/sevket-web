@@ -47,10 +47,8 @@ const GithubBadge = () => {
         <Link
           href="https://github.com/sevketaydogdu/sevket-web"
           asChild
-          hrefAttrs={{
-            target: '_blank',
-            rel: 'noopener noreferrer',
-          }}>
+          target="_blank"
+          rel="noopener noreferrer">
           <Pressable>
             {({ hovered }) => {
               return (
