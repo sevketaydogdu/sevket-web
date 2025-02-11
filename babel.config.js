@@ -6,27 +6,10 @@ module.exports = function(api) {
       "nativewind/babel",
     ],
         plugins: [
-      'transform-inline-environment-variables',
-      [
-        '@tamagui/babel-plugin',
-        {
-          components: ['tamagui'],
-          config: './tamagui.config.ts',
-          logTimings: true,
-          disableExtraction: process.env.NODE_ENV === 'development',
-        },
-      ],
+       'transform-inline-environment-variables',
+    
       'react-native-reanimated/plugin',
-      [
-        'module-resolver',
-        {
-          alias: {
-            // Add your path aliases here
-            '@web/*': './**/*.web.tsx',
-            '@native/*': './**/*.native.tsx',
-          },
-        },
-      ],
+     
     ],
   };
 };

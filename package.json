@@ -16,6 +16,7 @@
     "@expo/vector-icons": "^14.0.2",
     "@react-navigation/native": "^6.0.2",
     "@tamagui/animations-react-native": "^1.123.3",
+    "@tamagui/babel-plugin": "^1.123.3",
     "@tamagui/config": "^1.123.3",
     "@tamagui/font-inter": "^1.123.3",
     "@tamagui/react-native-media-driver": "^1.123.3",
