@@ -1,17 +1,14 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { ThemeProvider } from '@react-navigation/native';
+import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Slot, SplashScreen, Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useRef } from 'react';
-import { Platform, View } from 'react-native';
-
-import SHeader from '@/components/customHeader';
-import Footer from '@/components/footer';
-import { DarkTheme } from '@/constants/navigatiorTheme';
-import GithubBadge from '@/screens/home/components/githubBadge';
+import { Slot, SplashScreen } from 'expo-router';
+import React, { useEffect } from 'react';
+import { Appearance, ColorSchemeName, Platform, useColorScheme, View } from 'react-native';
 import { TamaguiProvider, Theme } from 'tamagui';
 import config from 'tamagui.config';
+
+import { DarkTheme } from '@/constants/navigatiorTheme';
+import '../global.css';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -36,7 +33,6 @@ export default function RootLayout() {
     SatoshiVariable: require('../assets/fonts/Satoshi-Variable.ttf'),
     ...FontAwesome.font,
   });
-  const scrollRef = useRef<number | undefined>(undefined);
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
@@ -55,64 +51,82 @@ export default function RootLayout() {
     return null;
   }
 
+  return <InnerRootLayout />;
+}
+const InnerRootLayout = () => {
+  const colorScheme = useColorScheme();
+  if (Platform.OS === 'web') {
+    Appearance.setColorScheme = (scheme) => {
+      if (scheme) {
+        document.documentElement.setAttribute('data-theme', scheme);
+      }
+    };
+
+    Appearance.getColorScheme = (): ColorSchemeName => {
+      const systemValue = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light';
+      const userValue = document.documentElement.getAttribute('data-theme');
+      return (userValue && userValue !== 'null' ? userValue : systemValue) as ColorSchemeName;
+    };
+
+    Appearance.addChangeListener = (listener) => {
+      // Listen for changes of system value
+      interface ColorSchemeChangeListener {
+        (event: { colorScheme: ColorSchemeName }): void;
+      }
+
+      interface SystemValueListenerEvent {
+        matches: boolean;
+      }
+
+      const systemValueListener = (e: SystemValueListenerEvent): void => {
+        const newSystemValue: ColorSchemeName = e.matches ? 'dark' : 'light';
+        const userValue = document.documentElement.getAttribute('data-theme');
+        listener({
+          colorScheme:
+            userValue && userValue !== 'null' ? (userValue as ColorSchemeName) : newSystemValue,
+        });
+      };
+      const systemValue = window.matchMedia('(prefers-color-scheme: dark)');
+      systemValue.addEventListener('change', systemValueListener);
+
+      // Listen for changes of user set value
+      const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+          if (mutation.attributeName === 'data-theme') {
+            listener({ colorScheme: Appearance.getColorScheme() });
+          }
+        }
+      });
+      observer.observe(document.documentElement, { attributes: true });
+
+      function remove(): void {
+        systemValue.removeEventListener('change', systemValueListener);
+        observer.disconnect();
+      }
+
+      return { remove };
+    };
+  }
   return (
-    <TamaguiProvider config={config}>
-      <>
-        <ThemeProvider value={DarkTheme}>
-          <Theme name={'dark'}>
-            <>
-              {Platform.OS === 'web' ? (
-                <>
-                  <View
-                  // overflowY="scroll"
-                  // f={1}
-                  // fd="column"
-                  // // f={1}
-                  // overflow="hidden"
-                  // // bg="$red10"
-                  // $gtLg={{
-                  //   // mx: `15rem`,
-                  //   maw: 1200,
-                  //   mx: 'auto',
-                  // }}
-                  // $gtMd={{
-                  //   mx: `5rem`,
-                  //   // p: "$2",
-                  //   mt: '$2',
-                  // }}
-                  // $gtSm={{ p: '$2', mt: '$2' }}
-                  // $gtXs={{ p: '$2', mt: '$2' }}
-                  // $xs={{ p: '$2', mt: '$2' }}
-                  >
-                    <SHeader scrollRef={scrollRef} />
-
-                    <Slot
-                      screenOptions={({ route }) => ({
-                        title: route.name,
-                      })}
-                    />
-
-                    <Footer />
-                  </View>
-
-                  <GithubBadge />
-                </>
-              ) : (
-                <>
-                  <StatusBar style="light" />
-                  <Stack>
-                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                    <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-                  </Stack>
-                </>
-              )}
-              {/* <MainModal /> */}
-            </>
+    <View className=" flex-1">
+      <TamaguiProvider config={config}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Theme name="dark">
+            <Slot
+              screenOptions={({ route }) => ({
+                title: route.name,
+              })}
+            />
+            {/* <>
+            <StatusBar style="light" />
+            <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+            </Stack>
+            </> */}
           </Theme>
         </ThemeProvider>
-      </>
-    </TamaguiProvider>
+      </TamaguiProvider>
+    </View>
   );
-}
-
-// StyleSheet.flatten([styles.container, globalStyles.webkitScrollbar]);
+};
