@@ -1,11 +1,14 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Slot, SplashScreen } from 'expo-router';
-import React, { useEffect } from 'react';
+import { Slot, SplashScreen, Stack } from 'expo-router';
+import Head from 'expo-router/head';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from 'react';
 import { Appearance, ColorSchemeName, Platform, useColorScheme, View } from 'react-native';
 import { TamaguiProvider, Theme } from 'tamagui';
-import config from 'tamagui.config';
+
+import config from '../tamagui.config';
 
 import { DarkTheme } from '@/constants/navigatiorTheme';
 import '../global.css';
@@ -44,9 +47,6 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  useEffect(() => {
-    document.title = 'Sevket Ayodgdu - React Native Developer';
-  });
   if (!loaded) {
     return null;
   }

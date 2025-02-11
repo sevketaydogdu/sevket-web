@@ -19,6 +19,10 @@ const ProjectDetailScreen = () => {
   React.useEffect(() => {
     if (window !== undefined) window.scrollTo(0, 0);
   }, []);
+
+  React.useEffect(() => {
+    if (window !== undefined) window.scrollTo(0, 0);
+  }, []);
   if (!project) {
     return (
       <View ai="center" f={1} jc="center">

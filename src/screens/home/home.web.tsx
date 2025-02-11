@@ -92,12 +92,33 @@ export default function WebHomeScreen() {
                 </Button>
               </Pressable>
             </Link>
+            <Link href="/contact/" asChild>
+              <Pressable>
+                <Button
+                  white
+                  // onPress={() => router.push()}
+                  textAlign="center">
+                  Get In Touch
+                </Button>
+              </Pressable>
+            </Link>
+            <Link href="/projects/" asChild>
+              <Pressable>
+                <Button
+                  outlined
+                  //  onPress={() => router.push()}
+                >
+                  View All Projects
+                </Button>
+              </Pressable>
+            </Link>
           </XStack>
         </>
       </View>
       <H2 mt="$10" mb="$8" als="center" col={Colors.dark.orange[100]}>
         Projects
       </H2>
+      <ProjectListRenderer />
       <ProjectListRenderer />
     </View>
   );

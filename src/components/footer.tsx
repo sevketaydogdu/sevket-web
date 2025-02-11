@@ -1,7 +1,10 @@
+import { Link } from 'expo-router';
 import React from 'react';
+import { Pressable, StyleSheet } from 'react-native';
 import { Text, Footer as FooterTamagui, View, XStack, YStack } from 'tamagui';
 
 import Colors from '@/constants/Colors';
+import { menuItems } from '@/constants/menu';
 
 const Footer = () => {
   return (
@@ -23,18 +26,20 @@ const Footer = () => {
           fd: 'column',
           ai: 'baseline',
           space: '$2',
-          br: '$8',
+          br: '$1',
+          p: '$4',
         }}
         mt="$12"
-        p="$10"
+        px="$6"
+        py="$2"
         ai="center"
         space="$12"
         br="$2">
-        <YStack f={1} bg="rebeccapurple">
-          <Text $gtSm={{ fos: '$6' }} fos="$10" ff="$heading" col={Colors.dark.orange[200]}>
+        <YStack f={1}>
+          <Text $gtMd={{ fos: '$8' }} fos="$7" ff="$heading" col={Colors.dark.orange[200]}>
             Sevket Aydogdu
           </Text>
-          <Text
+          {/* <Text
             fos="$8"
             ff="$heading"
             $gtLg={{
@@ -44,9 +49,25 @@ const Footer = () => {
               fos: '$8',
             }}>
             React Native{'\n'}Developer
-          </Text>
+          </Text> */}
         </YStack>
-        <YStack f={1}>
+        <XStack
+          $md={{
+            flexDirection: 'column',
+          }}>
+          {menuItems.map((item) => (
+            <Link key={item.title} href={item.href as `http${string}`} asChild>
+              <Pressable>
+                {({ hovered }) => (
+                  <View style={styles(hovered).buttonContainer}>
+                    <Text style={styles(hovered).buttonText}>{item.title}</Text>
+                  </View>
+                )}
+              </Pressable>
+            </Link>
+          ))}
+        </XStack>
+        {/* <YStack f={1}>
           <Text f={1} ff="$heading" fos="$8" $md={{ fos: '$6' }}>
             Lorem ipsum dolor sit amet consectetur. Malesuada nibh iaculis eu posuere nisl aliquam
             sed. Sed vitae amet egestas aliquet dui netus.
@@ -55,28 +76,42 @@ const Footer = () => {
             Lorem ipsum dolor sit amet consectetur. Malesuada nibh iaculis eu posuere nisl aliquam
             sed. Sed vitae amet egestas aliquet dui netus.
           </Text>
-          <XStack space="$8" mt="$6">
+          <View
+            $gtSm={{
+              flexDirection: 'row',
+              gap: '$8',
+            }}
+            gap="$2"
+            flexDirection="column"
+            f={1}
+            mt="$6">
             <YStack>
-              <Text fow="800" col={Colors.dark.gray[100]}>
-                Projects Done
-              </Text>
-              <Text ff="$heading" fos="$10" fow="200" col={Colors.dark.orange[200]}>
-                5+
-              </Text>
+              <FooterTitleText>Experience</FooterTitleText>
+              <FooterText fos="$4">+5 Years</FooterText>
             </YStack>
             <YStack>
-              <Text fow="800" col={Colors.dark.gray[100]}>
-                Experience
-              </Text>
-              <Text ff="$heading" fos="$10" fow="200" col={Colors.dark.orange[200]}>
-                2+ Years
-              </Text>
+              <FooterTitleText>Projects</FooterTitleText>
+              <FooterText fos="$4">+5 Years</FooterText>
             </YStack>
-          </XStack>
-        </YStack>
+          </View>
+        </YStack> */}
       </View>
     </FooterTamagui>
   );
 };
 
 export default Footer;
+
+const styles = (hovered: boolean) =>
+  StyleSheet.create({
+    buttonContainer: {
+      backgroundColor: hovered ? Colors.dark.orange[100] : undefined,
+      padding: 12,
+      borderRadius: 32,
+    },
+    buttonText: {
+      color: hovered ? Colors.dark.black[200] : Colors.dark.white[100],
+      fontWeight: '600',
+      fontSize: 16,
+    },
+  });
