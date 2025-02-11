@@ -59,8 +59,9 @@
     "typescript": "^5.1.3"
   },
   "eslintConfig": {
-  "eslintConfig": {
-    "extends": "universe/native"
-  },
-  "private": true
+    "eslintConfig": {
+      "extends": "universe/native"
+    },
+    "private": true
+  }
 }
