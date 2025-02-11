@@ -47,16 +47,18 @@ export default function TabLayout() {
           <View className={`sticky ${isCompact ? 'w-[72px] p-2' : 'w-[275px] p-2'} h-full`}>
             <View className={`fixed ${isCompact ? 'w-[72px] p-2' : 'w-[275px] p-2'} h-full`}>
               <View className="mb-8 pl-3 pt-3">
-                <View className="flex-row items-center gap-[2px] mt-2">
-                  <Image
-                    source={require('../../assets/images/logo-white.png')}
-                    style={{
-                      width: 110,
-                      height: 40,
-                    }}
-                    resizeMode="cover"
-                  />
-                </View>
+                {!isCompact && (
+                  <View className="flex-row items-center gap-[2px] mt-2">
+                    <Image
+                      source={require('../../assets/images/logo-white.png')}
+                      style={{
+                        width: 110,
+                        height: 40,
+                      }}
+                      resizeMode="cover"
+                    />
+                  </View>
+                )}
               </View>
 
               <View className="">
@@ -196,6 +198,22 @@ export default function TabLayout() {
         </View>
       )}
       <View className={`flex-1 w-full max-w-[900px] bg-transparent p-6 ${isMobile ? 'mb-16' : ''}`}>
+        {isMobile && (
+          <Link href="/" asChild>
+            <Pressable className="flex-initial top-0 left-0 right-0 z-10">
+              <View className="flex-row  bg-background2 mb-4 justify-center items-center gap-[2px] py-4 rounded-lg">
+                <Image
+                  source={require('../../assets/images/logo-white.png')}
+                  style={{
+                    width: 110,
+                    height: 40,
+                  }}
+                  resizeMode="cover"
+                />
+              </View>
+            </Pressable>
+          </Link>
+        )}
         <Slot />
       </View>
       {isMobile && (
@@ -308,7 +326,7 @@ function SidebarItem({
 
   const iconColor = isActive ? '#fda054' : '#ffffff';
 
-  const size = compact ? 28 : 22;
+  const size = compact ? 22 : 22;
 
   const getIcon = () => {
     switch (icon) {
