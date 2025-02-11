@@ -26,8 +26,13 @@ module.exports = {
         200: '2',
       },
       colors: {
-        background: 'rgb(3, 8, 30)',
-        background2: '#08102e',
+        background: 'rgb(10, 10, 10)',
+        // background: 'rgb(3, 8, 30)',
+        selected:'#131212',
+        background2: '#1A1A1A',
+        'orange-100':'#F14A00',
+        'orange-200':'#C62300',
+
         'apple-news': '#FA2D48',
         'light-tint': '#FA2D48',
         'dark-tint': '#FA2D48',

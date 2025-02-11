@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 import SocialButtons from '@/components/SocialButtons';
+import SideBarMenu from '@/components/web/sidebar-menu';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -33,16 +34,13 @@ export default function TabLayout() {
   const isMobile = width < 768;
   const borderColor = colorScheme === 'dark' ? '#2f3336' : '#eee';
 
-  //      <SHeader scrollRef={scrollRef} />;
-  //                 <GithubBadge />
-  //  <Footer />;
   return (
     <View className="flex-row left-0 right-0 bg-background  justify-center relative">
       {!isMobile && (
         <View
           className={`${
             isCompact ? 'w-[72px]' : ''
-          } items-end sticky top-0 h-screen border-r border-gray-500`}
+          } items-end sticky top-0  border-r border-gray-500 h-screen`}
           style={{ borderRightColor: borderColor }}>
           <View className={`sticky ${isCompact ? 'w-[72px] p-2' : 'w-[275px] p-2'} h-full`}>
             <View className={`fixed ${isCompact ? 'w-[72px] p-2' : 'w-[275px] p-2'} h-full`}>
@@ -62,34 +60,7 @@ export default function TabLayout() {
               </View>
 
               <View className="">
-                <SidebarItem
-                  icon="home"
-                  label="Home"
-                  href="/"
-                  compact={isCompact}
-                  isActive={segments.length === 1}
-                />
-                <SidebarItem
-                  icon="about"
-                  label="About"
-                  href="/aboutme"
-                  compact={isCompact}
-                  isActive={segments[1] === 'aboutme'}
-                />
-                <SidebarItem
-                  icon="airplay"
-                  label="Contact"
-                  href="/contact"
-                  compact={isCompact}
-                  isActive={segments[1] === 'contact'}
-                />
-                <SidebarItem
-                  icon="printer"
-                  label="Projects"
-                  href="/projects"
-                  compact={isCompact}
-                  isActive={segments[1] === 'projects'}
-                />
+                <SideBarMenu segments={segments as any} compact={isCompact} />
               </View>
 
               {!isCompact && (
@@ -197,7 +168,8 @@ export default function TabLayout() {
           </View>
         </View>
       )}
-      <View className={`flex-1 w-full max-w-[900px] bg-transparent p-6 ${isMobile ? 'mb-16' : ''}`}>
+      <View
+        className={`flex-1 w-full max-w-[900px] bg-background h-full p-6 ${isMobile ? 'mb-16' : ''}`}>
         {isMobile && (
           <Link href="/" asChild>
             <Pressable className="flex-initial top-0 left-0 right-0 z-10">
@@ -303,72 +275,5 @@ export default function TabLayout() {
         </View>
       )}
     </View>
-  );
-}
-function SidebarItem({
-  icon,
-  label,
-  href,
-  isActive,
-  compact = false,
-}: {
-  icon: keyof typeof Feather.glyphMap | 'home' | 'about' | 'sports' | 'printer';
-  label: string;
-  href: string;
-  isActive?: boolean;
-  compact?: boolean;
-}) {
-  const colorScheme = useColorScheme();
-  const router = useRouter();
-  const hoverBg = colorScheme === 'dark' ? 'rgba(255, 59, 48, 0.1)' : 'rgba(255, 59, 48, 0.1)';
-  const activeBg = colorScheme === 'dark' ? 'rgba(255, 59, 48, 0.15)' : 'rgba(255, 59, 48, 0.15)';
-  const textColor = isActive ? '#fda054' : '#ffffff';
-
-  const iconColor = isActive ? '#fda054' : '#ffffff';
-
-  const size = compact ? 22 : 22;
-
-  const getIcon = () => {
-    switch (icon) {
-      case 'home':
-        return <Feather name="home" size={size} color={iconColor} />;
-      case 'about':
-        return <Feather name="book-open" size={size} color={iconColor} />;
-      case 'sports':
-        return <Feather name="airplay" size={size} color={iconColor} />;
-      case 'printer':
-        return <Feather name="printer" size={size} color={iconColor} />;
-
-      case 'activity':
-        return <Feather name="airplay" size={size} color={iconColor} />;
-
-      case 'link':
-        return <Feather name="link" size={size} color={iconColor} />;
-      default:
-        return <Feather name="airplay" size={size} color={iconColor} />;
-    }
-  };
-
-  return (
-    <Pressable
-      onPress={() => {
-        window?.scrollTo({ top: 0, behavior: 'smooth' });
-
-        router.push(href as any);
-      }}
-      className={` flex flex-row items-center p-2 rounded-lg gap-3 mb-0.5 
-        hover:bg-orange-950 transition-all duration-200  ${
-          compact ? 'justify-center w-10 h-10 mx-auto' : 'pl-2 pr-6 mr-8'
-        } ${isActive ? 'bg-orange-950' : ''}`}
-      style={({ pressed, hovered }) => [(pressed || hovered) && { backgroundColor: hoverBg }]}>
-      {getIcon()}
-      {!compact && (
-        <Text
-          className={`text-[15px] font-semibold ${isActive ? 'font-bold ' : ''}`}
-          style={{ color: textColor }}>
-          {label}
-        </Text>
-      )}
-    </Pressable>
   );
 }

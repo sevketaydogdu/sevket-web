@@ -1,8 +1,9 @@
 import Head from 'expo-router/head';
 import React from 'react';
-import { View, H2 } from 'tamagui';
+import { H2 } from 'tamagui';
 
 import ContactItems, { ContactItemAllProps } from './components/contact-items';
+import { View } from 'react-native';
 
 const contactItems: ContactItemAllProps[] = [
   {
@@ -25,22 +26,19 @@ const contactItems: ContactItemAllProps[] = [
 ];
 const WebContactScreen = () => {
   return (
-    <View flex={1}>
-      <Head>
-        <title>Contact me | Sevket Aydogdu - React Native Developer</title>
-      </Head>
-
-      <View className="h-full">
+    <View className="flex-1 h-screen-safe  ">
+      <View className="h-full mt-8">
         <Head>
           <title>Contact me | Sevket Aydogdu - React Native Developer</title>
         </Head>
 
         <View
-          $gtLg={{
-            flexDirection: 'column',
-          }}
-          flexDirection="column">
-          <View maxWidth="100%">
+          className="flex-col flex-1 h-full"
+          // $gtLg={{
+          //   flexDirection: 'column',
+          // }}
+        >
+          <View className="">
             <H2
               textAlign="center"
               $md={{
@@ -51,7 +49,7 @@ const WebContactScreen = () => {
               You Can Reach Me from these adresses
             </H2>
           </View>
-          <View f={1} gap="$4" mt="$4">
+          <View className="flex-1 gap-4 mt-8">
             {contactItems.map((item, index) => (
               <ContactItems key={index} {...item} />
             ))}
