@@ -1,6 +1,6 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
-import { Link } from 'expo-router';
+import { Href, Link } from 'expo-router';
 import React, { FC, useState } from 'react';
 import { Pressable } from 'react-native';
 import { SizableText, View, XStack, YStack, AnimatePresence } from 'tamagui';
@@ -103,13 +103,7 @@ const CopyItem: FC<ContactItemCopyProps> = ({ label, text }) => {
 const LinkItem: FC<ContatItemLinkProps> = ({ label, text, url, iconName = 'link' }) => {
   return (
     <AnimatePresence>
-      <Link
-        href={url as `http${string}`}
-        asChild
-        hrefAttrs={{
-          target: '_blank',
-          rel: 'noopener noreferrer',
-        }}>
+      <Link href={url as Href} asChild target="_blank" rel="noopener noreferrer">
         <Pressable>
           {({ hovered }) => (
             <XStack
