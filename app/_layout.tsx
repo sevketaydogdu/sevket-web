@@ -5,7 +5,14 @@ import { Slot, SplashScreen, Stack } from 'expo-router';
 import Head from 'expo-router/head';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Appearance, ColorSchemeName, Platform, useColorScheme, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Appearance,
+  ColorSchemeName,
+  Platform,
+  useColorScheme,
+  View,
+} from 'react-native';
 import { TamaguiProvider, Theme } from 'tamagui';
 
 import config from '../tamagui.config';
@@ -48,7 +55,11 @@ export default function RootLayout() {
   }, [loaded]);
 
   if (!loaded) {
-    return null;
+    return (
+      <View className="flex-1 bg-background items-center justify-center">
+        <ActivityIndicator />
+      </View>
+    );
   }
 
   return <InnerRootLayout />;
