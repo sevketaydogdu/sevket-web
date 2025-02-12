@@ -121,10 +121,10 @@ const InnerRootLayout = () => {
         ...DarkTheme,
         colors: {
           ...DarkTheme.colors,
-          background: '#f11111',
-          // background: 'rgb(10, 10, 10)',
-          // card: 'rgb(10, 10, 10)',
-          card: '#f11111',
+          // background: '#f11111',
+          background: 'rgb(10, 10, 10)',
+          card: 'rgb(10, 10, 10)',
+          // card: '#f11111',
           text: 'rgb(250, 250, 250)',
         },
       }}>
