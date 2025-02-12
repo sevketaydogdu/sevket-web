@@ -2,10 +2,8 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
 import { Href, Link } from 'expo-router';
 import React, { FC, useState } from 'react';
-import { Pressable, View as RNView } from 'react-native';
-import { SizableText, View, XStack, YStack, AnimatePresence } from 'tamagui';
+import { Pressable, View, Text } from 'react-native';
 
-import { ParagraphText } from '@/components/ui/text';
 import Colors from '@/constants/Colors';
 
 // Add this type definition
@@ -26,6 +24,7 @@ interface ContatItemLinkProps extends ContactItemNeededProps {
 
 export type ContactItemAllProps = ContactItemCopyProps | ContatItemLinkProps;
 
+const textClass = 'color-white text-xl';
 const CopyItem: FC<ContactItemCopyProps> = ({ label, text }) => {
   const [copied, setCopied] = useState<boolean>(false);
 
@@ -40,62 +39,65 @@ const CopyItem: FC<ContactItemCopyProps> = ({ label, text }) => {
   return (
     <Pressable onPress={copyToClipboard}>
       {({ hovered }) => (
-        <RNView className="bg-background2 rounded-2xl">
-          <AnimatePresence>
-            <XStack
-              paddingVertical="$4"
-              paddingLeft="$5"
-              paddingRight="$4"
-              br="$1"
-              animation="quick"
-              enterStyle={{ opacity: 0, scale: 0.9 }}
-              exitStyle={{ opacity: 0, scale: 0.9 }}
-              cursor="copy">
-              <YStack f={1} justifyContent="center">
-                {copied ? (
-                  <ParagraphText textAlign="left" animation="quick" y={0} opacity={1} scale={1}>
-                    <Feather
-                      name="check-circle"
-                      size={24}
-                      color={Colors.dark.orange[200]}
-                      style={{ marginRight: 8 }}
-                    />
-                    E-mail Copied!
-                  </ParagraphText>
-                ) : (
-                  <YStack y={0} opacity={1} scale={1}>
-                    {label && (
-                      <SizableText fontWeight="500" size="$5">
-                        {label}:
-                      </SizableText>
-                    )}
-                    <ParagraphText
-                      textAlign="left"
-                      fontWeight="900"
-                      numberOfLines={1}
-                      $md={{
-                        fontSize: 16,
-                      }}
-                      allowFontScaling>
-                      {text}
-                    </ParagraphText>
-                  </YStack>
-                )}
-              </YStack>
+        <View className=" rounded-2xl">
+          <View
+            className=" bg-background2 hover:bg-orange-950 flex-row py-4 pl-5 pr-4 rounded-2xl cursor-copy items-center"
+            // paddingVertical="$4"
+            // paddingLeft="$5"
+            // paddingRight="$4"
+            // br="$1"
+            // animation="quick"
+            // enterStyle={{ opacity: 0, scale: 0.9 }}
+            // exitStyle={{ opacity: 0, scale: 0.9 }}
+            // cursor="copy"
+          >
+            <View className="flex-col flex-1 justify-center ">
+              {copied ? (
+                <Text
+                  className={textClass}
 
-              <View
-                padding="$4"
-                bg={hovered ? Colors.dark.black[300] : Colors.dark.black[100]}
-                br={16}>
-                <Feather
-                  name="copy"
-                  size={24}
-                  color={hovered ? Colors.dark.orange[200] : Colors.dark.orange[100]}
-                />
-              </View>
-            </XStack>
-          </AnimatePresence>
-        </RNView>
+                  // textAlign="left" animation="quick" y={0} opacity={1} scale={1}
+                >
+                  <Feather
+                    name="check-circle"
+                    size={24}
+                    color={Colors.dark.orange[200]}
+                    style={{ marginRight: 8 }}
+                  />
+                  E-mail Copied!
+                </Text>
+              ) : (
+                <View className="flex-col  ">
+                  {label && <Text className="font-light color-white text-sm">{label}:</Text>}
+                  <Text
+                    className={textClass}
+                    // textAlign="left"
+                    // fontWeight="900"
+                    // numberOfLines={1}
+                    // $md={{
+                    //   fontSize: 16,
+                    // }}
+                    allowFontScaling>
+                    {text}
+                  </Text>
+                </View>
+              )}
+            </View>
+
+            <View
+              className={`p-4 ${hovered ? 'bg-selected' : 'bg-background2'} rounded-2xl`}
+              // padding="$4"
+              // bg={hovered ? Colors.dark.black[300] : Colors.dark.black[100]}
+              // br={16}
+            >
+              <Feather
+                name="copy"
+                size={24}
+                color={hovered ? Colors.dark.orange[200] : Colors.dark.orange[100]}
+              />
+            </View>
+          </View>
+        </View>
       )}
     </Pressable>
   );
@@ -103,64 +105,58 @@ const CopyItem: FC<ContactItemCopyProps> = ({ label, text }) => {
 
 const LinkItem: FC<ContatItemLinkProps> = ({ label, text, url, iconName = 'link' }) => {
   return (
-    <RNView className="bg-background2 rounded-2xl">
-      <AnimatePresence>
-        <Link href={url as Href} asChild target="_blank" rel="noopener noreferrer">
-          <Pressable>
-            {({ hovered }) => (
-              <XStack
-                animation="quick"
-                paddingVertical="$4"
-                paddingLeft="$5"
-                paddingRight="$4"
-                enterStyle={{ opacity: 0, scale: 0.9 }}
-                exitStyle={{ opacity: 0, scale: 0.9 }}
-                br="$1">
-                <YStack f={1} justifyContent="center">
-                  {label && (
-                    <SizableText fontWeight="500" size="$5">
-                      {label}:
-                    </SizableText>
-                  )}
-                  <XStack alignItems="center" gap="$4">
-                    <AntDesign
-                      name={iconName}
-                      style={{
-                        lineHeight: 24,
-                      }}
-                      size={24}
-                      color={Colors.dark.white[100]}
-                    />
-                    <ParagraphText
-                      textAlign="left"
-                      fontWeight="900"
-                      cursor="pointer"
-                      numberOfLines={1}
-                      $md={{
-                        fontSize: 16,
-                      }}
-                      allowFontScaling>
-                      {text}
-                    </ParagraphText>
-                  </XStack>
-                </YStack>
-
-                <View
-                  padding="$4"
-                  bg={hovered ? Colors.dark.black[300] : Colors.dark.black[100]}
-                  br={16}>
-                  <Feather
-                    name="external-link"
+    <View className=" rounded-2xl">
+      <Link href={url as Href} asChild target="_blank" rel="noopener noreferrer">
+        <Pressable>
+          {({ hovered }) => (
+            <View
+              className=" bg-background2 hover:bg-orange-950 flex-row py-4 pl-5 pr-4 rounded-2xl cursor-pointer"
+              // animation="quick"
+              // paddingVertical="$4"
+              // paddingLeft="$5"
+              // paddingRight="$4"
+              // enterStyle={{ opacity: 0, scale: 0.9 }}
+              // exitStyle={{ opacity: 0, scale: 0.9 }}
+              // br="$1"
+            >
+              <View className="flex-col flex-1 justify-center">
+                {label && <Text className="color-white">{label}:</Text>}
+                <View className="flex-row items-center gap-4">
+                  <AntDesign
+                    name={iconName}
+                    style={{
+                      lineHeight: 24,
+                    }}
                     size={24}
-                    color={hovered ? Colors.dark.orange[200] : Colors.dark.orange[100]}
+                    color={Colors.dark.white[100]}
                   />
+                  <Text
+                    // textAlign="left"
+                    // fontWeight="900"
+                    // cursor="pointer"
+                    // numberOfLines={1}
+                    // $md={{
+                    //   fontSize: 16,
+                    // }}
+                    className={textClass}
+                    allowFontScaling>
+                    {text}
+                  </Text>
                 </View>
-              </XStack>
-            )}
-          </Pressable>
-        </Link>
-      </AnimatePresence>
-    </RNView>
+              </View>
+
+              <View className={`p-4 ${hovered ? 'bg-selected' : 'bg-background2'} rounded-2xl`}>
+                <Feather
+                  name="external-link"
+                  size={24}
+                  color={hovered ? Colors.dark.orange[200] : Colors.dark.orange[100]}
+                />
+              </View>
+            </View>
+          )}
+        </Pressable>
+      </Link>
+    </View>
   );
 };
 
@@ -172,7 +168,9 @@ const ContactItems: FC<ContactItemAllProps> = (props) => {
       return <CopyItem {...props} />;
     case 'link':
       return (
-        <View enterStyle={{ opacity: 0, scale: 0.9 }} exitStyle={{ opacity: 0, scale: 0.9 }}>
+        <View
+        // enterStyle={{ opacity: 0, scale: 0.9 }} exitStyle={{ opacity: 0, scale: 0.9 }}
+        >
           <LinkItem {...props} />
         </View>
       );

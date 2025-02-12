@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'tamagui';
+import { View, Text } from 'react-native';
 
 const AboutMeNative = () => {
   return (

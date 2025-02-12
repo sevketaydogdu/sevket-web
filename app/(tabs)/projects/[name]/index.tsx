@@ -2,9 +2,8 @@ import { Feather } from '@expo/vector-icons';
 import { Href, Link, router, useLocalSearchParams } from 'expo-router';
 import Head from 'expo-router/head';
 import React, { ReactNode } from 'react';
-import { Image, View as RNView, Platform, StyleSheet, Pressable } from 'react-native';
+import { Image, View, Platform, StyleSheet, Pressable, Text } from 'react-native';
 import Markdown from 'react-native-markdown-display';
-import { H1, H2, Text, View } from 'tamagui';
 
 import Colors from '@/constants/Colors';
 import { projects } from '@/constants/projects';
@@ -25,14 +24,14 @@ const ProjectDetailScreen = () => {
   }, []);
   if (!project) {
     return (
-      <View ai="center" f={1} jc="center">
-        <H1>Project not found</H1>
-        <Text fos="$6">{name}</Text>
+      <View className="flex-1 items-center justify-center">
+        <Text className="text-8xl text-white">Project not found</Text>
+        <Text className="text-white">{name}</Text>
       </View>
     );
   }
   return (
-    <RNView style={styles.mainContainer}>
+    <View style={styles.mainContainer}>
       <Head>
         <title>{project.title} | Sevket Aydogdu - React Native Developer</title>
       </Head>
@@ -40,20 +39,21 @@ const ProjectDetailScreen = () => {
         onPress={() => router.back()}
         className="self-start hover:scale-98  absolute   left-2 z-50">
         <View
-          className="self-start hover:scale-98 bg-background2 rounded-xl hover:bg-selected "
-          $gtMd={{
-            display: 'flex',
-          }}
-          gap={8}
-          padding="$4"
-          flexDirection="row"
-          alignItems="center">
+          className="flex-row gap-4 px-4 py-3 items-center self-start hover:scale-98 bg-background2 rounded-xl hover:bg-selected "
+          // $gtMd={{
+          //   display: 'flex',
+          // }}
+          // gap={8}
+          // padding="$4"
+          // flexDirection="row"
+          // alignItems="center"
+        >
           <Feather name="arrow-left" size={24} color="white" />
-          <Text color="white">Back</Text>
+          <Text className="text-white">Back</Text>
         </View>
       </Pressable>
-      <View f={1} ov="hidden" ai="flex-start" jc="flex-start">
-        <View aspectRatio={1} className="self-center" br="$5">
+      <View className="flex-1 overflow-hidden items-start justify-start">
+        <View className="self-center aspect-square rounded-2xl">
           <Image
             source={project?.imagePath}
             style={{
@@ -68,46 +68,49 @@ const ProjectDetailScreen = () => {
           />
         </View>
         <View className="self-center">
-          <H1
+          <Text
+            className="text-4xl flex-1 self-center text-center mt-6 color-white font-bold"
             // numberOfLines={1}
-            marginTop="$6"
-            style={{
-              flex: 1,
-              alignSelf: 'center',
-              textAlign: 'center',
-            }}>
+            // marginTop="$6"
+            // style={{
+            //   flex: 1,
+            //   alignSelf: 'center',
+            //   textAlign: 'center',
+            // }}
+          >
             {project?.title}
-          </H1>
+          </Text>
 
           <Text
-            className="text-xl"
-            style={{
-              alignSelf: 'center',
-            }}
-            mt="$2"
-            ta="center">
+            className="text-xl text-center mt-2 self-center color-white"
+            // style={{
+            //   alignSelf: 'center',
+            // }}
+            // mt="$2"
+            // ta="center"
+          >
             {project?.subtitle}
           </Text>
         </View>
       </View>
 
-      <RNView style={[styles.contentContainer]}>
+      <View style={[styles.contentContainer]}>
         <StoreButtons links={project?.storeLinks} />
 
         <Text
-          className="text-lg"
-          mt="$4"
-          whiteSpace={Platform.OS === 'web' ? 'pre-line' : 'normal'}
+          className="text-lg mt-4 color-white"
+          // mt="$4"
           style={{
+            // whiteSpace:Platform.OS === 'web' ? 'pre-line' : 'normal',
             textAlign: 'center',
           }}>
           {project?.description}
         </Text>
         {project.technicalDetails && (
-          <View justifyContent="flex-start" w="100%">
-            <H2 marginTop="$6" textAlign="center">
+          <View className="justify-start w-full">
+            <Text className="text-2xl flex-1 self-center text-center mt-6 color-white font-bold">
               Technical Details
-            </H2>
+            </Text>
             <Markdown
               style={{
                 heading1: {
@@ -135,8 +138,8 @@ const ProjectDetailScreen = () => {
             </Markdown>
           </View>
         )}
-      </RNView>
-    </RNView>
+      </View>
+    </View>
   );
 };
 
@@ -169,7 +172,7 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
     renderItem.push(
       <Link key={links.apple + 1} href={links.apple as Href} asChild target="_blank">
         <Pressable>
-          <View cursor="pointer">
+          <View className="cursor-pointer">
             <Image
               // cursor="pointer"
               source={require('../../../../assets/images/appleBadge.png')}
@@ -188,7 +191,7 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
     renderItem.push(
       <Link key={links.google + 2} href={links.google as Href} asChild target="_blank">
         <Pressable>
-          <View cursor="pointer">
+          <View className="cursor-pointer">
             <Image
               //
               source={require('../../../../assets/images/googlebadge.png')}
@@ -206,17 +209,17 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
     renderItem.push(
       <Link key={links.web + 3} href={links.web as Href} asChild target="_blank">
         <Pressable>
-          <RNView
+          <View
             style={{
               padding: 7,
               backgroundColor: 'white',
               borderRadius: 8,
             }}>
             <Feather name="globe" size={24} />
-          </RNView>
+          </View>
         </Pressable>
       </Link>
     );
   }
-  return <RNView style={styles.storeBadgesWrapper}>{renderItem}</RNView>;
+  return <View style={styles.storeBadgesWrapper}>{renderItem}</View>;
 };

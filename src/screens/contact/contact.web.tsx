@@ -1,9 +1,8 @@
 import Head from 'expo-router/head';
 import React from 'react';
-import { H2 } from 'tamagui';
 
 import ContactItems, { ContactItemAllProps } from './components/contact-items';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 const contactItems: ContactItemAllProps[] = [
   {
@@ -39,15 +38,16 @@ const WebContactScreen = () => {
           // }}
         >
           <View className="">
-            <H2
-              textAlign="center"
-              $md={{
-                fontSize: 20,
-                lineHeight: 24,
-              }}
+            <Text
+              className="text-3xl color-white font-bold text-center "
+              // textAlign="center"
+              // $md={{
+              //   fontSize: 20,
+              //   lineHeight: 24,
+              // }}
               allowFontScaling>
               You Can Reach Me from these adresses
-            </H2>
+            </Text>
           </View>
           <View className="flex-1 gap-4 mt-8">
             {contactItems.map((item, index) => (

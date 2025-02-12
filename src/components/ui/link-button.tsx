@@ -1,8 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
-import { Link } from 'expo-router';
+import { Href, Link } from 'expo-router';
 import React, { FC } from 'react';
-import { View, Pressable, StyleSheet, TextProps, ViewProps } from 'react-native';
-import { Text } from 'tamagui';
+import { View, Pressable, StyleSheet, TextProps, ViewProps, Text } from 'react-native';
 
 import Colors from '@/constants/Colors';
 
@@ -27,13 +26,7 @@ const LinkButton: FC<LinkButtonProps> = ({
   targetBlank = false,
 }) => {
   return (
-    <Link
-      href={href as `http${string}`}
-      asChild
-      hrefAttrs={{
-        target: targetBlank ? '_blank' : '_self',
-        rel: targetBlank ? 'noopener noreferrer' : '',
-      }}>
+    <Link href={href as Href} asChild target="_blank" rel="noopener noreferrer">
       <Pressable>
         {({ hovered }) => (
           <View

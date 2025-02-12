@@ -1,8 +1,8 @@
 import Colors from '@/constants/Colors';
 import React from 'react';
-import { Platform, Pressable } from 'react-native';
+import { Text } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
-import { View, Text } from 'tamagui';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 const AnimatedText = Animated.createAnimatedComponent(Text);
@@ -77,12 +77,13 @@ const HoverButton: React.FC<IHoverButtonProps> = (prop, { ...props }) => {
         {...props}
         ai="center">
         <AnimatedText
-          p="$2"
-          px="$4"
-          style={animatedTextColorChange}
-          ff="$body"
-          fow={Platform.select({ web: '800', native: '400' })}
-          fos={Platform.select({ web: '$4', native: '$4' })}>
+        // p="$2"
+        // px="$4"
+        // style={animatedTextColorChange}
+        // ff="$body"
+        // fow={Platform.select({ web: '800', native: '400' })}
+        // fos={Platform.select({ web: '$4', native: '$4' })}
+        >
           {children}
         </AnimatedText>
       </AnimatedView>

@@ -1,18 +1,21 @@
 import { Link } from 'expo-router';
 import { Text, Image, Pressable, View } from 'react-native';
-import { Card, H4, styled } from 'tamagui';
-
-import Colors from '@/constants/Colors';
 import { IProjectTypes } from '@/types/projectTypes';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
+import Animated from 'react-native-reanimated';
+import { animations } from '@/constants/animations';
 
-export const CardComp = ({ item }: { item: IProjectTypes }) => {
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+export const CardComp = ({ item, index }: { item: IProjectTypes; index: number }) => {
   const { title, subtitle, imagePath } = item;
   const uri = clearSpacesAndSpecialCharacters(title);
-
+  const animationDecider = index % 2 === 0 ? 'slideInLeft' : 'slideInRight';
   return (
     <Link href={`/projects/${uri}`} asChild>
-      <Pressable className="w-full flex-1 overflow-hidden rounded-3xl  bg-background2 pt-2 hover:scale-98">
+      <AnimatedPressable
+        onPress={() => window?.scrollTo({ top: 0, behavior: 'smooth' })}
+        entering={animations.entering[animationDecider].delay(index * 50)}
+        className="w-full flex-1 overflow-hidden rounded-3xl  bg-background2 pt-2 hover:scale-98">
         <View className="flex-1  p-4 ">
           <Text className="flex-1 color-white text-xl font-bold text-center truncate">{title}</Text>
           <Text
@@ -32,7 +35,7 @@ export const CardComp = ({ item }: { item: IProjectTypes }) => {
             }}
           />
         </View>
-      </Pressable>
+      </AnimatedPressable>
     </Link>
   );
 };

@@ -1,7 +1,6 @@
 import { Stack } from 'expo-router';
 import React from 'react';
-import { SafeAreaView } from 'react-native';
-import { Text } from 'tamagui';
+import { SafeAreaView, Text } from 'react-native';
 const NativeContactScreen = () => {
   return (
     <>

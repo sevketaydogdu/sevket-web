@@ -4,7 +4,7 @@ import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, Stack } from 'expo-router';
 import Head from 'expo-router/head';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Appearance,
@@ -13,7 +13,6 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import { TamaguiProvider, Theme } from 'tamagui';
 
 import config from '../tamagui.config';
 
@@ -120,24 +119,20 @@ const InnerRootLayout = () => {
   }
   return (
     <View className=" flex-1">
-      <TamaguiProvider config={config}>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Theme name="dark">
-            <Slot
-              screenOptions={({ route }) => ({
-                title: route.name,
-              })}
-            />
-            {/* <>
+      <ThemeProvider value={DarkTheme}>
+        <Slot
+          screenOptions={({ route }) => ({
+            title: route.name,
+          })}
+        />
+        {/* <>
             <StatusBar style="light" />
             <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
             </Stack>
             </> */}
-          </Theme>
-        </ThemeProvider>
-      </TamaguiProvider>
+      </ThemeProvider>
     </View>
   );
 };

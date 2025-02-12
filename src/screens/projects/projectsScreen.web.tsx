@@ -1,8 +1,8 @@
 import Head from 'expo-router/head';
 import React from 'react';
-import { H2, View } from 'tamagui';
 
 import ProjectListRenderer from '@/components/project-list/project-list-renderer';
+import { Text, View } from 'react-native';
 
 const ProjectsScreenWeb = () => {
   return (
@@ -10,17 +10,18 @@ const ProjectsScreenWeb = () => {
       <Head>
         <title>Projects | Sevket Aydogdu - React Native Developer</title>
       </Head>
-      <View flex={1}>
-        <H2
-          textAlign="center"
-          mb={24}
-          $md={{
-            fontSize: 20,
-            lineHeight: 24,
-          }}
+      <View className="flex-1 my-8">
+        <Text
+          className="text-3xl color-white font-bold text-center mb-[24px]"
+          // textAlign="center"
+          // mb={24}
+          // $md={{
+          //   fontSize: 20,
+          //   lineHeight: 24,
+          // }}
           allowFontScaling>
-          You Can Reach Me from these adresses
-        </H2>
+          Projects
+        </Text>
         <ProjectListRenderer />
       </View>
     </View>

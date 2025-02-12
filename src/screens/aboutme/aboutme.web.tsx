@@ -2,11 +2,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { Href, Link } from 'expo-router';
 import Head from 'expo-router/head';
 import React from 'react';
-import { Image, Pressable, ScrollView } from 'react-native';
-import { Text, View, XStack, YStack } from 'tamagui';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 
-import { Button } from '@/components/buttons/styledButton';
-import { FooterText, FooterTitleText, ParagraphText } from '@/components/ui/text';
 import Colors from '@/constants/Colors';
 import { socialButtons } from '@/constants/menu';
 
@@ -97,62 +94,63 @@ type TechCategory = keyof typeof categorizedTech;
 
 const AboutMeWeb = () => {
   return (
-    <View>
+    <View className="flex-1">
       <Head>
         <title>About Me | Sevket Aydogdu - React Native Developer</title>
       </Head>
-      <XStack
-        w={256}
-        $md={{
-          w: '100%',
-          px: '$5',
-        }}
-        animation="quick"
-        enterStyle={{ opacity: 0, scale: 0.5 }}
-        exitStyle={{ opacity: 0, scale: 0.9 }}
-        alignSelf="center">
+      <View
+        className="w-[256px]   px-{5} self-center"
+
+        // enterStyle={{ opacity: 0, scale: 0.5 }}
+        // exitStyle={{ opacity: 0, scale: 0.9 }}
+        // alignSelf="center"
+      >
         <Image
           source={require('../../../assets/images/selfie.jpeg')}
           style={{
-            height: '100%',
-            width: '100%',
+            height: 256,
+            width: 256,
             aspectRatio: 1,
             borderRadius: 256,
           }}
         />
-      </XStack>
+      </View>
       <View
-        flexDirection="row"
-        gap="$8"
-        f={1}
-        my="$6"
-        alignSelf="center"
-        animation="quick"
-        enterStyle={{ opacity: 0, x: 200 }}
-        exitStyle={{ opacity: 0, x: 200 }}>
-        <YStack>
-          <Text>Experience</Text>
-          <Text fos="$4">+5 Years</Text>
-        </YStack>
-        <YStack>
-          <Text>Projects Done</Text>
-          <Text fos="$4">+5 Projects</Text>
-        </YStack>
+        className="flex-row gap-8 self-center my-8 "
+        // flexDirection="row"
+        // gap="$8"
+        // f={1}
+        // my="$6"
+        // alignSelf="center"
+        // animation="quick"
+        // enterStyle={{ opacity: 0, x: 200 }}
+        // exitStyle={{ opacity: 0, x: 200 }}
+      >
+        <View className="flex-col  items-center self-center">
+          <Text className="color-white">Experience</Text>
+          <Text className="font-bold color-white">+5 Years</Text>
+        </View>
+        <View className="flex-col   self-center items-center">
+          <Text className="color-white">Projects Done</Text>
+          <Text className="font-bold color-white">+5 Projects</Text>
+        </View>
       </View>
 
-      <XStack
-        ai="center"
-        gap="$4"
-        my="$6"
-        alignSelf="center"
-        $sm={{
-          flexDirection: 'column',
-          gap: '$4',
-          flex: 1,
-        }}
-        animation="quick"
-        enterStyle={{ opacity: 0, x: -200 }}
-        exitStyle={{ opacity: 0, x: -200 }}>
+      <View
+        className="flex-row gap-4 self-center my-6"
+        // ai="center"
+        // gap="$4"
+        // my="$6"
+        // alignSelf="center"
+        // $sm={{
+        //   flexDirection: 'column',
+        //   gap: '$4',
+        //   flex: 1,
+        // }}
+        // animation="quick"
+        // enterStyle={{ opacity: 0, x: -200 }}
+        // exitStyle={{ opacity: 0, x: -200 }}
+      >
         {socialButtons.map((item, index) => {
           return (
             <Link
@@ -160,56 +158,61 @@ const AboutMeWeb = () => {
               href={item.href as Href}
               asChild
               target="_blank"
-              rel="noopener noreferrer">
+              rel="noopener noreferrer"
+              className="group">
               <Pressable>
-                <Button white>
-                  <XStack gap="$2">
-                    <AntDesign name={item.name as any} color={Colors.dark.black[100]} size={24} />
-                    <Text col="black">{item.title}</Text>
-                  </XStack>
-                </Button>
+                <View className="bg-background2 group-hover:bg-orange-950 flex-row gap-2 items-center justify-center px-4 py-2 rounded-full">
+                  <AntDesign
+                    name={item.name as any}
+                    className="text-white group-hover:text-orange-300"
+                    size={24}
+                  />
+                  <Text className="text-white group-hover:text-orange-300">{item.title}</Text>
+                </View>
               </Pressable>
             </Link>
           );
         })}
-      </XStack>
+      </View>
       <View
-        mt="$5"
-        gap="$4"
-        jc="flex-start"
-        fd="row"
-        $md={{
-          fd: 'column',
-        }}
-        animation="quick"
-        enterStyle={{ opacity: 0, y: 200 }}
-        exitStyle={{ opacity: 0, y: 200 }}>
-        <YStack
-          f={1}
-          alignItems="center"
-          alignSelf="center"
-          $md={{
-            w: '100%',
-            px: '$5',
-          }}>
-          <Text className="text-center text-xl " whiteSpace="pre-line">
+        className="flex-col gap-4 self-center justify-start  mt-5 "
+        // mt="$5"
+        // gap="$4"
+        // jc="flex-start"
+        // fd="row"
+        // $md={{
+        //   fd: 'column',
+        // }}
+        // animation="quick"
+        // enterStyle={{ opacity: 0, y: 200 }}
+        // exitStyle={{ opacity: 0, y: 200 }}
+      >
+        <View
+          className="flex-col gap-4 self-center"
+          // f={1}
+          // alignItems="center"
+          // alignSelf="center"
+          // $md={{
+          //   w: '100%',
+          //   px: '$5',
+          // }}
+        >
+          <Text className="text-center text-xl text-white">
             Welcome to my corner of the web! {`\n`}I'm{' '}
-            <Text col="orange" fow="900" whiteSpace="pre-line">
-              Sevket Aydogdu,{`\n`}
-            </Text>
+            <Text className="color-orange-500 font-bold">Sevket Aydogdu,{`\n`}</Text>
             {aboutMeText}
           </Text>
           <Link href="/contact" asChild>
-            <Pressable>
+            <Pressable className="self-center">
               {({ hovered }) => (
                 <Text
+                  className="text-white self-center text-lg"
                   style={{
                     backgroundColor: hovered ? Colors.dark.white[200] : Colors.dark.orange[200],
                     padding: 10,
                     borderRadius: 10,
                     color: Colors.dark.black[200],
                     fontWeight: 'bold',
-                    fontSize: 20,
                     marginTop: 20,
                     cursor: 'pointer',
                   }}>
@@ -218,36 +221,47 @@ const AboutMeWeb = () => {
               )}
             </Pressable>
           </Link>
-          <Text fontWeight="bold" fontFamily="$heading" mt="$4">
+          <Text
+            className="text-center text-xl text-white"
+            //  fontWeight="bold" fontFamily="$heading" mt="$4"
+          >
             Used Tech.
           </Text>
-          <View f={1} width="100%" flexGrow={1}>
+          <View
+            // f={1} width="100%" flexGrow={1}
+            className="flex-col gap-4 self-center flex-grow items-center ">
             {Object.keys(categorizedTech).map((key) => {
               return (
-                <View key={key} gap="$4" mt="$4">
-                  <Text textAlign="center" fontWeight="bold" fontSize={20} fontFamily="$heading">
+                <View key={key} className="mt-4 gap-4  items-center justify-center">
+                  <Text className="text-center font-bold text-2xl text-white  ">
                     {key.charAt(0).toUpperCase() + key.slice(1)}
                   </Text>
-                  <XStack
-                    gap="$2"
-                    flexWrap="wrap"
-                    justifyContent="center"
-                    $md={{
-                      gap: '$1',
-                    }}>
+                  <View
+                    className="flex-row gap-2 self-center flex-wrap items-center justify-center"
+                    // gap="$2"
+                    // flexWrap="wrap"
+                    // justifyContent="center"
+                    // $md={{
+                    //   gap: '$1',
+                    // }}
+                  >
                     {categorizedTech[key as TechCategory].map((item) => {
                       return (
-                        <Button key={item} textAlign="center" white cursor="inherit" margin="$1">
-                          {item}
-                        </Button>
+                        <View
+                          key={item}
+                          className="bg-background2 rounded-full px-4 py-3 items-center justify-self-center">
+                          <Text key={item} className="text-center text-white">
+                            {item}
+                          </Text>
+                        </View>
                       );
                     })}
-                  </XStack>
+                  </View>
                 </View>
               );
             })}
           </View>
-        </YStack>
+        </View>
       </View>
     </View>
   );

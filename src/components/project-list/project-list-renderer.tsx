@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
-import { Text, useWindowDimensions, View, XStack } from 'tamagui';
 
 import { CardComp } from './card-comp';
 
 import { projects } from '@/constants/projects';
+import { useWindowDimensions, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 const ProjectListRenderer = () => {
   const { width: screenWidth } = useWindowDimensions();
@@ -12,18 +13,22 @@ const ProjectListRenderer = () => {
   const numRows = Math.ceil(projects.length / cardRowForResponsive);
 
   return (
-    <View f={1}>
+    <View className="flex-1">
       {Array.from({ length: numRows }).map((row, rowIndex) => (
         <View key={rowIndex}>
-          <XStack gap={16} f={1} fd="row">
+          <View className="flex-row gap-4 flex-1">
             {/* Slice the projects array for the current row */}
             {projects
               .slice(rowIndex * cardRowForResponsive, (rowIndex + 1) * cardRowForResponsive)
-              .map((item) => (
-                <CardComp key={item.id.toString() + rowIndex.toString() + '3'} item={item} />
+              .map((item, index) => (
+                <CardComp
+                  key={item.id.toString() + rowIndex.toString() + '3'}
+                  item={item}
+                  index={index}
+                />
               ))}
-          </XStack>
-          {rowIndex < 2 - 1 && <View h={16} />}
+          </View>
+          {rowIndex < 2 - 1 && <View className="h-[16px]" />}
         </View>
       ))}
     </View>
