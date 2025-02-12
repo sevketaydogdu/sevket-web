@@ -13,6 +13,7 @@ import {
 
 import SocialButtons from '@/components/SocialButtons';
 import SideBarMenu from '@/components/web/sidebar-menu';
+import { useBreakPoints } from '@/hooks/useBreakPoints';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -27,11 +28,10 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const segments = useSegments();
+  const { isCompact, isMobile } = useBreakPoints();
 
   const { width } = useWindowDimensions();
 
-  const isCompact = width < 1024;
-  const isMobile = width < 768;
   const borderColor = colorScheme === 'dark' ? '#2f3336' : '#eee';
 
   return (
@@ -169,7 +169,7 @@ export default function TabLayout() {
         </View>
       )}
       <View
-        className={`flex-1 w-full max-w-[900px] bg-background h-full p-6 ${isMobile ? 'mb-16' : ''}`}>
+        className={`flex-1 w-full max-w-[900px] bg-background h-full p-6 ${isMobile ? 'mb-52' : ''}`}>
         {isMobile && (
           <Link href="/" asChild>
             <Pressable className="flex-initial top-0 left-0 right-0 z-10">

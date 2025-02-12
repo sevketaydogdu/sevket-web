@@ -14,8 +14,6 @@ import {
   View,
 } from 'react-native';
 
-import config from '../tamagui.config';
-
 import { DarkTheme } from '@/constants/navigatiorTheme';
 import '../global.css';
 
@@ -119,7 +117,15 @@ const InnerRootLayout = () => {
   }
   return (
     <View className=" flex-1">
-      <ThemeProvider value={DarkTheme}>
+      <ThemeProvider
+        value={{
+          ...DarkTheme,
+          colors: {
+            ...DarkTheme.colors,
+            background: 'rgb(10, 10, 10)',
+            text: 'rgb(250, 250, 250)',
+          },
+        }}>
         <Slot
           screenOptions={({ route }) => ({
             title: route.name,

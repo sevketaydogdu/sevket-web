@@ -8,9 +8,12 @@ import Markdown from 'react-native-markdown-display';
 import Colors from '@/constants/Colors';
 import { projects } from '@/constants/projects';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
+import { useBreakPoints } from '@/hooks/useBreakPoints';
 
 const ProjectDetailScreen = () => {
   const { name } = useLocalSearchParams();
+  const { isMobile } = useBreakPoints();
+
   const project = projects.find(
     (project) => clearSpacesAndSpecialCharacters(project.title) === name
   );
@@ -35,23 +38,26 @@ const ProjectDetailScreen = () => {
       <Head>
         <title>{project.title} | Sevket Aydogdu - React Native Developer</title>
       </Head>
-      <Pressable
-        onPress={() => router.back()}
-        className="self-start hover:scale-98  absolute   left-2 z-50">
-        <View
-          className="flex-row gap-4 px-4 py-3 items-center self-start hover:scale-98 bg-background2 rounded-xl hover:bg-selected "
-          // $gtMd={{
-          //   display: 'flex',
-          // }}
-          // gap={8}
-          // padding="$4"
-          // flexDirection="row"
-          // alignItems="center"
-        >
-          <Feather name="arrow-left" size={24} color="white" />
-          <Text className="text-white">Back</Text>
-        </View>
-      </Pressable>
+      {!isMobile && (
+        <Pressable
+          onPress={() => router.back()}
+          className="self-start hover:scale-98  absolute   left-2 z-50">
+          <View
+            className="flex-row gap-4 px-4 py-3 items-center self-start hover:scale-98 bg-background2 rounded-xl hover:bg-selected "
+            // $gtMd={{
+            //   display: 'flex',
+            // }}
+            // gap={8}
+            // padding="$4"
+            // flexDirection="row"
+            // alignItems="center"
+          >
+            <Feather name="arrow-left" size={24} color="white" />
+            <Text className="text-white">Back</Text>
+          </View>
+        </Pressable>
+      )}
+
       <View className="flex-1 overflow-hidden items-start justify-start">
         <View className="self-center aspect-square rounded-2xl">
           <Image
