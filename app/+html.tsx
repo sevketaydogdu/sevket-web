@@ -45,7 +45,7 @@ body {
 }
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #000;
+    background-color: #0a0a0a;
   }
 
   /* Dark mode scrollbar styles */

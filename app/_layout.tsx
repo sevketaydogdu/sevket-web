@@ -116,29 +116,30 @@ const InnerRootLayout = () => {
     };
   }
   return (
-    <View className=" flex-1">
-      <ThemeProvider
-        value={{
-          ...DarkTheme,
-          colors: {
-            ...DarkTheme.colors,
-            background: 'rgb(10, 10, 10)',
-            text: 'rgb(250, 250, 250)',
-          },
-        }}>
-        <Slot
-          screenOptions={({ route }) => ({
-            title: route.name,
-          })}
-        />
-        {/* <>
+    <ThemeProvider
+      value={{
+        ...DarkTheme,
+        colors: {
+          ...DarkTheme.colors,
+          background: '#f11111',
+          // background: 'rgb(10, 10, 10)',
+          // card: 'rgb(10, 10, 10)',
+          card: '#f11111',
+          text: 'rgb(250, 250, 250)',
+        },
+      }}>
+      <Slot
+        screenOptions={({ route }) => ({
+          title: route.name,
+        })}
+      />
+      {/* <>
             <StatusBar style="light" />
             <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
             </Stack>
             </> */}
-      </ThemeProvider>
-    </View>
+    </ThemeProvider>
   );
 };

@@ -169,7 +169,7 @@ export default function TabLayout() {
         </View>
       )}
       <View
-        className={`flex-1 w-full max-w-[900px] bg-background h-full p-6 ${isMobile ? 'mb-52' : ''}`}>
+        className={`flex-1 w-full max-w-[900px] bg-background h-full p-6 ${isMobile ? 'pb-52' : ''}`}>
         {isMobile && (
           <Link href="/" asChild>
             <Pressable className="flex-initial top-0 left-0 right-0 z-10">

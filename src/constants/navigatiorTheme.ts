@@ -28,7 +28,6 @@ const DarkTheme: Theme = {
     primary: 'rgb(1, 1, 1)',
     background: 'rgb(1, 1, 1)',
     card: 'rgb(1, 1, 1)',
-    // text: 'rgb(1, 150, 150)',
     text: 'rgb(255,1,1)',
     border: 'rgb(216, 216, 216)',
     notification: 'rgb(255, 59, 48)',
