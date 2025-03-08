@@ -9,6 +9,8 @@ import Colors from '@/constants/Colors';
 import { projects } from '@/constants/projects';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
 import { useBreakPoints } from '@/hooks/useBreakPoints';
+import Animated from 'react-native-reanimated';
+import { animations } from '@/constants/animations';
 
 const ProjectDetailScreen = () => {
   const { name } = useLocalSearchParams();
@@ -25,41 +27,24 @@ const ProjectDetailScreen = () => {
   React.useEffect(() => {
     if (window !== undefined) window.scrollTo(0, 0);
   }, []);
-  if (!project) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <Text className="text-8xl text-white">Project not found</Text>
-        <Text className="text-white">{name}</Text>
-      </View>
-    );
-  }
+  // if (!project) {
+  //   return (
+  //     <View className="flex-1 items-center justify-center">
+  //       <Text className="text-8xl text-white">Project not found</Text>
+  //       <Text className="text-white">{name}</Text>
+  //     </View>
+  //   );
+  // }
   return (
     <View style={styles.mainContainer}>
       <Head>
-        <title>{project.title} | Sevket Aydogdu - React Native Developer</title>
+        <title>{project?.title} | Sevket Aydogdu - React Native Developer</title>
       </Head>
-      {!isMobile && (
-        <Pressable
-          onPress={() => router.back()}
-          className="self-start hover:scale-98  absolute   left-2 z-50">
-          <View
-            className="flex-row gap-4 px-4 py-3 items-center self-start hover:scale-98 bg-background2 rounded-xl hover:bg-selected "
-            // $gtMd={{
-            //   display: 'flex',
-            // }}
-            // gap={8}
-            // padding="$4"
-            // flexDirection="row"
-            // alignItems="center"
-          >
-            <Feather name="arrow-left" size={24} color="white" />
-            <Text className="text-white">Back</Text>
-          </View>
-        </Pressable>
-      )}
 
       <View className="flex-1 overflow-hidden items-start justify-start">
-        <View className="self-center aspect-square rounded-2xl">
+        <Animated.View
+          className="self-center aspect-square rounded-2xl"
+          entering={animations.entering.fade}>
           <Image
             source={project?.imagePath}
             style={{
@@ -72,9 +57,10 @@ const ProjectDetailScreen = () => {
             }}
             resizeMode="cover"
           />
-        </View>
+        </Animated.View>
         <View className="self-center">
-          <Text
+          <Animated.Text
+            entering={animations.entering.slideInRight}
             className="text-4xl flex-1 self-center text-center mt-6 color-white font-bold"
             // numberOfLines={1}
             // marginTop="$6"
@@ -85,9 +71,10 @@ const ProjectDetailScreen = () => {
             // }}
           >
             {project?.title}
-          </Text>
+          </Animated.Text>
 
-          <Text
+          <Animated.Text
+            entering={animations.entering.slideInLeft}
             className="text-xl text-center mt-2 self-center color-white"
             // style={{
             //   alignSelf: 'center',
@@ -96,14 +83,21 @@ const ProjectDetailScreen = () => {
             // ta="center"
           >
             {project?.subtitle}
-          </Text>
+          </Animated.Text>
         </View>
       </View>
 
       <View style={[styles.contentContainer]}>
-        <StoreButtons links={project?.storeLinks} />
+        <StoreButtons
+          links={{
+            google: project?.storeLinks?.apple ?? '',
+            apple: project?.storeLinks?.google ?? '',
+            web: project?.storeLinks?.web,
+          }}
+        />
 
-        <Text
+        <Animated.Text
+          entering={animations.entering.slideInDown}
           className="text-lg mt-4 color-white"
           // mt="$4"
           style={{
@@ -111,9 +105,11 @@ const ProjectDetailScreen = () => {
             textAlign: 'center',
           }}>
           {project?.description}
-        </Text>
-        {project.technicalDetails && (
-          <View className="justify-start w-full">
+        </Animated.Text>
+        {project?.technicalDetails && (
+          <Animated.View
+            className="justify-start w-full"
+            entering={animations.entering.slideInDown}>
             <Text className="text-2xl flex-1 self-center text-center mt-6 color-white font-bold">
               Technical Details
             </Text>
@@ -142,7 +138,7 @@ const ProjectDetailScreen = () => {
               }}>
               {project?.technicalDetails}
             </Markdown>
-          </View>
+          </Animated.View>
         )}
       </View>
     </View>
@@ -178,7 +174,7 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
     renderItem.push(
       <Link key={links.apple + 1} href={links.apple as Href} asChild target="_blank">
         <Pressable>
-          <View className="cursor-pointer">
+          <Animated.View className="cursor-pointer" entering={animations.entering.slideInLeft}>
             <Image
               // cursor="pointer"
               source={require('../../../../assets/images/appleBadge.png')}
@@ -187,7 +183,7 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
                 height: 40,
               }}
             />
-          </View>
+          </Animated.View>
         </Pressable>
       </Link>
     );
@@ -197,7 +193,7 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
     renderItem.push(
       <Link key={links.google + 2} href={links.google as Href} asChild target="_blank">
         <Pressable>
-          <View className="cursor-pointer">
+          <Animated.View className="cursor-pointer" entering={animations.entering.slideInRight}>
             <Image
               //
               source={require('../../../../assets/images/googlebadge.png')}
@@ -206,7 +202,7 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
                 height: 40,
               }}
             />
-          </View>
+          </Animated.View>
         </Pressable>
       </Link>
     );
@@ -215,14 +211,15 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
     renderItem.push(
       <Link key={links.web + 3} href={links.web as Href} asChild target="_blank">
         <Pressable>
-          <View
+          <Animated.View
+            entering={animations.entering.slideInRight}
             style={{
               padding: 7,
               backgroundColor: 'white',
               borderRadius: 8,
             }}>
             <Feather name="globe" size={24} />
-          </View>
+          </Animated.View>
         </Pressable>
       </Link>
     );

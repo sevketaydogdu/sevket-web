@@ -137,13 +137,7 @@ const AnimatedButton = ({
   </a>
 );
 
-export default function SocialButtons({
-  showGithub = false,
-  showTwitter = false,
-}: {
-  showGithub?: boolean;
-  showTwitter?: boolean;
-}) {
+export default function SocialButtons({ showGithub = false }: { showGithub?: boolean }) {
   return (
     <div>
       {/* <div className="flex flex-col gap-2 p-2 mt-4"> */}
@@ -171,19 +165,6 @@ export default function SocialButtons({
             <path d="M7 17L17 7M17 7H7M17 7V17" />
           </svg>
         </a>
-      )}
-
-      {showTwitter && (
-        <AnimatedButton
-          href="https://twitter.com/intent/follow?screen_name=sevketaydogdu"
-          animate={false}>
-          <img
-            src="https://i.imgur.com/6wdPxeP.jpeg"
-            alt="Twitter"
-            className="w-4 h-4 rounded-full"
-          />
-          Follow Saúl on 𝕏
-        </AnimatedButton>
       )}
     </div>
   );

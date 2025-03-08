@@ -121,7 +121,6 @@ export default function TabLayout() {
                   </Link>
                 </>
               )}
-
               {/* <View className="mt-8 gap-2">
                 {!isCompact && (
                   <Text className="text-sm font-medium text-gray-500 px-3">Discover</Text>
@@ -160,8 +159,6 @@ export default function TabLayout() {
                   </View>
                 );
               })} */}
-
-              {/* {!isCompact && <SocialButtons showTwitter />} */}
 
               <View className="mr-7 mt-8"> {!isCompact && <SocialButtons showGithub />}</View>
             </View>
