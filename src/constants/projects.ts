@@ -11,7 +11,7 @@ export const projects = [
 ✅ Shared Routes
 ✅ Nativewind
 ✅ iOS, Web, Android all from same codebase!`,
-    technicalDetails: ['React Native', 'Expo', 'Expo Router', 'Reanimated'],
+    technicalDetails: ['React Native', 'Expo', 'Expo Router', 'Reanimated', 'Nativewind'],
     storeLinks: {
       google: '',
       apple: '',
