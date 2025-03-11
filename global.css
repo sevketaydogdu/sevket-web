@@ -7,3 +7,11 @@ body {
   overflow-x: auto !important;
   overflow-y: scroll !important;
 }
+@layer components {
+  .title-section {
+    @apply text-title text-center font-extrabold mb-12 text-orange-200 animate-title;
+  }
+  .title-h2 {
+    @apply text-3xl text-center font-extrabold mb-12 text-orange-200 animate-title;
+  }
+}

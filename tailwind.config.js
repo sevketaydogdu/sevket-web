@@ -30,8 +30,7 @@ module.exports = {
         // background: 'rgb(3, 8, 30)',
         selected:'#131212',
         background2: '#1A1A1A',
-        'orange-100':'#F14A00',
-        'orange-200':'#C62300',
+   
 
         'apple-news': '#FA2D48',
         'light-tint': '#FA2D48',
@@ -47,6 +46,22 @@ module.exports = {
           'Arial',
           'sans-serif',
         ],
+      },
+      fontSize: {
+        'title': ['2.25rem', {
+          lineHeight: '2.5rem',
+          fontWeight: '800',
+          letterSpacing: '-0.02em',
+        }],
+      },
+      animation: {
+        'title': 'fadeIn 0.5s ease-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY( 10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
       },
     },
   },

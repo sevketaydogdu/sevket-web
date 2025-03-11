@@ -68,9 +68,7 @@ export default function WebHomeScreen() {
       </Animated.View>
       {/* Skills Section */}
       <View className="max-w-4xl  px-4 py-20">
-        <Animated.Text
-          entering={animations.entering.slideInDown}
-          className="text-4xl text-center font-extrabold mb-12 text-orange-500">
+        <Animated.Text entering={animations.entering.slideInDown} className="title-h2">
           Skills & Expertise
         </Animated.Text>
 
@@ -95,7 +93,7 @@ export default function WebHomeScreen() {
       {/* Projects Section */}
       <Animated.Text
         entering={animations.entering.slideInDown}
-        className="mt-20 text-4xl text-center font-extrabold mb-8  text-orange-500">
+        className="  title-h2 animate-title">
         Projects
       </Animated.Text>
       <ProjectListRenderer />

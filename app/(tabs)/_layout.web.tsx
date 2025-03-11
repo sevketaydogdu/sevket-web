@@ -32,7 +32,7 @@ export default function TabLayout() {
 
   const { width } = useWindowDimensions();
 
-  const borderColor = colorScheme === 'dark' ? '#2f3336' : '#eee';
+  const borderColor = '#2f3336';
 
   return (
     <View className="flex-row left-0 right-0 bg-background  justify-center relative">

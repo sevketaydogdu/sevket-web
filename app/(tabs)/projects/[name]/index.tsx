@@ -36,12 +36,12 @@ const ProjectDetailScreen = () => {
   //   );
   // }
   return (
-    <View style={styles.mainContainer}>
+    <View style={styles.mainContainer} className=" ">
       <Head>
         <title>{project?.title} | Sevket Aydogdu - React Native Developer</title>
       </Head>
 
-      <View className="flex-1 overflow-hidden items-start justify-start">
+      <View className="  overflow-hidden items-start justify-start">
         <Animated.View
           className="self-center aspect-square rounded-2xl"
           entering={animations.entering.fade}>
@@ -60,8 +60,7 @@ const ProjectDetailScreen = () => {
         </Animated.View>
         <View className="self-center">
           <Animated.Text
-            entering={animations.entering.slideInRight}
-            className="text-4xl flex-1 self-center text-center mt-6 color-white font-bold"
+            className="text-4xl animate-title flex-1 self-center text-center mt-6 color-white font-bold"
             // numberOfLines={1}
             // marginTop="$6"
             // style={{
@@ -74,8 +73,7 @@ const ProjectDetailScreen = () => {
           </Animated.Text>
 
           <Animated.Text
-            entering={animations.entering.slideInLeft}
-            className="text-xl text-center mt-2 self-center color-white"
+            className="text-lg animate-title text-center mt-2 self-center color-orange-100"
             // style={{
             //   alignSelf: 'center',
             // }}
@@ -87,58 +85,42 @@ const ProjectDetailScreen = () => {
         </View>
       </View>
 
-      <View style={[styles.contentContainer]}>
-        <StoreButtons
-          links={{
-            google: project?.storeLinks?.apple ?? '',
-            apple: project?.storeLinks?.google ?? '',
-            web: project?.storeLinks?.web,
-          }}
-        />
+      <View style={[styles.contentContainer]} className="animate-title ">
+        {project?.storeLinks?.apple || project?.storeLinks?.google || project?.storeLinks?.web ? (
+          <StoreButtons
+            links={{
+              google: project?.storeLinks?.apple ?? '',
+              apple: project?.storeLinks?.google ?? '',
+              web: project?.storeLinks?.web,
+            }}
+          />
+        ) : null}
 
-        <Animated.Text
-          entering={animations.entering.slideInDown}
-          className="text-lg mt-4 color-white"
-          // mt="$4"
-          style={{
-            // whiteSpace:Platform.OS === 'web' ? 'pre-line' : 'normal',
-            textAlign: 'center',
-          }}>
-          {project?.description}
-        </Animated.Text>
-        {project?.technicalDetails && (
-          <Animated.View
-            className="justify-start w-full"
-            entering={animations.entering.slideInDown}>
-            <Text className="text-2xl flex-1 self-center text-center mt-6 color-white font-bold">
-              Technical Details
-            </Text>
-            <Markdown
-              style={{
-                heading1: {
-                  fontSize: 24,
-                  color: 'white',
-                },
-                heading2: {
-                  fontSize: 20,
-                  color: 'white',
-                },
-                heading3: {
-                  fontSize: 24,
-                  color: 'white',
-                },
-                heading4: {
-                  fontSize: 24,
-                  color: 'white',
-                },
-                bullet_list: {
-                  color: 'white',
-                  fontSize: 22,
-                },
-              }}>
-              {project?.technicalDetails}
-            </Markdown>
-          </Animated.View>
+        {project?.description && (
+          <Animated.Text
+            entering={animations.entering.slideInDown}
+            className="text-lg mt-4 color-white"
+            // mt="$4"
+            style={{
+              // whiteSpace:Platform.OS === 'web' ? 'pre-line' : 'normal',
+              textAlign: 'center',
+            }}>
+            {project?.description}
+          </Animated.Text>
+        )}
+        {project?.technicalDetails.length && (
+          <View className="animate-title">
+            <Text className="title-h2 mt-8 mb-8  ">Technical Details</Text>
+            <View className=" flex-row gap-2   flex-grow flex-wrap justify-center">
+              {project.technicalDetails.map((item, index) => (
+                <Text
+                  key={index}
+                  className="bg-background2 color-white self-start rounded-full px-4 py-3 items-center justify-self-center">
+                  {item}
+                </Text>
+              ))}
+            </View>
+          </View>
         )}
       </View>
     </View>
@@ -152,7 +134,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
     overflow: 'hidden',
     flexDirection: 'column',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   contentContainer: {
     alignContent: 'center',
@@ -172,55 +154,61 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
   const renderItem: ReactNode[] = [];
   if (links.apple) {
     renderItem.push(
-      <Link key={links.apple + 1} href={links.apple as Href} asChild target="_blank">
-        <Pressable>
-          <Animated.View className="cursor-pointer" entering={animations.entering.slideInLeft}>
-            <Image
-              // cursor="pointer"
-              source={require('../../../../assets/images/appleBadge.png')}
-              style={{
-                width: 135,
-                height: 40,
-              }}
-            />
-          </Animated.View>
-        </Pressable>
+      <Link
+        key={links.apple + 1}
+        //@ts-ignore
+        href={links.apple}
+        target="_blank"
+        className="target-blank">
+        <Animated.View className="cursor-pointer">
+          <Image
+            // cursor="pointer"
+            source={require('../../../../assets/images/appleBadge.png')}
+            style={{
+              width: 135,
+              height: 40,
+            }}
+          />
+        </Animated.View>
       </Link>
     );
   }
 
   if (links.google) {
     renderItem.push(
-      <Link key={links.google + 2} href={links.google as Href} asChild target="_blank">
-        <Pressable>
-          <Animated.View className="cursor-pointer" entering={animations.entering.slideInRight}>
-            <Image
-              //
-              source={require('../../../../assets/images/googlebadge.png')}
-              style={{
-                width: 135,
-                height: 40,
-              }}
-            />
-          </Animated.View>
-        </Pressable>
+      <Link
+        key={links.google + 2}
+        //@ts-ignore
+        href={links.google}
+        target="_blank">
+        <Animated.View className="cursor-pointer">
+          <Image
+            //
+            source={require('../../../../assets/images/googlebadge.png')}
+            style={{
+              width: 135,
+              height: 40,
+            }}
+          />
+        </Animated.View>
       </Link>
     );
   }
   if (links.web) {
     renderItem.push(
-      <Link key={links.web + 3} href={links.web as Href} asChild target="_blank">
-        <Pressable>
-          <Animated.View
-            entering={animations.entering.slideInRight}
-            style={{
-              padding: 7,
-              backgroundColor: 'white',
-              borderRadius: 8,
-            }}>
-            <Feather name="globe" size={24} />
-          </Animated.View>
-        </Pressable>
+      <Link
+        key={links.web + 3}
+        //@ts-ignore
+        href={links.web}
+        target="_blank">
+        <Animated.View
+          style={{
+            padding: 7,
+            backgroundColor: 'white',
+            borderRadius: 8,
+          }}>
+          <Feather name="globe" size={24} />
+        </Animated.View>
       </Link>
     );
   }

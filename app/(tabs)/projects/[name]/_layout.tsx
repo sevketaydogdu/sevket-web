@@ -1,30 +1,34 @@
 import { View, Text, Image, Pressable } from 'react-native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link, router, Slot, useSegments } from 'expo-router';
 import SocialButtons from '@/components/SocialButtons';
 import SideBarMenu from '@/components/web/sidebar-menu';
 import { useBreakPoints } from '@/hooks/useBreakPoints';
 import { Feather } from '@expo/vector-icons';
 
+export const unstable_settings = {
+  // Ensure that reloading on `/modal` keeps a back button present.
+  initialRouteName: '(tabs)',
+};
+
 const ProjectsLayout = () => {
   const { isCompact, isMobile } = useBreakPoints();
-  const segments = useSegments();
+
+  const handlePressBack = useCallback(() => {
+    if (router.canGoBack()) {
+      console.log('🚀 ~ handlePressBack ~ router.canGoBack(:', router.canGoBack());
+      router.back();
+    } else {
+      router.push('/');
+    }
+  }, []);
   return (
     <>
       {!isMobile && (
         <Pressable
-          onPress={() => router.back()}
+          onPress={handlePressBack}
           className="self-start hover:scale-98  absolute   left-6 z-50">
-          <View
-            className="flex-row gap-4 px-4 py-3 items-center self-start hover:scale-98 bg-background2 rounded-xl hover:bg-selected "
-            // $gtMd={{
-            //   display: 'flex',
-            // }}
-            // gap={8}
-            // padding="$4"
-            // flexDirection="row"
-            // alignItems="center"
-          >
+          <View className="flex-row gap-4 px-4 py-3 items-center self-start hover:scale-98 bg-background2 rounded-xl hover:bg-selected ">
             <Feather name="arrow-left" size={24} color="white" />
             <Text className="text-white">Back</Text>
           </View>

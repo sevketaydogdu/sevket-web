@@ -9,7 +9,8 @@ const JobHistory = () => {
     <View className="pr-8 mt-20">
       <Animated.Text
         entering={animations.entering.slideInDown}
-        className="mt-10 text-4xl text-center font-extrabold  text-orange-500">
+        // className="mt-10 text-4xl text-center font-extrabold  text-orange-500"
+        className="title-h2">
         Experience
       </Animated.Text>
 
