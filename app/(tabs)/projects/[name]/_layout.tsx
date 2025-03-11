@@ -8,7 +8,7 @@ import { Feather } from '@expo/vector-icons';
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: 'index',
 };
 
 const ProjectsLayout = () => {
