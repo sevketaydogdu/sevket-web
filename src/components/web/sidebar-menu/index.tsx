@@ -77,11 +77,11 @@ function SidebarItem({
       case 'home':
         return <Feather name="home" size={size} color={iconColor} />;
       case 'about':
-        return <Feather name="book-open" size={size} color={iconColor} />;
+        return <Feather name="info" size={size} color={iconColor} />;
       case 'contact':
         return <Feather name="mail" size={size} color={iconColor} />;
       case 'projects':
-        return <Feather name="printer" size={size} color={iconColor} />;
+        return <Feather name="feather" size={size} color={iconColor} />;
 
       default:
         return <Feather name="airplay" size={size} color={iconColor} />;

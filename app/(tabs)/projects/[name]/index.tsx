@@ -12,6 +12,11 @@ import { useBreakPoints } from '@/hooks/useBreakPoints';
 import Animated from 'react-native-reanimated';
 import { animations } from '@/constants/animations';
 
+export async function generateStaticParams(): Promise<Record<string, string>[]> {
+  return projects.map((project) => ({
+    name: clearSpacesAndSpecialCharacters(project.title),
+  }));
+}
 const ProjectDetailScreen = () => {
   const { name } = useLocalSearchParams();
   const { isMobile } = useBreakPoints();
@@ -23,22 +28,19 @@ const ProjectDetailScreen = () => {
   React.useEffect(() => {
     if (window !== undefined) window.scrollTo(0, 0);
   }, []);
-
-  React.useEffect(() => {
-    if (window !== undefined) window.scrollTo(0, 0);
-  }, []);
-  // if (!project) {
-  //   return (
-  //     <View className="flex-1 items-center justify-center">
-  //       <Text className="text-8xl text-white">Project not found</Text>
-  //       <Text className="text-white">{name}</Text>
-  //     </View>
-  //   );
-  // }
+  if (!project) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Text className="text-8xl text-white">Project not found</Text>
+        <Text className="text-white">{name}</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.mainContainer} className=" ">
       <Head>
         <title>{project?.title} | Sevket Aydogdu - React Native Developer</title>
+        <meta name="description" content={project.description} />
       </Head>
 
       <View className="  overflow-hidden items-start justify-start">
@@ -59,39 +61,27 @@ const ProjectDetailScreen = () => {
           />
         </Animated.View>
         <View className="self-center">
-          <Animated.Text
-            className="text-4xl animate-title flex-1 self-center text-center mt-6 color-white font-bold"
-            // numberOfLines={1}
-            // marginTop="$6"
-            // style={{
-            //   flex: 1,
-            //   alignSelf: 'center',
-            //   textAlign: 'center',
-            // }}
-          >
+          <Animated.Text className="text-4xl animate-title flex-1 self-center text-center mt-6 color-white font-bold">
             {project?.title}
           </Animated.Text>
 
-          <Animated.Text
-            className="text-lg animate-title text-center mt-2 self-center color-orange-100"
-            // style={{
-            //   alignSelf: 'center',
-            // }}
-            // mt="$2"
-            // ta="center"
-          >
+          <Animated.Text className="text-lg animate-title text-center mt-2 self-center color-orange-100">
             {project?.subtitle}
           </Animated.Text>
         </View>
       </View>
 
       <View style={[styles.contentContainer]} className="animate-title ">
-        {project?.storeLinks?.apple || project?.storeLinks?.google || project?.storeLinks?.web ? (
+        {project?.storeLinks?.apple ||
+        project?.storeLinks?.github ||
+        project?.storeLinks?.google ||
+        project?.storeLinks?.web ? (
           <StoreButtons
             links={{
               google: project?.storeLinks?.apple ?? '',
               apple: project?.storeLinks?.google ?? '',
               web: project?.storeLinks?.web,
+              github: project?.storeLinks?.github,
             }}
           />
         ) : null}
@@ -100,9 +90,7 @@ const ProjectDetailScreen = () => {
           <Animated.Text
             entering={animations.entering.slideInDown}
             className="text-lg mt-4 color-white"
-            // mt="$4"
             style={{
-              // whiteSpace:Platform.OS === 'web' ? 'pre-line' : 'normal',
               textAlign: 'center',
             }}>
             {project?.description}
@@ -150,7 +138,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const StoreButtons = ({ links }: { links: { google: string; apple: string; web?: string } }) => {
+const StoreButtons = ({
+  links,
+}: {
+  links: { google: string; apple: string; web?: string; github?: string };
+}) => {
+  console.log('🚀 ~ links:', links);
   const renderItem: ReactNode[] = [];
   if (links.apple) {
     renderItem.push(
@@ -208,6 +201,24 @@ const StoreButtons = ({ links }: { links: { google: string; apple: string; web?:
             borderRadius: 8,
           }}>
           <Feather name="globe" size={24} />
+        </Animated.View>
+      </Link>
+    );
+  }
+  if (links.github) {
+    renderItem.push(
+      <Link
+        key={links.github}
+        //@ts-ignore
+        href={links.github}
+        target="_blank">
+        <Animated.View
+          style={{
+            padding: 7,
+            backgroundColor: 'white',
+            borderRadius: 8,
+          }}>
+          <Feather name="github" size={24} />
         </Animated.View>
       </Link>
     );

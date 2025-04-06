@@ -162,7 +162,7 @@ export default function TabLayout() {
               onPress={() => router.push('/projects')}
               className="flex-1 items-center justify-center gap-1">
               <Feather
-                name="printer"
+                name="feather"
                 size={24}
                 color={
                   segments[1] === 'projects' ? '#fda054' : colorScheme === 'dark' ? '#999' : '#666'

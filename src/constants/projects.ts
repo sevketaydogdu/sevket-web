@@ -10,12 +10,16 @@ export const projects = [
 💯 Expo Router 
 ✅ Shared Routes
 ✅ Nativewind
-✅ iOS, Web, Android all from same codebase!`,
+✅ iOS, Web, Android all from same codebase!
+
+
+Deployed to Eas Hosting`,
     technicalDetails: ['React Native', 'Expo', 'Expo Router', 'Reanimated', 'Nativewind'],
     storeLinks: {
       google: '',
       apple: '',
-      web: 'https://github.com/sevketaydogdu/twitter-ui-clone',
+      web: 'https://twitter-ui-clone.expo.app/',
+      github: 'https://github.com/sevketaydogdu/twitter-ui-clone',
     },
   },
   {
@@ -49,7 +53,7 @@ export const projects = [
       apple: 'https://apps.apple.com/app/zikirmatik-kolay-kullan%C4%B1m/id6450431673',
       // web: 'https://zikirmatik.com',
       web: '',
-      // web: 'https://zikirmatik.com',
+      github: '',
     },
   },
   {
@@ -83,8 +87,15 @@ export const projects = [
       'Reanimated',
       'Admob',
       'Swr',
+      'react-query',
       'Axios',
+      'i18n-js',
       'Google Analytics',
+      'react-hook-form',
+      'Firebase',
+      'React Native Reanimated',
+      'react-native-apple-authentication',
+      'Stylesheet',
     ],
     subtitle: 'Social Media Platform',
 
@@ -106,6 +117,7 @@ export const projects = [
       google: '',
       apple: '',
       web: '',
+      github: '',
     },
   },
   {
@@ -119,6 +131,7 @@ export const projects = [
       google: '',
       apple: '',
       web: '',
+      github: '',
     },
   },
 ];
