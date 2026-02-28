@@ -30,7 +30,8 @@ module.exports = {
         // background: 'rgb(3, 8, 30)',
         selected:'#131212',
         background2: '#1A1A1A',
-   
+        primary: '#E0FF00',
+        'primary-dark': '#B8CC00',
 
         'apple-news': '#FA2D48',
         'light-tint': '#FA2D48',

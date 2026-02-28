@@ -110,6 +110,33 @@ Deployed to Eas Hosting`,
     id: 3,
     title: 'SkorSever',
     subtitle: 'Live Scores and Match Results',
+    description: `Real-Time Sports App
+I developed a real-time sports application using a monorepo setup that spans across both mobile (React Native with Expo) and web (Next.js) platforms, providing users with an engaging, cross-platform experience. This project demonstrates my ability to build scalable, maintainable applications using modern technologies while maintaining performance across multiple environments.
+
+Key Features & Technologies
+Monorepo Architecture: The app was structured using a monorepo to manage both the mobile and web codebases. This approach ensured efficient development, with shared components, utilities, and state management logic, while keeping platform-specific implementations separate. This made the project easier to scale and maintain in the long term.
+
+Cross-Platform Support: Leveraging React Native (Expo) for the mobile app and Next.js for the web app, I ensured a seamless user experience across multiple platforms. By building reusable components and optimizing for both mobile and web, users enjoy a consistent interface regardless of the device they use.
+
+API Integration: I implemented REST API integration to fetch sports data, allowing real-time updates of match scores, player statistics, and game events. Using React Query for data fetching and caching enabled efficient, asynchronous data management and reduced unnecessary API calls, improving overall app performance.
+
+Global State Management: For managing application-wide state, I utilized React Context API, which enabled me to share states such as user preferences, authentication status, and game data between various components without the need for prop drilling.
+
+Authentication & Security: I developed a complete authentication flow for secure login, registration, and session management. This included handling secure tokens (JWT) for user authentication and implementing protected routes that ensured users could only access certain features after logging in.
+
+Version Control: The project was managed with Git for version control, ensuring efficient collaboration, tracking of changes, and maintaining code quality through branching and commit history.
+
+Modular & Scalable Development: Following best practices for modular development, I organized the project into clear, maintainable modules. This structure made it easier to add new features, debug issues, and enhance scalability, ensuring the app could grow with minimal technical debt.
+
+Performance & User Experience
+Firebase Integration: I integrated Firebase for real-time database management and user authentication. Firebase enabled quick updates on match data and player stats without reloading, providing a smoother user experience. I also used Firebase Cloud Functions for handling backend logic securely.
+
+SignalR Integration: To ensure real-time communication, I integrated SignalR, a robust framework for handling WebSockets and long-polling. This allowed the app to deliver real-time notifications and live updates for scores, match events, and other game-related activities, giving users the thrill of immediate action.
+
+Tamagui for UI Components: To further enhance the user experience, I integrated Tamagui, a design system and component library optimized for performance across both mobile and web platforms. This allowed for responsive layouts, high-performance rendering, and a smooth, native-like experience on both platforms.
+
+Conclusion
+Through this project, I gained valuable experience in creating real-time, cross-platform applications with an emphasis on performance, scalability, and user-centric design. By combining powerful technologies like React Native, Next.js, Firebase, and SignalR, I was able to deliver a high-quality sports app that provides a dynamic and engaging experience for users.`,
     imagePath: require('../../assets/images/skorsever.png'),
     technicalDetails: [],
 

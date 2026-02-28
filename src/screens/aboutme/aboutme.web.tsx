@@ -6,11 +6,12 @@ import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import { socialButtons } from '@/constants/menu';
+import ExperienceSection from '../home/components/ExperienceSection';
 
 const aboutMeText = `
 a passionate React Native developer with a love for turning ideas into reality through
-code. With over +4 years of experience in mobile development, I've had the pleasure of
-working on 5+ projects spanning various industries.
+code. With over +6 years of experience in mobile development, I've had the pleasure of
+working on 10+ projects spanning various industries.
 
 
 Before delving into the world of mobile apps, I honed my skills as a UX/UI designer.
@@ -29,7 +30,7 @@ I'm excited to connect with fellow enthusiasts, exchange ideas, and embark on ne
 adventures together. Let's create something amazing!
 `;
 export const categorizedTech = {
-  framework: ['React Native', 'Next.js'],
+  framework: ['React Native', 'Expo', 'Next.js', 'React', 'Vite'],
   development: [
     'TypeScript',
     'Es6',
@@ -41,11 +42,14 @@ export const categorizedTech = {
   ],
   stateManagement: ['Redux', 'Redux Toolkit', 'Redux Persist', 'Redux Thunk', 'Context API'],
   navigation: ['React Navigation'],
-  styling: ['Styled Components', 'Tamagui', 'Native Base'],
+  styling: ['StyleSheet API', 'NativeWind', 'Styled Components', 'Tamagui', 'Native Base'],
   firebase: ['Firebase Analytics', 'Firebase Crashlytics', 'Firebase Firestore'],
   features: ['In App Purchase', 'Reanimated', 'Monorepo'],
   libraries: [
-    'Rest API',
+    'axios',
+    'react-query',
+    'swr',
+    'microsoft/signalr',
     'lottie',
     'netinfo',
     'expo vector icons',
@@ -73,7 +77,6 @@ export const categorizedTech = {
     'expo-av',
     'expo-notifications',
     'expo-updates',
-    'axios',
     'signalr',
     'flash-list',
     'expo-share-intent',
@@ -83,8 +86,6 @@ export const categorizedTech = {
     'expo-file-system',
     'lodash',
     'react-native-gifted-charts',
-    'react-query',
-    'swr',
     'react-native-apple-authentication',
     'react-native-google-signin',
   ],
@@ -128,11 +129,11 @@ const AboutMeWeb = () => {
       >
         <View className="flex-col  items-center self-center">
           <Text className="color-white">Experience</Text>
-          <Text className="font-bold color-white">+5 Years</Text>
+          <Text className="font-bold color-white">+6 Years</Text>
         </View>
         <View className="flex-col   self-center items-center">
           <Text className="color-white">Projects Done</Text>
-          <Text className="font-bold color-white">+5 Projects</Text>
+          <Text className="font-bold color-white">+10 Projects</Text>
         </View>
       </View>
 
@@ -221,12 +222,8 @@ const AboutMeWeb = () => {
               )}
             </Pressable>
           </Link>
-          <Text
-            className="text-center text-xl text-white"
-            //  fontWeight="bold" fontFamily="$heading" mt="$4"
-          >
-            Used Tech.
-          </Text>
+          <ExperienceSection />
+          <Text className="title-h2 mt-12">Used Tech.</Text>
           <View
             // f={1} width="100%" flexGrow={1}
             className="flex-col gap-4 self-center flex-grow items-center ">

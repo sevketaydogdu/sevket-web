@@ -90,9 +90,11 @@ const ProjectDetailScreen = () => {
           <Animated.Text
             entering={animations.entering.slideInDown}
             className="text-lg mt-4 color-white"
-            style={{
-              textAlign: 'center',
-            }}>
+            style={
+              {
+                // textAlign: 'center',
+              }
+            }>
             {project?.description}
           </Animated.Text>
         )}
