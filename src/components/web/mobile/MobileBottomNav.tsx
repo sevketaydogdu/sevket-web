@@ -46,7 +46,16 @@ export default function MobileBottomNav() {
       {navItems.map((item) => (
         <Pressable
           key={item.route}
-          onPress={() => router.push(item.route as any)}
+          onPress={() => {
+            router.push(item.route as any);
+            if (Platform.OS === 'web' && typeof window !== 'undefined') {
+              setTimeout(() => {
+                window.scrollTo(0, 0);
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+              }, 100);
+            }
+          }}
           className="flex-1 items-center justify-center gap-1">
           <Feather
             name={item.icon}

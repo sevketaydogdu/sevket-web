@@ -91,9 +91,14 @@ function SidebarItem({
   return (
     <Pressable
       onPress={() => {
-        window?.scrollTo({ top: 0, behavior: 'smooth' });
-
         router.push(href as any);
+        if (typeof window !== 'undefined') {
+          setTimeout(() => {
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+          }, 100);
+        }
       }}
       className={` flex flex-row items-center p-2 rounded-lg gap-3 mb-0.5 
         hover:bg-selected transition-all duration-200  ${

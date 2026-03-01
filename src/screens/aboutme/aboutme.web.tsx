@@ -95,7 +95,7 @@ type TechCategory = keyof typeof categorizedTech;
 
 const AboutMeWeb = () => {
   return (
-    <View className="flex-1">
+    <View className="flex-1 section-container">
       <Head>
         <title>About Me | Sevket Aydogdu - React Native Developer</title>
       </Head>

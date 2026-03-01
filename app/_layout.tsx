@@ -1,7 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Slot, SplashScreen, Stack } from 'expo-router';
+import { Slot, SplashScreen, usePathname } from 'expo-router';
 import Head from 'expo-router/head';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 
 import { DarkTheme } from '@/constants/navigatiorTheme';
+import { useScrollToTopOnNavigate } from '@/hooks/useScrollToTopOnNavigate';
 import '../global.css';
 
 export {
@@ -63,6 +64,20 @@ export default function RootLayout() {
 }
 const InnerRootLayout = () => {
   const colorScheme = useColorScheme();
+  const pathname = usePathname();
+
+  // Web: scroll to top on every route change (document is the scroll container)
+  useScrollToTopOnNavigate();
+  useEffect(() => {
+    if (Platform.OS !== 'web' || typeof window === 'undefined') return;
+    const t = setTimeout(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 120);
+    return () => clearTimeout(t);
+  }, [pathname]);
+
   if (Platform.OS === 'web') {
     Appearance.setColorScheme = (scheme) => {
       if (scheme) {

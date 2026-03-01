@@ -3,7 +3,6 @@ import { Href, Link, router, useLocalSearchParams } from 'expo-router';
 import Head from 'expo-router/head';
 import React, { ReactNode } from 'react';
 import { Image, View, Platform, StyleSheet, Pressable, Text } from 'react-native';
-import Markdown from 'react-native-markdown-display';
 
 import Colors from '@/constants/Colors';
 import { projects } from '@/constants/projects';
@@ -134,9 +133,6 @@ const styles = StyleSheet.create({
     gap: 16,
     marginTop: 16,
     flexDirection: 'row',
-  },
-  markDown: {
-    backgroundColor: 'red',
   },
 });
 
