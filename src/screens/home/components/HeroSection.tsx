@@ -22,9 +22,7 @@ export default function HeroSection() {
         {/* Copy block */}
         <View className="flex-1">
           <Animated.View entering={animations.entering.slideInDown} className="space-y-5">
-            <Text className="text-white/50 text-base md:text-lg font-medium">
-              Hello, I'm
-            </Text>
+            <Text className="text-white/50 text-base md:text-lg font-medium">Hello, I'm</Text>
             <View className="space-y-2">
               <Text className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
                 Sevket Aydogdu
@@ -34,11 +32,10 @@ export default function HeroSection() {
             <Text className="text-xl md:text-2xl text-orange-400 font-semibold">
               React Native developer
             </Text>
-            <Text className="text-white/60 text-base">
-              based in Turkey
-            </Text>
+            <Text className="text-white/60 text-base">based in Turkey</Text>
             <Text className="text-white/75 text-lg max-w-xl leading-relaxed pt-1">
-              I build cross-platform mobile apps with Expo and TypeScript—from idea to App Store and Play Store.
+              I build cross-platform mobile apps with Expo and TypeScript—from idea to App Store and
+              Play Store.
             </Text>
           </Animated.View>
 

@@ -1,7 +1,8 @@
 import { animations } from '@/constants/animations';
 import { jobHistory } from '@/constants/job-history';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Text } from '@/components/ui/text';
 import Animated from 'react-native-reanimated';
 
 const JobHistory = () => {
@@ -27,10 +28,12 @@ const JobHistory = () => {
               <View className="relative z-10 mt-3.5 w-4 h-4 rounded-full border-2 border-orange-500 bg-background flex-shrink-0 group-hover:border-orange-400" />
 
               <View className="flex-1 pb-12 border-b border-white/5 last:border-0">
-                <Text className="text-lg font-bold text-white">{job.position}</Text>
+                <Text className="text-lg font-bold  ">{job.position}</Text>
                 <Text className="text-orange-400 font-medium mt-0.5">{job.company}</Text>
-                <Text className="text-white/50 text-sm mt-1">{job.period}</Text>
-                <Text className="text-white/75 text-base leading-relaxed mt-3">
+                <Text className="dark:text-white/50 text-neutral-400 text-sm mt-1">
+                  {job.period}
+                </Text>
+                <Text className="dark:text-ellipsis-white/75 dark:text-ellipsis-neutral-400/75 text-base leading-relaxed mt-3">
                   {job.description}
                 </Text>
               </View>

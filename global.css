@@ -2,23 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
+/* NativeWind theme: semantic colors (used by bg-background, bg-card, etc.) */
+:root {
+  --color-background: #fafafa;
+  --color-card: #ffffff;
+  --color-foreground: #171717;
+  --color-muted: #525252;
+  --color-border: #e5e5e5;
+  /* Hero SVG gradient blobs (layout) — light mode */
+  --hero-paint0-start: #001aff;
+  --hero-paint0-end: #6ee5c2;
+  --hero-paint1-0: #ffc83a;
+  --hero-paint1-50: #ff008a;
+  --hero-paint1-100: #6100ff;
+  --hero-blob-opacity: 0.175;
+}
+html.dark {
+  --color-background: rgb(10, 10, 10);
+  --color-card: rgb(15, 23, 42);
+  --color-foreground: #fafafa;
+  --color-muted: #a3a3a3;
+  --color-border: rgba(255, 255, 255, 0.1);
+  /* Hero SVG gradient blobs — dark mode (softer, glow-friendly on dark bg) */
+  --hero-paint0-start: #3b82f6;
+  --hero-paint0-end: #5eead4;
+  --hero-paint1-0: #fbbf24;
+  --hero-paint1-50: #f472b6;
+  --hero-paint1-100: #8b5cf6;
+  --hero-blob-opacity: 0.22;
+}
+
 html {
   overflow: hidden;
   height: 100%;
   scroll-behavior: smooth;
 }
+
+/* Body is the scroll container; background follows NativeWind theme */
 body {
   overflow-y: auto !important;
   overflow-x: hidden !important;
   position: relative;
   min-height: 100%;
   height: 100%;
-  scrollbar-width: thin;
-  scrollbar-color: #ea580c rgb(23, 23, 23);
-  scrollbar-gutter: stable;
+  background-color: var(--color-background);
 }
 
-/* Subtle radial gradient at top of layout */
+/* Scrollbar styling on body (main viewport scrollbar) */
+body::-webkit-scrollbar {
+  width: 14px;
+}
+body::-webkit-scrollbar-track {
+  background: rgba(243, 244, 246, 0.9);
+  border-radius: 10px;
+  margin: 6px 4px;
+}
+body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #fb923c 0%, #ea580c 100%);
+  border-radius: 10px;
+  border: 3px solid rgba(243, 244, 246, 0.9);
+  min-height: 40px;
+}
+body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #fdba74 0%, #f97316 100%);
+}
+body::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 body::before {
   content: '';
   position: fixed;
@@ -28,43 +79,113 @@ body::before {
   height: 28vh;
   background: radial-gradient(
     ellipse 90% 70% at 50% 0%,
-    rgba(251, 146, 60, 0.12) 0%,
-    rgba(234, 88, 12, 0.04) 45%,
+    rgba(251, 146, 60, 0.08) 0%,
+    rgba(234, 88, 12, 0.03) 45%,
     transparent 70%
   );
   pointer-events: none;
   z-index: 1;
 }
 
-/* Modern orange scrollbar (all themes) */
-body::-webkit-scrollbar {
+/* Scrollbar on layout scroll container (above navbar) — always visible */
+.main-scroll,
+[data-scroll-root='main'] {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  scrollbar-width: auto;
+  scrollbar-color: #ea580c rgba(243, 244, 246, 0.9);
+}
+.main-scroll::-webkit-scrollbar,
+[data-scroll-root='main']::-webkit-scrollbar {
   width: 14px;
+  -webkit-appearance: none;
+  appearance: none;
 }
-body::-webkit-scrollbar-track {
-  background: rgba(23, 23, 23, 0.4);
+.main-scroll::-webkit-scrollbar-track,
+[data-scroll-root='main']::-webkit-scrollbar-track {
+  background: rgba(243, 244, 246, 0.9);
   border-radius: 10px;
-  margin: 6px 0;
+  margin: 6px 4px;
 }
-body::-webkit-scrollbar-thumb {
+.main-scroll::-webkit-scrollbar-thumb,
+[data-scroll-root='main']::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #fb923c 0%, #ea580c 100%);
   border-radius: 10px;
-  border: 3px solid rgb(23, 23, 23);
+  border: 3px solid rgba(243, 244, 246, 0.9);
   min-height: 40px;
 }
-body::-webkit-scrollbar-thumb:hover {
+.main-scroll::-webkit-scrollbar-thumb:hover,
+[data-scroll-root='main']::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #fdba74 0%, #f97316 100%);
 }
+.main-scroll::-webkit-scrollbar-corner,
+[data-scroll-root='main']::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Dark mode — body uses var(--color-background) from html.dark above */
+
+html.dark body::before {
+  background: radial-gradient(
+    ellipse 90% 70% at 50% 0%,
+    rgba(251, 146, 60, 0.12) 0%,
+    rgba(234, 88, 12, 0.04) 45%,
+    transparent 70%
+  );
+}
+
+html.dark .main-scroll,
+html.dark [data-scroll-root='main'] {
+  scrollbar-color: #ea580c rgba(23, 23, 23, 0.95);
+}
+html.dark .main-scroll::-webkit-scrollbar-track,
+html.dark [data-scroll-root='main']::-webkit-scrollbar-track {
+  background: rgba(23, 23, 23, 0.95);
+}
+html.dark .main-scroll::-webkit-scrollbar-thumb,
+html.dark [data-scroll-root='main']::-webkit-scrollbar-thumb {
+  border-color: rgb(23, 23, 23);
+}
+/* Safe area insets (notch, home indicator) — use with viewport-fit=cover in meta viewport for PWA/mobile */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.screen-safe {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 @layer components {
+  /* Full-width section band: use a wrapper with no max-w (gray/border), then put section-container or section-container-wide inside for max-w + centering. */
   .section-container {
     @apply max-w-5xl mx-auto px-6 md:px-8 py-16 md:py-24;
   }
+  .section-container-wide {
+    @apply mx-auto max-w-6xl px-6 md:px-10 py-20 md:py-28;
+  }
   .title-section {
-    @apply text-title text-center font-extrabold mb-12 text-orange-200 animate-title;
+    @apply text-title text-center font-extrabold mb-12 text-orange-500 dark:text-orange-400 animate-title;
   }
   .title-h2 {
-    @apply text-2xl md:text-3xl font-extrabold text-white mb-2 animate-title;
+    @apply text-2xl md:text-3xl font-extrabold text-foreground mb-2 animate-title;
   }
   .title-h2-accent {
-    @apply text-sm font-medium uppercase tracking-widest text-orange-400/90 mb-6;
+    @apply text-sm font-medium uppercase tracking-widest text-orange-500 dark:text-orange-400 mb-6;
+  }
+  .hero-headline {
+    @apply font-display text-4xl leading-[1.05] tracking-tight text-white md:text-5xl lg:text-6xl xl:text-7xl;
+  }
+  /* Sourceful-style section headings */
+  .section-heading {
+    @apply text-2xl font-bold tracking-tight text-white md:text-3xl lg:text-4xl;
+  }
+  .section-subline {
+    @apply mt-3 text-base text-white/60 md:text-lg;
   }
 }

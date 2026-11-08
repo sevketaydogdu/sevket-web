@@ -1,11 +1,16 @@
+import { useTheme } from '@/contexts/ThemeContext';
 import { Feather } from '@expo/vector-icons';
 import { router, useSegments } from 'expo-router';
-import { Platform, Pressable, Text, useColorScheme, View } from 'react-native';
+import { Platform, Pressable, Text, View } from 'react-native';
+
+const ACTIVE_TINT = '#f97316';
+const INACTIVE_LIGHT = '#525252';
+const INACTIVE_DARK = '#a3a3a3';
 
 export default function MobileBottomNav() {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useTheme();
   const segments = useSegments();
-  const borderColor = '#2f3336';
+  const inactiveColor = colorScheme === 'dark' ? INACTIVE_DARK : INACTIVE_LIGHT;
 
   const navItems = [
     { icon: 'home' as const, label: 'Home', route: '/', isActive: segments.length === 1 },
@@ -29,20 +34,11 @@ export default function MobileBottomNav() {
     },
   ];
 
-  const activeColor = '#fda054';
-  const inactiveColor = colorScheme === 'dark' ? '#999' : '#666';
-
   return (
     <View
-      className={`fixed bottom-0 left-0 right-0 h-16 flex-row border-t ${
+      className={`fixed bottom-0 left-0 right-0 h-16 flex-row border-t border-border bg-card/90 backdrop-blur-xl ${
         Platform.OS === 'ios' ? 'pb-5' : ''
-      }`}
-      style={{
-        borderTopColor: borderColor,
-        backgroundColor:
-          colorScheme === 'dark' ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.7)',
-        backdropFilter: Platform.OS === 'web' ? 'blur(12px)' : undefined,
-      }}>
+      }`}>
       {navItems.map((item) => (
         <Pressable
           key={item.route}
@@ -60,13 +56,11 @@ export default function MobileBottomNav() {
           <Feather
             name={item.icon}
             size={24}
-            color={item.isActive ? activeColor : inactiveColor}
+            color={item.isActive ? ACTIVE_TINT : inactiveColor}
           />
           <Text
-            className="text-xs font-medium"
-            style={{
-              color: item.isActive ? activeColor : inactiveColor,
-            }}>
+            className={`text-xs font-medium ${item.isActive ? 'text-orange-500' : 'text-muted'}`}
+            style={item.isActive ? undefined : { color: inactiveColor }}>
             {item.label}
           </Text>
         </Pressable>

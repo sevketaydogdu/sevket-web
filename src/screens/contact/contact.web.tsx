@@ -2,7 +2,8 @@ import Head from 'expo-router/head';
 import React from 'react';
 
 import ContactItems, { ContactItemAllProps } from './components/contact-items';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { Text } from '@/components/ui/text';
 
 const contactItems: ContactItemAllProps[] = [
   {
@@ -39,7 +40,7 @@ const WebContactScreen = () => {
         >
           <View className="">
             <Text
-              className="text-3xl color-white font-bold text-center "
+              className="text-3xl  font-bold text-center "
               // textAlign="center"
               // $md={{
               //   fontSize: 20,

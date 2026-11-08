@@ -2,11 +2,12 @@ import { AntDesign } from '@expo/vector-icons';
 import { Href, Link } from 'expo-router';
 import Head from 'expo-router/head';
 import React from 'react';
-import { Image, Pressable, ScrollView, Text, View } from 'react-native';
+import { Image, Pressable, View } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import { socialButtons } from '@/constants/menu';
 import ExperienceSection from '../home/components/ExperienceSection';
+import { Text } from '@/components/ui/text';
 
 const aboutMeText = `
 a passionate React Native developer with a love for turning ideas into reality through
@@ -128,12 +129,12 @@ const AboutMeWeb = () => {
         // exitStyle={{ opacity: 0, x: 200 }}
       >
         <View className="flex-col  items-center self-center">
-          <Text className="color-white">Experience</Text>
-          <Text className="font-bold color-white">+6 Years</Text>
+          <Text className="">Experience</Text>
+          <Text className="font-bold ">+6 Years</Text>
         </View>
         <View className="flex-col   self-center items-center">
-          <Text className="color-white">Projects Done</Text>
-          <Text className="font-bold color-white">+10 Projects</Text>
+          <Text className="">Projects Done</Text>
+          <Text className="font-bold ">+10 Projects</Text>
         </View>
       </View>
 
@@ -162,13 +163,15 @@ const AboutMeWeb = () => {
               rel="noopener noreferrer"
               className="group">
               <Pressable>
-                <View className="bg-background2 group-hover:bg-orange-950 flex-row gap-2 items-center justify-center px-4 py-2 rounded-full">
+                <View className="bg-neutral-100 dark:bg-background2 group-hover:bg-orange-950 flex-row gap-2 items-center justify-center px-4 py-2 rounded-full">
                   <AntDesign
                     name={item.name as any}
-                    className="text-white group-hover:text-orange-300"
+                    className="text-neutral-800 dark:text-neutral-200 group-hover:text-orange-300"
                     size={24}
                   />
-                  <Text className="text-white group-hover:text-orange-300">{item.title}</Text>
+                  <Text className="text-neutral-800 dark:text-neutral-200 group-hover:text-orange-300">
+                    {item.title}
+                  </Text>
                 </View>
               </Pressable>
             </Link>
@@ -198,7 +201,7 @@ const AboutMeWeb = () => {
           //   px: '$5',
           // }}
         >
-          <Text className="text-center text-xl text-white">
+          <Text className="text-center text-xl ">
             Welcome to my corner of the web! {`\n`}I'm{' '}
             <Text className="color-orange-500 font-bold">Sevket Aydogdu,{`\n`}</Text>
             {aboutMeText}
@@ -207,7 +210,7 @@ const AboutMeWeb = () => {
             <Pressable className="self-center">
               {({ hovered }) => (
                 <Text
-                  className="text-white self-center text-lg"
+                  className=" self-center text-lg"
                   style={{
                     backgroundColor: hovered ? Colors.dark.white[200] : Colors.dark.orange[200],
                     padding: 10,
@@ -230,7 +233,7 @@ const AboutMeWeb = () => {
             {Object.keys(categorizedTech).map((key) => {
               return (
                 <View key={key} className="mt-4 gap-4  items-center justify-center">
-                  <Text className="text-center font-bold text-2xl text-white  ">
+                  <Text className="text-center font-bold text-2xl   ">
                     {key.charAt(0).toUpperCase() + key.slice(1)}
                   </Text>
                   <View
@@ -246,8 +249,8 @@ const AboutMeWeb = () => {
                       return (
                         <View
                           key={item}
-                          className="bg-background2 rounded-full px-4 py-3 items-center justify-self-center">
-                          <Text key={item} className="text-center text-white">
+                          className="dark:bg-background2 bg-neutral-100 rounded-full px-4 py-3 items-center justify-self-center">
+                          <Text key={item} className="text-center ">
                             {item}
                           </Text>
                         </View>

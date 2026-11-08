@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import { Route, useRouter } from 'expo-router';
-import { useColorScheme, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 const SIDEBAR_DATA = ({ segments, isCompact }: { segments: Route; isCompact: boolean }) => [
   {
@@ -62,14 +62,8 @@ function SidebarItem({
   isActive?: boolean;
   compact?: boolean;
 }) {
-  const colorScheme = useColorScheme();
   const router = useRouter();
-  const hoverBg = colorScheme === 'dark' ? 'rgba(255, 59, 48, 0.1)' : 'rgba(255, 59, 48, 0.1)';
-  const activeBg = colorScheme === 'dark' ? 'rgba(255, 59, 48, 0.15)' : 'rgba(255, 59, 48, 0.15)';
-  const textColor = isActive ? '#fda054' : '#ffffff';
-
-  const iconColor = isActive ? '#fda054' : '#ffffff';
-
+  const iconColor = isActive ? '#f97316' : '#e5e5e5';
   const size = compact ? 22 : 22;
 
   const getIcon = () => {
@@ -100,16 +94,13 @@ function SidebarItem({
           }, 100);
         }
       }}
-      className={` flex flex-row items-center p-2 rounded-lg gap-3 mb-0.5 
-        hover:bg-selected transition-all duration-200  ${
-          compact ? 'justify-center w-10 h-10 mx-auto' : 'pl-2 pr-6 mr-8'
-        } ${isActive ? 'bg-background2' : ''}`}
-      style={({ pressed, hovered }) => [(pressed || hovered) && { backgroundColor: hoverBg }]}>
+      className={`flex flex-row items-center p-2 rounded-lg gap-3 mb-0.5 transition-all duration-200 hover:bg-orange-500/10 active:bg-orange-500/15 ${
+        compact ? 'justify-center w-10 h-10 mx-auto' : 'pl-2 pr-6 mr-8'
+      } ${isActive ? 'bg-background2' : ''}`}>
       {getIcon()}
       {!compact && (
         <Text
-          className={`text-[15px] font-semibold ${isActive ? 'font-bold ' : ''}`}
-          style={{ color: textColor }}>
+          className={`text-[15px] font-semibold ${isActive ? 'font-bold text-orange-500' : 'text-gray-200'}`}>
           {label}
         </Text>
       )}

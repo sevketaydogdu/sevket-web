@@ -6,6 +6,7 @@ module.exports = {
     './src/**/*.{js,jsx,ts,tsx}',
     './helper/**/*.{js,jsx,ts,tsx}',
   ],
+  darkMode: 'class',
   presets: [require('nativewind/preset')],
   theme: {
     extend: {
@@ -26,9 +27,13 @@ module.exports = {
         200: '2',
       },
       colors: {
-        background: 'rgb(10, 10, 10)',
-        // background: 'rgb(3, 8, 30)',
-        selected:'#131212',
+        // NativeWind theme: CSS vars so light/dark switch with html.dark
+        background: 'var(--color-background)',
+        card: 'var(--color-card)',
+        foreground: 'var(--color-foreground)',
+        muted: 'var(--color-muted)',
+        border: 'var(--color-border)',
+        selected: '#131212',
         background2: '#1A1A1A',
         primary: '#E0FF00',
         'primary-dark': '#B8CC00',
@@ -47,6 +52,7 @@ module.exports = {
           'Arial',
           'sans-serif',
         ],
+        display: ['SatoshiBlack', 'SatoshiVariable', 'sans-serif'],
       },
       fontSize: {
         'title': ['2.25rem', {

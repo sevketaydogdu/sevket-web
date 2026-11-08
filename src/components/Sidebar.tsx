@@ -8,7 +8,6 @@ import {
   Image,
   useWindowDimensions,
 } from 'react-native';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import { CategoryCard } from './CategoryCard';
 import entities from '@/app/data/entities.json';
 import { scores } from '@/data/scores.json';
@@ -132,8 +131,6 @@ export function Sidebar() {
   const [isFocused, setIsFocused] = useState(false);
   const segments = useSegments();
   const router = useRouter();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
   const { width } = useWindowDimensions();
 
   const isMobile = width < 768;
@@ -181,8 +178,8 @@ export function Sidebar() {
   if (isMobile) return null;
 
   return (
-    <View className="w-[350px] sticky top-0 " style={{ borderLeftColor: '#eee' }}>
-      <View className="w-[350px] border-l fixed top-0 px-2" style={{ borderLeftColor: '#eee' }}>
+    <View className="w-[350px] sticky top-0 border-l border-border">
+      <View className="w-[350px] border-l border-border fixed top-0 px-2">
         <View className="p-4"></View>
         <View style={styles.container}>
           {!hideSearch && (

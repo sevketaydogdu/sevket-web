@@ -2,7 +2,8 @@ import Head from 'expo-router/head';
 import React from 'react';
 
 import ProjectListRenderer from '@/components/project-list/project-list-renderer';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Text } from '@/components/ui/text';
 
 const ProjectsScreenWeb = () => {
   return (
@@ -12,7 +13,7 @@ const ProjectsScreenWeb = () => {
       </Head>
       <View className="flex-1 my-8">
         <Text
-          className="text-3xl color-white font-bold text-center mb-[24px]"
+          className="text-3xl  font-bold text-center mb-[24px]"
           // textAlign="center"
           // mb={24}
           // $md={{

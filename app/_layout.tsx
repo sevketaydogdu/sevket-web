@@ -1,5 +1,5 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, usePathname } from 'expo-router';
 import Head from 'expo-router/head';
@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 
 import { DarkTheme } from '@/constants/navigatiorTheme';
+import { ThemeProvider as NavThemeProvider } from '@/contexts/ThemeContext';
 import { useScrollToTopOnNavigate } from '@/hooks/useScrollToTopOnNavigate';
 import '../global.css';
 
@@ -131,30 +132,36 @@ const InnerRootLayout = () => {
     };
   }
   return (
-    <ThemeProvider
-      value={{
-        ...DarkTheme,
-        colors: {
-          ...DarkTheme.colors,
-          // background: '#f11111',
-          background: 'rgb(10, 10, 10)',
-          card: 'rgb(10, 10, 10)',
-          // card: '#f11111',
-          text: 'rgb(250, 250, 250)',
-        },
-      }}>
-      <Slot
-        screenOptions={({ route }) => ({
-          title: route.name,
-        })}
-      />
-      {/* <>
-            <StatusBar style="light" />
-            <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-            </Stack>
-            </> */}
-    </ThemeProvider>
+    <NavThemeProvider>
+      <NavigationThemeProvider
+        value={{
+          ...DarkTheme,
+          colors: {
+            ...DarkTheme.colors,
+            // background: '#f11111',
+            background: 'rgb(10, 10, 10)',
+            card: 'rgb(10, 10, 10)',
+            // card: '#f11111',
+            text: 'rgb(250, 250, 250)',
+          },
+        }}>
+        <Slot
+          screenOptions={{
+            colorScheme: colorScheme,
+          }}
+          // screenOptions={({ route }) => ({
+          //   title: route.name,
+
+          // })}
+        />
+        {/* <>
+              <StatusBar style="light" />
+              <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+              </Stack>
+              </> */}
+      </NavigationThemeProvider>
+    </NavThemeProvider>
   );
 };
