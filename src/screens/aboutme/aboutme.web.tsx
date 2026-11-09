@@ -4,265 +4,217 @@ import Head from 'expo-router/head';
 import React from 'react';
 import { Image, Pressable, View } from 'react-native';
 
-import Colors from '@/constants/Colors';
-import { socialButtons } from '@/constants/menu';
-import ExperienceSection from '../home/components/ExperienceSection';
+import {
+  ButtonLink,
+  Container,
+  Eyebrow,
+  Reveal,
+  SectionHeader,
+  Span,
+  Tag,
+  siteFacts,
+  type,
+  useSiteColors,
+} from '@/components/site';
 import { Text } from '@/components/ui/text';
+import { jobHistory } from '@/constants/job-history';
+import { socialButtons } from '@/constants/menu';
+import { cn } from '@/lib/utils';
 
-const aboutMeText = `
-a passionate React Native developer with a love for turning ideas into reality through
-code. With over +6 years of experience in mobile development, I've had the pleasure of
-working on 10+ projects spanning various industries.
+const bio = [
+  "I'm a React Native developer who turns ideas into apps people actually use. Over the last six years I've shipped more than ten of them — social platforms, live sports, utilities and multi-tenant white-label products — to the App Store and Google Play.",
+  'Before writing mobile code I worked as a UX/UI designer. That background still shapes how I build: flows first, details second, and nothing ships until it feels right in the hand.',
+  "I like owning the whole path — architecture, state and data, CI, store releases and the monitoring that keeps an app healthy after launch. Most of my side projects live on GitHub if you'd like to see how I work.",
+];
 
-
-Before delving into the world of mobile apps, I honed my skills as a UX/UI designer.
-This background has given me a unique perspective on crafting seamless user experiences
-that blend functionality with aesthetics.
-
-  Born in 1993, I'm a lifelong learner who thrives on staying ahead of the curve. I'm
-always eager to explore new technologies, push boundaries, and expand my skill set. If
-you're curious about my coding journey, you can explore my projects on GitHub.
-
-  Beyond coding, I'm a firm believer in the power of exploration. Whether it's trying out
-a new programming language, experimenting with design concepts, or pursuing
-unconventional hobbies, I'm always up for the challenge.
-
-I'm excited to connect with fellow enthusiasts, exchange ideas, and embark on new
-adventures together. Let's create something amazing!
-`;
-export const categorizedTech = {
-  framework: ['React Native', 'Expo', 'Next.js', 'React', 'Vite'],
-  development: [
-    'TypeScript',
-    'Es6',
-    'Expo',
-    'Expo Router',
-    'React Navigation',
-    'Expo Libraries',
-    'GitHub',
+export const categorizedTech: Record<string, string[]> = {
+  Core: ['React Native', 'Expo', 'Expo Router', 'TypeScript', 'React', 'Next.js', 'Vite'],
+  'State & data': [
+    'Redux Toolkit',
+    'Redux Persist',
+    'Context API',
+    'React Query',
+    'SWR',
+    'Axios',
+    'SignalR',
+    'Firebase Firestore',
   ],
-  stateManagement: ['Redux', 'Redux Toolkit', 'Redux Persist', 'Redux Thunk', 'Context API'],
-  navigation: ['React Navigation'],
-  styling: ['StyleSheet API', 'NativeWind', 'Styled Components', 'Tamagui', 'Native Base'],
-  firebase: ['Firebase Analytics', 'Firebase Crashlytics', 'Firebase Firestore'],
-  features: ['In App Purchase', 'Reanimated', 'Monorepo'],
-  libraries: [
-    'axios',
-    'react-query',
-    'swr',
-    'microsoft/signalr',
-    'lottie',
-    'netinfo',
-    'expo vector icons',
-    'react-native-svg',
-    'react-native-svg-transformer',
+  'UI & motion': [
+    'NativeWind',
+    'Tamagui',
+    'Styled Components',
+    'StyleSheet API',
+    'Reanimated',
+    'Gesture Handler',
+    'Lottie',
+    'FlashList',
+  ],
+  Platform: [
+    'In-app purchases',
+    'Expo Notifications',
+    'OneSignal',
+    'Apple & Google sign-in',
+    'Expo Updates',
+    'Secure Store',
+    'SQLite',
     'i18n',
-    'react-native-localize',
-    'haptics',
-    'react-native-safe-area-context',
-    'react-native-reanimated',
-    'react-native-gesture-handler',
-    'async-storage',
-    'expo-secure-store',
-    'react-native-clipboard',
-    'react-native-device-info',
-    'react-native-splash-screen',
-    'react-native-webview',
-    'react-native-onesignal',
-    'react-native-firebase',
-    'yup',
-    'react-hook-form',
-    'moment',
+  ],
+  'Quality & delivery': [
+    'Jest',
+    'Maestro',
+    'Sentry',
+    'Crashlytics',
+    'Firebase Analytics',
+    'GitHub Actions',
+    'Monorepos',
     'patch-package',
-    'expo-sqlite',
-    'expo-av',
-    'expo-notifications',
-    'expo-updates',
-    'signalr',
-    'flash-list',
-    'expo-share-intent',
-    'expo-linear-gradient',
-    'expo-document-picker',
-    'expo-image-picker',
-    'expo-file-system',
-    'lodash',
-    'react-native-gifted-charts',
-    'react-native-apple-authentication',
-    'react-native-google-signin',
   ],
 };
 
-type TechCategory = keyof typeof categorizedTech;
+function SocialLink({ item }: { item: (typeof socialButtons)[number] }) {
+  const colors = useSiteColors();
+  return (
+    <Link href={item.href as Href} asChild target="_blank" rel="noopener noreferrer">
+      <Pressable accessibilityRole="link">
+        {({ hovered }) => (
+          <View
+            className={cn(
+              'flex-row items-center gap-2 rounded-full border border-border px-4 py-2.5 transition-colors duration-200',
+              hovered && 'border-orange-500/60'
+            )}>
+            <AntDesign
+              name={item.name}
+              size={16}
+              color={hovered ? colors.accent : colors.fg}
+            />
+            <Text className="font-heading text-sm text-foreground">{item.title}</Text>
+          </View>
+        )}
+      </Pressable>
+    </Link>
+  );
+}
 
 const AboutMeWeb = () => {
   return (
-    <View className="flex-1 section-container">
+    <View className="flex-1">
       <Head>
         <title>About Me | Sevket Aydogdu - React Native Developer</title>
-      </Head>
-      <View
-        className="w-[256px]   px-{5} self-center"
-
-        // enterStyle={{ opacity: 0, scale: 0.5 }}
-        // exitStyle={{ opacity: 0, scale: 0.9 }}
-        // alignSelf="center"
-      >
-        <Image
-          source={require('../../../assets/images/selfie.jpeg')}
-          style={{
-            height: 256,
-            width: 256,
-            aspectRatio: 1,
-            borderRadius: 256,
-          }}
+        <meta
+          name="description"
+          content="Sevket Aydogdu is a senior React Native developer with six years of experience shipping cross-platform mobile apps."
         />
-      </View>
-      <View
-        className="flex-row gap-8 self-center my-8 "
-        // flexDirection="row"
-        // gap="$8"
-        // f={1}
-        // my="$6"
-        // alignSelf="center"
-        // animation="quick"
-        // enterStyle={{ opacity: 0, x: 200 }}
-        // exitStyle={{ opacity: 0, x: 200 }}
-      >
-        <View className="flex-col  items-center self-center">
-          <Text className="">Experience</Text>
-          <Text className="font-bold ">+6 Years</Text>
-        </View>
-        <View className="flex-col   self-center items-center">
-          <Text className="">Projects Done</Text>
-          <Text className="font-bold ">+10 Projects</Text>
-        </View>
-      </View>
+      </Head>
 
-      <View
-        className="flex-row gap-4 self-center my-6"
-        // ai="center"
-        // gap="$4"
-        // my="$6"
-        // alignSelf="center"
-        // $sm={{
-        //   flexDirection: 'column',
-        //   gap: '$4',
-        //   flex: 1,
-        // }}
-        // animation="quick"
-        // enterStyle={{ opacity: 0, x: -200 }}
-        // exitStyle={{ opacity: 0, x: -200 }}
-      >
-        {socialButtons.map((item, index) => {
-          return (
-            <Link
-              key={item.title}
-              href={item.href as Href}
-              asChild
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group">
-              <Pressable>
-                <View className="bg-neutral-100 dark:bg-background2 group-hover:bg-orange-950 flex-row gap-2 items-center justify-center px-4 py-2 rounded-full">
-                  <AntDesign
-                    name={item.name as any}
-                    className="text-neutral-800 dark:text-neutral-200 group-hover:text-orange-300"
-                    size={24}
-                  />
-                  <Text className="text-neutral-800 dark:text-neutral-200 group-hover:text-orange-300">
-                    {item.title}
-                  </Text>
-                </View>
-              </Pressable>
-            </Link>
-          );
-        })}
-      </View>
-      <View
-        className="flex-col gap-4 self-center justify-start  mt-5 "
-        // mt="$5"
-        // gap="$4"
-        // jc="flex-start"
-        // fd="row"
-        // $md={{
-        //   fd: 'column',
-        // }}
-        // animation="quick"
-        // enterStyle={{ opacity: 0, y: 200 }}
-        // exitStyle={{ opacity: 0, y: 200 }}
-      >
-        <View
-          className="flex-col gap-4 self-center"
-          // f={1}
-          // alignItems="center"
-          // alignSelf="center"
-          // $md={{
-          //   w: '100%',
-          //   px: '$5',
-          // }}
-        >
-          <Text className="text-center text-xl ">
-            Welcome to my corner of the web! {`\n`}I'm{' '}
-            <Text className="color-orange-500 font-bold">Sevket Aydogdu,{`\n`}</Text>
-            {aboutMeText}
-          </Text>
-          <Link href="/contact" asChild>
-            <Pressable className="self-center">
-              {({ hovered }) => (
-                <Text
-                  className=" self-center text-lg"
-                  style={{
-                    backgroundColor: hovered ? Colors.dark.white[200] : Colors.dark.orange[200],
-                    padding: 10,
-                    borderRadius: 10,
-                    color: Colors.dark.black[200],
-                    fontWeight: 'bold',
-                    marginTop: 20,
-                    cursor: 'pointer',
-                  }}>
-                  Hire Me
+      {/* ——— Intro ——— */}
+      <Container className="pb-20 pt-10 md:pb-28 md:pt-20">
+        <View className="gap-12 lg:flex-row lg:items-start lg:gap-16">
+          <View className="flex-1 gap-8">
+            <Reveal>
+              <Eyebrow label="About" />
+            </Reveal>
+            <Reveal delay={80}>
+              <Text className={type.h1}>
+                Hi, I'm Sevket.{' '}
+                <Span className="text-muted">I make apps feel at home on every platform.</Span>
+              </Text>
+            </Reveal>
+            <Reveal delay={160} className="gap-5">
+              {bio.map((p) => (
+                <Text key={p.slice(0, 16)} className={type.lead}>
+                  {p}
                 </Text>
-              )}
-            </Pressable>
-          </Link>
-          <ExperienceSection />
-          <Text className="title-h2 mt-12">Used Tech.</Text>
-          <View
-            // f={1} width="100%" flexGrow={1}
-            className="flex-col gap-4 self-center flex-grow items-center ">
-            {Object.keys(categorizedTech).map((key) => {
-              return (
-                <View key={key} className="mt-4 gap-4  items-center justify-center">
-                  <Text className="text-center font-bold text-2xl   ">
-                    {key.charAt(0).toUpperCase() + key.slice(1)}
-                  </Text>
+              ))}
+            </Reveal>
+            <Reveal delay={240} className="flex-row flex-wrap items-center gap-3">
+              <ButtonLink href="/contact">Work with me</ButtonLink>
+              {socialButtons.map((item) => (
+                <SocialLink key={item.title} item={item} />
+              ))}
+            </Reveal>
+          </View>
+
+          <Reveal delay={120} className="w-full max-w-sm self-center lg:w-[340px] lg:self-start">
+            <View className="overflow-hidden rounded-[2rem] border border-border bg-card">
+              <Image
+                source={require('../../../assets/images/selfie.jpeg')}
+                resizeMode="cover"
+                style={{ width: '100%', aspectRatio: 4 / 5 }}
+                accessibilityLabel="Portrait of Sevket Aydogdu"
+              />
+              <View className="flex-row">
+                {siteFacts.stats.slice(0, 2).map((stat, i) => (
                   <View
-                    className="flex-row gap-2 self-center flex-wrap items-center justify-center"
-                    // gap="$2"
-                    // flexWrap="wrap"
-                    // justifyContent="center"
-                    // $md={{
-                    //   gap: '$1',
-                    // }}
-                  >
-                    {categorizedTech[key as TechCategory].map((item) => {
-                      return (
-                        <View
-                          key={item}
-                          className="dark:bg-background2 bg-neutral-100 rounded-full px-4 py-3 items-center justify-self-center">
-                          <Text key={item} className="text-center ">
-                            {item}
-                          </Text>
-                        </View>
-                      );
-                    })}
+                    key={stat.label}
+                    className={cn('flex-1 gap-1 p-5', i > 0 && 'border-l border-border')}>
+                    <Text className="font-display text-3xl text-foreground">{stat.value}</Text>
+                    <Text className={type.small}>{stat.label}</Text>
                   </View>
+                ))}
+              </View>
+            </View>
+          </Reveal>
+        </View>
+      </Container>
+
+      {/* ——— Experience ——— */}
+      <Container>
+        <View className="border-t border-border py-20 md:py-28">
+          <SectionHeader index="01" label="Career" title="Experience" />
+          <View className="mt-12">
+            {jobHistory.map((job, i) => (
+              <View
+                key={`${job.company}-${job.period}`}
+                className="gap-4 border-t border-border py-10 md:flex-row md:gap-10">
+                <View className="gap-2 md:w-60">
+                  <Text className={cn(type.mono, i === 0 && type.accent)}>
+                    {job.period.replace(/\s+/g, ' ')}
+                  </Text>
+                  <Text className="font-heading text-lg text-foreground">{job.company}</Text>
                 </View>
-              );
-            })}
+                <View className="flex-1 gap-3">
+                  <Text className={cn(type.h3, type.accent)}>{job.position}</Text>
+                  {job.description
+                    .split('\n')
+                    .map((line) => line.replace(/^•\s*/, '').trim())
+                    .filter(Boolean)
+                    .map((line) => (
+                      <Text key={line.slice(0, 24)} className={type.body}>
+                        {line}
+                      </Text>
+                    ))}
+                </View>
+              </View>
+            ))}
           </View>
         </View>
-      </View>
+      </Container>
+
+      {/* ——— Toolkit ——— */}
+      <Container className="pb-24 md:pb-32">
+        <View className="border-t border-border pt-20 md:pt-28">
+          <SectionHeader
+            index="02"
+            label="Toolkit"
+            title="What I build with"
+            description="The stack I reach for most, grouped by the job it does."
+          />
+          <View className="mt-12">
+            {Object.entries(categorizedTech).map(([group, items]) => (
+              <View
+                key={group}
+                className="gap-4 border-t border-border py-8 md:flex-row md:items-start md:gap-10">
+                <Text className={cn(type.mono, 'md:w-60 md:pt-2')}>{group}</Text>
+                <View className="flex-1 flex-row flex-wrap gap-2">
+                  {items.map((item) => (
+                    <Tag key={item}>{item}</Tag>
+                  ))}
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      </Container>
     </View>
   );
 };

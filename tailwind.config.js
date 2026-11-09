@@ -53,6 +53,9 @@ module.exports = {
           'sans-serif',
         ],
         display: ['SatoshiBlack', 'SatoshiVariable', 'sans-serif'],
+        heading: ['SatoshiBold', 'SatoshiVariable', 'sans-serif'],
+        body: ['SatoshiRegular', 'SatoshiVariable', 'sans-serif'],
+        mono: ['SpaceMono', 'ui-monospace', 'Menlo', 'monospace'],
       },
       fontSize: {
         'title': ['2.25rem', {

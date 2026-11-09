@@ -1,225 +1,213 @@
 import { Feather } from '@expo/vector-icons';
-import { Href, Link, router, useLocalSearchParams } from 'expo-router';
+import { Href, Link, useLocalSearchParams } from 'expo-router';
 import Head from 'expo-router/head';
-import React, { ReactNode } from 'react';
-import { Image, View, Platform, StyleSheet, Pressable, Text } from 'react-native';
+import React from 'react';
+import { Image, Pressable, View } from 'react-native';
 
-import Colors from '@/constants/Colors';
+import { ButtonLink, Container, Reveal, Tag, type, useSiteColors } from '@/components/site';
+import { projectHref } from '@/components/site/projects';
+import { Text } from '@/components/ui/text';
 import { projects } from '@/constants/projects';
+import { cn } from '@/lib/utils';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
-import { useBreakPoints } from '@/hooks/useBreakPoints';
-import Animated from 'react-native-reanimated';
-import { animations } from '@/constants/animations';
 
 export async function generateStaticParams(): Promise<Record<string, string>[]> {
   return projects.map((project) => ({
     name: clearSpacesAndSpecialCharacters(project.title),
   }));
 }
-const ProjectDetailScreen = () => {
-  const { name } = useLocalSearchParams();
-  const { isMobile } = useBreakPoints();
 
-  const project = projects.find(
-    (project) => clearSpacesAndSpecialCharacters(project.title) === name
-  );
+/** Split the free-form description into paragraphs of trimmed lines. */
+function toParagraphs(text?: string) {
+  if (!text) return [];
+  return text
+    .split(/\n\s*\n/)
+    .map((block) =>
+      block
+        .split('\n')
+        .map((l) => l.trim())
+        .filter(Boolean)
+        .join('\n')
+    )
+    .filter(Boolean);
+}
 
-  React.useEffect(() => {
-    if (window !== undefined) window.scrollTo(0, 0);
-  }, []);
-  if (!project) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <Text className="text-8xl text-white">Project not found</Text>
-        <Text className="text-white">{name}</Text>
-      </View>
-    );
-  }
+function BackLink() {
+  const colors = useSiteColors();
   return (
-    <View style={styles.mainContainer} className=" ">
-      <Head>
-        <title>{project?.title} | Sevket Aydogdu - React Native Developer</title>
-        <meta name="description" content={project.description} />
-      </Head>
-
-      <View className="  overflow-hidden items-start justify-start">
-        <Animated.View
-          className="self-center aspect-square rounded-2xl"
-          entering={animations.entering.fade}>
-          <Image
-            source={project?.imagePath}
-            style={{
-              width: 128,
-              height: 128,
-              // height: '50%',
-              borderRadius: 24,
-              borderWidth: StyleSheet.hairlineWidth * 2,
-              borderColor: Colors.dark.orange[100],
-            }}
-            resizeMode="cover"
-          />
-        </Animated.View>
-        <View className="self-center">
-          <Animated.Text className="text-4xl animate-title flex-1 self-center text-center mt-6 color-white font-bold">
-            {project?.title}
-          </Animated.Text>
-
-          <Animated.Text className="text-lg animate-title text-center mt-2 self-center color-orange-100">
-            {project?.subtitle}
-          </Animated.Text>
-        </View>
-      </View>
-
-      <View style={[styles.contentContainer]} className="animate-title ">
-        {project?.storeLinks?.apple ||
-        project?.storeLinks?.github ||
-        project?.storeLinks?.google ||
-        project?.storeLinks?.web ? (
-          <StoreButtons
-            links={{
-              google: project?.storeLinks?.apple ?? '',
-              apple: project?.storeLinks?.google ?? '',
-              web: project?.storeLinks?.web,
-              github: project?.storeLinks?.github,
-            }}
-          />
-        ) : null}
-
-        {project?.description && (
-          <Animated.Text
-            entering={animations.entering.slideInDown}
-            className="text-lg mt-4 color-white"
-            style={
-              {
-                // textAlign: 'center',
-              }
-            }>
-            {project?.description}
-          </Animated.Text>
-        )}
-        {project?.technicalDetails.length && (
-          <View className="animate-title">
-            <Text className="title-h2 mt-8 mb-8  ">Technical Details</Text>
-            <View className=" flex-row gap-2   flex-grow flex-wrap justify-center">
-              {project.technicalDetails.map((item, index) => (
-                <Text
-                  key={index}
-                  className="bg-background2 color-white self-start rounded-full px-4 py-3 items-center justify-self-center">
-                  {item}
-                </Text>
-              ))}
-            </View>
+    <Link href={'/projects' as Href} asChild>
+      <Pressable accessibilityRole="link" className="self-start">
+        {({ hovered }) => (
+          <View className="flex-row items-center gap-2">
+            <Feather
+              name="arrow-left"
+              size={16}
+              color={hovered ? colors.accent : colors.muted}
+              style={{ transform: [{ translateX: hovered ? -3 : 0 }] }}
+            />
+            <Text className={cn(type.mono, hovered && type.accent)}>All projects</Text>
           </View>
         )}
-      </View>
+      </Pressable>
+    </Link>
+  );
+}
+
+function StoreBadge({ href, source, label }: { href: string; source: any; label: string }) {
+  return (
+    <Link href={href as Href} asChild target="_blank" rel="noopener noreferrer">
+      <Pressable accessibilityRole="link" accessibilityLabel={label}>
+        {({ hovered }) => (
+          <Image
+            source={source}
+            style={{ width: 135, height: 40, opacity: hovered ? 0.85 : 1 }}
+            resizeMode="contain"
+          />
+        )}
+      </Pressable>
+    </Link>
+  );
+}
+
+const ProjectDetailScreen = () => {
+  const { name } = useLocalSearchParams();
+  const index = projects.findIndex((p) => clearSpacesAndSpecialCharacters(p.title) === name);
+  const project = projects[index];
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') window.scrollTo(0, 0);
+  }, [name]);
+
+  if (!project) {
+    return (
+      <Container className="items-start gap-6 py-24">
+        <Text className={type.h1}>Project not found</Text>
+        <Text className={type.lead}>There's no project called “{String(name)}”.</Text>
+        <ButtonLink href="/projects">Back to projects</ButtonLink>
+      </Container>
+    );
+  }
+
+  const links: { apple?: string; google?: string; web?: string; github?: string } =
+    project.storeLinks ?? {};
+  const paragraphs = toParagraphs(project.description);
+  const stack = project.technicalDetails.map((t) => t.trim()).filter(Boolean);
+  const next = projects[(index + 1) % projects.length];
+  const hasLinks = links.apple || links.google || links.web || links.github;
+
+  return (
+    <View className="flex-1">
+      <Head>
+        <title>{project.title} | Sevket Aydogdu - React Native Developer</title>
+        <meta name="description" content={project.description ?? project.subtitle} />
+      </Head>
+
+      <Container className="pb-24 pt-10 md:pb-32 md:pt-16">
+        <BackLink />
+
+        {/* ——— Header ——— */}
+        <Reveal className="mt-10 gap-8 md:flex-row md:items-center md:gap-10">
+          <Image
+            source={project.imagePath}
+            resizeMode="cover"
+            style={{ width: 112, height: 112, borderRadius: 28 }}
+          />
+          <View className="flex-1 gap-3">
+            <Text className={cn(type.mono, type.accent)}>
+              Project {String(index + 1).padStart(2, '0')}
+            </Text>
+            <Text className={type.h1}>{project.title}</Text>
+            <Text className={type.lead}>{project.subtitle}</Text>
+          </View>
+        </Reveal>
+
+        {hasLinks ? (
+          <Reveal delay={100} className="mt-10 flex-row flex-wrap items-center gap-3">
+            {links.apple ? (
+              <StoreBadge
+                href={links.apple}
+                label="Download on the App Store"
+                source={require('../../../../assets/images/appleBadge.png')}
+              />
+            ) : null}
+            {links.google ? (
+              <StoreBadge
+                href={links.google}
+                label="Get it on Google Play"
+                source={require('../../../../assets/images/googlebadge.png')}
+              />
+            ) : null}
+            {links.web ? (
+              <ButtonLink href={links.web} variant="ghost" external icon="globe">
+                Live site
+              </ButtonLink>
+            ) : null}
+            {links.github ? (
+              <ButtonLink href={links.github} variant="ghost" external icon="github">
+                Source code
+              </ButtonLink>
+            ) : null}
+          </Reveal>
+        ) : null}
+
+        {/* ——— Body ——— */}
+        <View className="mt-16 gap-12 border-t border-border pt-12 lg:flex-row lg:gap-16">
+          <Reveal delay={160} className="flex-1 gap-6">
+            <Text className={type.mono}>Overview</Text>
+            {paragraphs.length ? (
+              paragraphs.map((p) => (
+                <Text key={p.slice(0, 32)} className={cn(type.body, 'text-lg')}>
+                  {p}
+                </Text>
+              ))
+            ) : (
+              <Text className={cn(type.body, 'text-lg')}>
+                {project.subtitle}. A detailed case study is on its way.
+              </Text>
+            )}
+          </Reveal>
+
+          {stack.length ? (
+            <Reveal delay={220} className="gap-4 lg:w-80">
+              <Text className={type.mono}>Stack</Text>
+              <View className="flex-row flex-wrap gap-2">
+                {stack.map((item) => (
+                  <Tag key={item}>{item}</Tag>
+                ))}
+              </View>
+            </Reveal>
+          ) : null}
+        </View>
+
+        {/* ——— Next ——— */}
+        {next && next !== project ? (
+          <Link href={projectHref(next)} asChild>
+            <Pressable accessibilityRole="link" className="mt-20">
+              {({ hovered }) => (
+                <View className="flex-row items-center gap-5 border-t border-border pt-10">
+                  <View className="flex-1 gap-2">
+                    <Text className={type.mono}>Next project</Text>
+                    <Text
+                      className={cn(
+                        'font-heading text-2xl text-foreground md:text-3xl',
+                        hovered && type.accent
+                      )}>
+                      {next.title}
+                    </Text>
+                  </View>
+                  <Image
+                    source={next.imagePath}
+                    resizeMode="cover"
+                    style={{ width: 64, height: 64, borderRadius: 16 }}
+                  />
+                </View>
+              )}
+            </Pressable>
+          </Link>
+        ) : null}
+      </Container>
     </View>
   );
 };
 
 export default ProjectDetailScreen;
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    marginTop: 24,
-    overflow: 'hidden',
-    flexDirection: 'column',
-    // alignItems: 'center',
-  },
-  contentContainer: {
-    alignContent: 'center',
-    alignItems: 'center',
-  },
-  storeBadgesWrapper: {
-    gap: 16,
-    marginTop: 16,
-    flexDirection: 'row',
-  },
-});
-
-const StoreButtons = ({
-  links,
-}: {
-  links: { google: string; apple: string; web?: string; github?: string };
-}) => {
-  console.log('🚀 ~ links:', links);
-  const renderItem: ReactNode[] = [];
-  if (links.apple) {
-    renderItem.push(
-      <Link
-        key={links.apple + 1}
-        //@ts-ignore
-        href={links.apple}
-        target="_blank"
-        className="target-blank">
-        <Animated.View className="cursor-pointer">
-          <Image
-            // cursor="pointer"
-            source={require('../../../../assets/images/appleBadge.png')}
-            style={{
-              width: 135,
-              height: 40,
-            }}
-          />
-        </Animated.View>
-      </Link>
-    );
-  }
-
-  if (links.google) {
-    renderItem.push(
-      <Link
-        key={links.google + 2}
-        //@ts-ignore
-        href={links.google}
-        target="_blank">
-        <Animated.View className="cursor-pointer">
-          <Image
-            //
-            source={require('../../../../assets/images/googlebadge.png')}
-            style={{
-              width: 135,
-              height: 40,
-            }}
-          />
-        </Animated.View>
-      </Link>
-    );
-  }
-  if (links.web) {
-    renderItem.push(
-      <Link
-        key={links.web + 3}
-        //@ts-ignore
-        href={links.web}
-        target="_blank">
-        <Animated.View
-          style={{
-            padding: 7,
-            backgroundColor: 'white',
-            borderRadius: 8,
-          }}>
-          <Feather name="globe" size={24} />
-        </Animated.View>
-      </Link>
-    );
-  }
-  if (links.github) {
-    renderItem.push(
-      <Link
-        key={links.github}
-        //@ts-ignore
-        href={links.github}
-        target="_blank">
-        <Animated.View
-          style={{
-            padding: 7,
-            backgroundColor: 'white',
-            borderRadius: 8,
-          }}>
-          <Feather name="github" size={24} />
-        </Animated.View>
-      </Link>
-    );
-  }
-  return <View style={styles.storeBadgesWrapper}>{renderItem}</View>;
-};

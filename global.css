@@ -10,26 +10,30 @@
   --color-muted: #525252;
   --color-border: #e5e5e5;
   /* Hero SVG gradient blobs (layout) — light mode */
-  --hero-paint0-start: #001aff;
-  --hero-paint0-end: #6ee5c2;
-  --hero-paint1-0: #ffc83a;
-  --hero-paint1-50: #ff008a;
-  --hero-paint1-100: #6100ff;
-  --hero-blob-opacity: 0.175;
+  --hero-paint0-start: #fdba74;
+  --hero-paint0-end: #fed7aa;
+  --hero-paint1-0: #fb923c;
+  --hero-paint1-50: #fdba74;
+  --hero-paint1-100: #ffedd5;
+  --hero-blob-opacity: 0.35;
 }
 html.dark {
   --color-background: rgb(10, 10, 10);
-  --color-card: rgb(15, 23, 42);
+  --color-card: #141414;
   --color-foreground: #fafafa;
   --color-muted: #a3a3a3;
   --color-border: rgba(255, 255, 255, 0.1);
   /* Hero SVG gradient blobs — dark mode (softer, glow-friendly on dark bg) */
-  --hero-paint0-start: #3b82f6;
-  --hero-paint0-end: #5eead4;
-  --hero-paint1-0: #fbbf24;
-  --hero-paint1-50: #f472b6;
-  --hero-paint1-100: #8b5cf6;
-  --hero-blob-opacity: 0.22;
+  --hero-paint0-start: #ea580c;
+  --hero-paint0-end: #7c2d12;
+  --hero-paint1-0: #fb923c;
+  --hero-paint1-50: #c2410c;
+  --hero-paint1-100: #431407;
+  --hero-blob-opacity: 0.28;
+}
+
+::selection {
+  background: rgba(249, 115, 22, 0.35);
 }
 
 html {
