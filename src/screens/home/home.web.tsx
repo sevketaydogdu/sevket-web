@@ -5,13 +5,7 @@ import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
 import { Frame, InkLink, SectionLabel, Span, site, type, yearRange } from '@/components/site';
 import { EASE, Phone, Reveal, useInView, usePointer } from '@/components/site/devices';
-import {
-  SCREENS,
-  WorkIndex,
-  platformsOf,
-  projectHref,
-  tintOf,
-} from '@/components/site/projects';
+import { SCREENS, WorkIndex, platformsOf, projectHref, tintOf } from '@/components/site/projects';
 import { Text } from '@/components/ui/text';
 import { jobHistory } from '@/constants/job-history';
 import { projects } from '@/constants/projects';
@@ -163,9 +157,11 @@ function CaseLink({ href, children, light }: { href: Href; children: string; lig
 function ZikirmatikCase() {
   const set = SCREENS[ZIKIRMATIK.title];
   return (
-    <View className="overflow-hidden rounded-[28px]" style={{ backgroundColor: tintOf(ZIKIRMATIK) }}>
+    <View
+      className="overflow-hidden rounded-[28px]"
+      style={{ backgroundColor: tintOf(ZIKIRMATIK) }}>
       <View className="gap-10 p-6 md:p-12 lg:flex-row lg:items-end lg:gap-16">
-        <View className="gap-6 lg:w-[30%]" >
+        <View className="gap-6 lg:w-[30%]">
           <Text className="font-body text-sm" style={{ color: 'rgba(233,245,233,0.6)' }}>
             Case 01
           </Text>
@@ -174,13 +170,19 @@ function ZikirmatikCase() {
             style={{ color: '#e9f5e9' }}>
             Zikirmatik
           </Text>
-          <Text className="font-body text-lg leading-[1.55]" style={{ color: 'rgba(233,245,233,0.82)' }}>
+          <Text
+            className="font-body text-lg leading-[1.55]"
+            style={{ color: 'rgba(233,245,233,0.82)' }}>
             A quiet dhikr counter. Slide to count, lists that save themselves, six languages and a
             light or dark theme chosen on first launch.
           </Text>
           <View className="flex-row gap-10">
-            <FactCol color="#e9f5e9" label="Platforms">{platformsOf(ZIKIRMATIK).join(', ')}</FactCol>
-            <FactCol color="#e9f5e9" label="Stack">Expo, Reanimated</FactCol>
+            <FactCol color="#e9f5e9" label="Platforms">
+              {platformsOf(ZIKIRMATIK).join(', ')}
+            </FactCol>
+            <FactCol color="#e9f5e9" label="Stack">
+              Expo, Reanimated
+            </FactCol>
           </View>
           <CaseLink href={projectHref(ZIKIRMATIK)} light>
             Read the case study
@@ -194,7 +196,11 @@ function ZikirmatikCase() {
           contentContainerStyle={{ gap: 20, paddingRight: 24 }}
           style={{ scrollSnapType: 'x mandatory' } as any}>
           {set.items.map((s, i) => (
-            <Reveal key={s.caption} delay={i * 90} distance={40} style={{ scrollSnapAlign: 'start' } as any}>
+            <Reveal
+              key={s.caption}
+              delay={i * 90}
+              distance={40}
+              style={{ scrollSnapAlign: 'start' } as any}>
               <Phone source={s.source} aspect={set.aspect} width={210} />
               <Text className="mt-4 font-body text-sm" style={{ color: 'rgba(233,245,233,0.7)' }}>
                 {String(i + 1).padStart(2, '0')} {s.caption}
@@ -233,15 +239,21 @@ function PoliticcaCase() {
             style={{ color: '#fff' }}>
             Politicca
           </Text>
-          <Text className="font-body text-lg leading-[1.55]" style={{ color: 'rgba(255,255,255,0.82)' }}>
+          <Text
+            className="font-body text-lg leading-[1.55]"
+            style={{ color: 'rgba(255,255,255,0.82)' }}>
             A social platform for politics — feed, news, direct messages and campaign donations in
             one app.
           </Text>
         </View>
         <View className="gap-6 md:items-end md:pt-10">
           <View className="flex-row gap-10">
-            <FactCol color="#ffffff" label="Platforms">{platformsOf(POLITICCA).join(', ')}</FactCol>
-            <FactCol color="#ffffff" label="Stack">Expo, Tamagui, Redux</FactCol>
+            <FactCol color="#ffffff" label="Platforms">
+              {platformsOf(POLITICCA).join(', ')}
+            </FactCol>
+            <FactCol color="#ffffff" label="Stack">
+              Expo, Tamagui, Redux
+            </FactCol>
           </View>
           <CaseLink href={projectHref(POLITICCA)} light>
             Read the case study
@@ -324,8 +336,8 @@ export default function WebHomeScreen() {
           <View className="w-full gap-1 md:w-1/2">
             <Text className={type.label}>Good at</Text>
             <Text className={cn(type.body, 'max-w-md')}>
-              App architecture from zero, white-label and multi-tenant apps, store releases, and
-              the small interaction details that make an app feel native.
+              App architecture from zero, white-label and multi-tenant apps, store releases, and the
+              small interaction details that make an app feel native.
             </Text>
           </View>
         </Reveal>
@@ -362,9 +374,7 @@ export default function WebHomeScreen() {
                 <Text className={cn(type.meta, 'tabular w-24 md:w-40')}>
                   {yearRange(job.period)}
                 </Text>
-                <Text className={cn(type.heading, 'flex-1 text-lg md:text-xl')}>
-                  {job.company}
-                </Text>
+                <Text className={cn(type.heading, 'flex-1 text-lg md:text-xl')}>{job.company}</Text>
                 <Text className={cn(type.meta, 'w-full pl-28 md:w-auto md:pl-0')}>
                   {job.position}
                 </Text>

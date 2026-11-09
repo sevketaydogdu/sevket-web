@@ -112,10 +112,18 @@ const ProjectDetailScreen = () => {
                 paddingTop: 40,
                 paddingBottom: screens.partial ? 0 : 40,
               }}
-              style={{ scrollSnapType: 'x mandatory', marginBottom: screens.partial ? -90 : 0 } as any}>
+              style={
+                { scrollSnapType: 'x mandatory', marginBottom: screens.partial ? -90 : 0 } as any
+              }>
               {screens.items.map((s, i) => (
-                <Reveal key={s.caption} delay={i * 90} distance={48} style={{ scrollSnapAlign: 'center' } as any}>
-                  <Text className="mb-4 font-body text-sm" style={{ color: 'rgba(255,255,255,0.72)' }}>
+                <Reveal
+                  key={s.caption}
+                  delay={i * 90}
+                  distance={48}
+                  style={{ scrollSnapAlign: 'center' } as any}>
+                  <Text
+                    className="mb-4 font-body text-sm"
+                    style={{ color: 'rgba(255,255,255,0.72)' }}>
                     {String(i + 1).padStart(2, '0')} {s.caption}
                   </Text>
                   <Phone source={s.source} aspect={screens.aspect} width={250} />
@@ -124,7 +132,11 @@ const ProjectDetailScreen = () => {
             </ScrollView>
           </View>
         ) : (
-          <IconField project={project} iconSize={176} className="aspect-[16/9] md:aspect-[21/9] rounded-[28px]" />
+          <IconField
+            project={project}
+            iconSize={176}
+            className="aspect-[16/9] md:aspect-[21/9] rounded-[28px]"
+          />
         )}
       </Frame>
 
