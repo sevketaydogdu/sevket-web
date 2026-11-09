@@ -33,6 +33,7 @@ module.exports = {
         foreground: 'var(--color-foreground)',
         muted: 'var(--color-muted)',
         border: 'var(--color-border)',
+        signal: 'var(--color-signal)',
         selected: '#131212',
         background2: '#1A1A1A',
         primary: '#E0FF00',
@@ -53,16 +54,22 @@ module.exports = {
           'sans-serif',
         ],
         display: ['SatoshiBlack', 'SatoshiVariable', 'sans-serif'],
+        heading: ['SatoshiBold', 'SatoshiVariable', 'sans-serif'],
+        body: ['SatoshiRegular', 'SatoshiVariable', 'sans-serif'],
+        mono: ['SpaceMono', 'ui-monospace', 'Menlo', 'monospace'],
       },
       fontSize: {
-        'title': ['2.25rem', {
-          lineHeight: '2.5rem',
-          fontWeight: '800',
-          letterSpacing: '-0.02em',
-        }],
+        title: [
+          '2.25rem',
+          {
+            lineHeight: '2.5rem',
+            fontWeight: '800',
+            letterSpacing: '-0.02em',
+          },
+        ],
       },
       animation: {
-        'title': 'fadeIn 0.5s ease-out',
+        title: 'fadeIn 0.5s ease-out',
       },
       keyframes: {
         fadeIn: {

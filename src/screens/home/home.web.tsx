@@ -1,474 +1,395 @@
+import { Href, Link } from 'expo-router';
+import Head from 'expo-router/head';
+import React from 'react';
+import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
+
+import { Frame, InkLink, SectionLabel, Span, site, type, yearRange } from '@/components/site';
+import { EASE, Phone, Reveal, useInView, usePointer } from '@/components/site/devices';
+import { SCREENS, WorkIndex, platformsOf, projectHref, tintOf } from '@/components/site/projects';
+import { Text } from '@/components/ui/text';
 import { jobHistory } from '@/constants/job-history';
 import { projects } from '@/constants/projects';
-import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
-import { LinearGradient } from 'expo-linear-gradient';
-import Head from 'expo-router/head';
-import { Link } from 'expo-router';
-import React from 'react';
-import { Image, Pressable, View } from 'react-native';
-import { Text } from '@/components/ui/text';
+import { cn } from '@/lib/utils';
 
-const featuredProjects = projects;
-// 3×4 grid (12 tiles) to match design; fill with projects then repeat if needed
-const featuredJobs = jobHistory.slice(0, 3);
+const ZIKIRMATIK = projects.find((p) => p.title === 'Easy Dhikr: Zikirmatik')!;
+const POLITICCA = projects.find((p) => p.title === 'Politicca')!;
+const REST = projects.filter((p) => p !== ZIKIRMATIK && p !== POLITICCA);
 
-const featureCards = [
-  {
-    title: 'Cross-platform',
-    description:
-      'One codebase for iOS, Android, and web. Ship to every platform without rewriting.',
-  },
-  {
-    title: 'React Native & Expo',
-    description:
-      'Modern stack that ships fast. TypeScript, Expo Router, and production-ready tooling.',
-  },
-  {
-    title: 'From idea to store',
-    description: 'From concept to App Store and Play Store. Architecture, build, and release.',
-  },
-  {
-    title: 'Built to last',
-    description: 'Scalable structure, clear code, and maintainable apps that grow with you.',
-  },
-];
+const dotGrid = {
+  backgroundImage: 'radial-gradient(var(--color-border) 1px, transparent 1px)',
+  backgroundSize: '22px 22px',
+} as any;
 
-const steps = [
-  {
-    step: 1,
-    title: 'Define & design',
-    description:
-      'We align on your vision, scope, and UX. Wireframes and flows so we build the right thing.',
-  },
-  {
-    step: 2,
-    title: 'Build with React Native',
-    description:
-      'I build the app with Expo and TypeScript. You get regular updates and a single codebase for all platforms.',
-  },
-  {
-    step: 3,
-    title: 'Ship to the stores',
-    description:
-      'App Store and Play Store submission, CI/CD, and post-launch support so your app stays live.',
-  },
-];
+/* ——— Hero stage: three phones rising from the bottom edge, with gentle pointer parallax ——— */
+function HeroStage() {
+  const { width } = useWindowDimensions();
+  const [stageRef, p] = usePointer<View>();
+  const [revealRef, shown] = useInView<View>('0px');
+  const compact = width < 768;
+  const w = compact ? 150 : 250;
 
-export default function WebHomeScreen() {
-  React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  const phones = [
+    {
+      source: SCREENS[ZIKIRMATIK.title].items[1].source,
+      aspect: SCREENS[ZIKIRMATIK.title].aspect,
+      x: compact ? -112 : -250,
+      y: compact ? 70 : 120,
+      r: -7,
+      depth: 0.6,
+      delay: 120,
+      z: 1,
+    },
+    {
+      source: SCREENS[ZIKIRMATIK.title].items[0].source,
+      aspect: SCREENS[ZIKIRMATIK.title].aspect,
+      x: 0,
+      y: compact ? 30 : 56,
+      r: 0,
+      depth: 1,
+      delay: 0,
+      z: 3,
+    },
+    {
+      source: SCREENS[POLITICCA.title].items[0].source,
+      aspect: SCREENS[POLITICCA.title].aspect,
+      x: compact ? 112 : 250,
+      y: compact ? 70 : 120,
+      r: 7,
+      depth: 0.6,
+      delay: 220,
+      z: 2,
+    },
+  ];
 
   return (
-    <View className="flex-1 bg-transparent">
+    <View ref={revealRef}>
+      <View
+        ref={stageRef}
+        className="relative h-[380px] overflow-hidden rounded-[28px] border border-border bg-card md:h-[600px]"
+        style={dotGrid}>
+        {phones.map((ph, i) => (
+          <View
+            key={i}
+            className="absolute bottom-0 left-1/2"
+            style={
+              {
+                zIndex: ph.z,
+                marginLeft: -w / 2,
+                opacity: shown ? 1 : 0,
+                transform: [
+                  { translateX: ph.x + p.x * 14 * ph.depth },
+                  { translateY: (shown ? ph.y : ph.y + 160) + p.y * 8 * ph.depth },
+                  { rotate: `${ph.r + p.x * 1.5 * ph.depth}deg` },
+                ],
+                transitionProperty: 'opacity, transform',
+                transitionDuration: shown ? '1400ms, 700ms' : '0ms',
+                transitionTimingFunction: EASE,
+                transitionDelay: `${ph.delay}ms, 0ms`,
+              } as any
+            }>
+            <Phone source={ph.source} aspect={ph.aspect} width={w} />
+          </View>
+        ))}
+      </View>
+      <View className="mt-3 flex-row justify-between gap-6">
+        <Text className={type.label}>Zikirmatik and Politicca — both live on iOS and Android.</Text>
+        <Text className={cn(type.label, 'hidden md:flex')}>Fig. 1</Text>
+      </View>
+    </View>
+  );
+}
+
+function FactCol({
+  label,
+  children,
+  color,
+}: {
+  label: string;
+  children: React.ReactNode;
+  color: string;
+}) {
+  return (
+    <View className="gap-1">
+      <Text className="font-body text-sm" style={{ color, opacity: 0.6 }}>
+        {label}
+      </Text>
+      <Text className="font-body text-base" style={{ color }}>
+        {children}
+      </Text>
+    </View>
+  );
+}
+
+function CaseLink({ href, children, light }: { href: Href; children: string; light?: boolean }) {
+  return (
+    <Link href={href} asChild>
+      <Pressable accessibilityRole="link" className="self-start">
+        {({ hovered }) => (
+          <View
+            className="flex-row items-center gap-3 border-b pb-1"
+            style={{ borderColor: light ? 'rgba(255,255,255,0.35)' : undefined }}>
+            <Text
+              className="font-heading text-base"
+              style={{ color: light ? '#fff' : undefined } as any}>
+              {children}
+            </Text>
+            <Text
+              className="font-body text-base"
+              style={
+                {
+                  color: light ? '#fff' : undefined,
+                  transform: [{ translateX: hovered ? 4 : 0 }],
+                  transitionProperty: 'transform',
+                  transitionDuration: '400ms',
+                  transitionTimingFunction: EASE,
+                } as any
+              }>
+              →
+            </Text>
+          </View>
+        )}
+      </Pressable>
+    </Link>
+  );
+}
+
+/* ——— Case 01: full phones scrolling sideways on the app's own green ——— */
+function ZikirmatikCase() {
+  const set = SCREENS[ZIKIRMATIK.title];
+  return (
+    <View
+      className="overflow-hidden rounded-[28px]"
+      style={{ backgroundColor: tintOf(ZIKIRMATIK) }}>
+      <View className="gap-10 p-6 md:p-12 lg:flex-row lg:items-end lg:gap-16">
+        <View className="gap-6 lg:w-[30%]">
+          <Text className="font-body text-sm" style={{ color: 'rgba(233,245,233,0.6)' }}>
+            Case 01
+          </Text>
+          <Text
+            className="font-heading text-4xl tracking-[-0.03em] md:text-5xl"
+            style={{ color: '#e9f5e9' }}>
+            Zikirmatik
+          </Text>
+          <Text
+            className="font-body text-lg leading-[1.55]"
+            style={{ color: 'rgba(233,245,233,0.82)' }}>
+            A quiet dhikr counter. Slide to count, lists that save themselves, six languages and a
+            light or dark theme chosen on first launch.
+          </Text>
+          <View className="flex-row gap-10">
+            <FactCol color="#e9f5e9" label="Platforms">
+              {platformsOf(ZIKIRMATIK).join(', ')}
+            </FactCol>
+            <FactCol color="#e9f5e9" label="Stack">
+              Expo, Reanimated
+            </FactCol>
+          </View>
+          <CaseLink href={projectHref(ZIKIRMATIK)} light>
+            Read the case study
+          </CaseLink>
+        </View>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          className="flex-1"
+          contentContainerStyle={{ gap: 20, paddingRight: 24 }}
+          style={{ scrollSnapType: 'x mandatory' } as any}>
+          {set.items.map((s, i) => (
+            <Reveal
+              key={s.caption}
+              delay={i * 90}
+              distance={40}
+              style={{ scrollSnapAlign: 'start' } as any}>
+              <Phone source={s.source} aspect={set.aspect} width={210} />
+              <Text className="mt-4 font-body text-sm" style={{ color: 'rgba(233,245,233,0.7)' }}>
+                {String(i + 1).padStart(2, '0')} {s.caption}
+              </Text>
+            </Reveal>
+          ))}
+        </ScrollView>
+      </View>
+    </View>
+  );
+}
+
+/* ——— Case 02: partial screens fanned up from the bottom of a blue field ——— */
+function PoliticcaCase() {
+  const set = SCREENS[POLITICCA.title];
+  const { width } = useWindowDimensions();
+  const compact = width < 768;
+  const visible = compact ? set.items.slice(0, 3) : set.items;
+  const w = compact ? 120 : 220;
+  const spread = compact ? 104 : 196;
+  const mid = (visible.length - 1) / 2;
+  const [ref, shown] = useInView<View>();
+
+  return (
+    <View
+      ref={ref}
+      className="relative overflow-hidden rounded-[28px]"
+      style={{ backgroundColor: tintOf(POLITICCA) }}>
+      <View className="gap-6 p-6 md:flex-row md:items-start md:justify-between md:p-12">
+        <View className="max-w-md gap-6">
+          <Text className="font-body text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            Case 02
+          </Text>
+          <Text
+            className="font-heading text-4xl tracking-[-0.03em] text-white md:text-5xl"
+            style={{ color: '#fff' }}>
+            Politicca
+          </Text>
+          <Text
+            className="font-body text-lg leading-[1.55]"
+            style={{ color: 'rgba(255,255,255,0.82)' }}>
+            A social platform for politics — feed, news, direct messages and campaign donations in
+            one app.
+          </Text>
+        </View>
+        <View className="gap-6 md:items-end md:pt-10">
+          <View className="flex-row gap-10">
+            <FactCol color="#ffffff" label="Platforms">
+              {platformsOf(POLITICCA).join(', ')}
+            </FactCol>
+            <FactCol color="#ffffff" label="Stack">
+              Expo, Tamagui, Redux
+            </FactCol>
+          </View>
+          <CaseLink href={projectHref(POLITICCA)} light>
+            Read the case study
+          </CaseLink>
+        </View>
+      </View>
+
+      <View className="relative h-[190px] md:h-[330px]">
+        {visible.map((s, i) => {
+          const off = i - mid;
+          return (
+            <View
+              key={s.caption}
+              className="absolute left-1/2"
+              style={
+                {
+                  top: Math.abs(off) * (compact ? 18 : 34),
+                  marginLeft: -w / 2,
+                  zIndex: 10 - Math.abs(off),
+                  opacity: shown ? 1 : 0,
+                  transform: [
+                    { translateX: off * spread },
+                    { translateY: shown ? 0 : 140 },
+                    { rotate: `${off * 3}deg` },
+                  ],
+                  transitionProperty: 'opacity, transform',
+                  transitionDuration: '1400ms',
+                  transitionTimingFunction: EASE,
+                  transitionDelay: `${Math.abs(off) * 110}ms`,
+                } as any
+              }>
+              <Phone source={s.source} aspect={set.aspect} width={w} />
+            </View>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
+
+export default function WebHomeScreen() {
+  return (
+    <View className="flex-1">
       <Head>
-        <title>Sevket Aydogdu — React Native Developer</title>
+        <title>Şevket Aydoğdu — React Native developer</title>
         <meta
           name="description"
-          content="React Native & Expo developer based in Turkey. Building cross-platform mobile apps with TypeScript and modern tooling."
+          content="Şevket Aydoğdu designs and builds mobile apps with React Native and Expo for iOS, Android and the web."
         />
       </Head>
 
-      {/* ——— Hero (editorial, confident, with depth and motion) ——— */}
-      <View className="section-container-wide mx-auto w-full relative min-h-[72vh] justify-center overflow-hidden pt-24 pb-32 md:min-h-[75vh] md:pt-32 md:pb-40">
-        {/* Top gradient — warm wash */}
-        <LinearGradient
-          colors={['rgba(234, 88, 12, 0.08)', 'rgba(234, 88, 12, 0.02)', 'transparent']}
-          style={{ position: 'absolute', left: 0, right: 0, top: 0, height: '60%' }}
-        />
-        {/* Bottom-right ambient glow */}
-        <LinearGradient
-          colors={['transparent', 'transparent', 'rgba(234, 88, 12, 0.04)']}
-          style={{ position: 'absolute', left: '40%', right: 0, top: '35%', bottom: 0 }}
-        />
-        {/* Decorative orb — adds depth without clutter */}
-        <View
-          className="absolute right-0 top-1/2 -translate-y-1/2 md:right-[5%] lg:right-[12%]"
-          style={{ width: 320, height: 320 }}
-          pointerEvents="none">
-          <LinearGradient
-            colors={['rgba(234, 88, 12, 0.12)', 'rgba(234, 88, 12, 0.04)', 'transparent']}
-            style={{
-              width: '100%',
-              height: '100%',
-              borderRadius: 9999,
-              opacity: 0.9,
-            }}
-          />
-        </View>
+      {/* ——— Intro ——— */}
+      <Frame className="pt-4 md:pt-12">
+        <Reveal>
+          <Text className={cn(type.statement, 'max-w-[22ch] md:max-w-[25ch]')}>
+            I design and build mobile apps with React Native — for iOS, Android and the web, from
+            one codebase. Six years in, with <InkLink href="/projects">ten-plus apps</InkLink> live
+            in the stores.
+          </Text>
+        </Reveal>
+      </Frame>
 
-        <View className="relative z-10 mx-auto w-full max-w-4xl">
-          <View className="flex flex-col items-center text-center md:items-center">
-            {/* Label — establishes context */}
-            <Text
-              className="text-xs font-semibold uppercase tracking-[0.25em] text-orange-400/90 md:text-sm">
-              React Native & Expo
-            </Text>
+      <Frame className="mt-12 md:mt-20">
+        <HeroStage />
+      </Frame>
 
-            {/* Headline — one clear idea */}
-            <View
-              className="mt-4 md:mt-5">
-              <Text className="text-center font-display text-4xl leading-[1.08] tracking-tight text-white md:text-5xl lg:text-6xl xl:text-7xl">
-                Create your app in weeks,{' '}
-                <Text className="font-display italic text-orange-400">not months.</Text>
-              </Text>
-            </View>
-
-            {/* Accent line — editorial detail */}
-            <View
-              className="mt-5 h-0.5 w-16 rounded-full bg-orange-500 md:mt-6 md:w-20"
-            />
-
-            {/* Subline — supporting, not competing */}
-            <Text
-              className="section-subline mx-auto mt-6 max-w-xl text-center text-white/70 md:max-w-2xl md:text-lg md:leading-relaxed">
-              Bring your product to life with one codebase. iOS, Android, and web — shipped and
-              ready for launch.
-            </Text>
-
-            {/* CTAs — primary + secondary with clear hierarchy */}
-            <View
-              className="mt-10 flex flex-row flex-wrap items-center justify-center gap-4 md:mt-12 md:gap-5">
-              <Link href={'/contact' as any} asChild>
-                <Pressable>
-                  <View className="rounded-full bg-orange-500 px-8 py-4 shadow-lg shadow-orange-500/25 active:opacity-90">
-                    <Text className="text-base font-semibold text-white">Get in touch</Text>
-                  </View>
-                </Pressable>
-              </Link>
-              <Link href={'/projects' as any} asChild>
-                <Pressable>
-                  <View className="rounded-full border border-white/25 bg-white/[0.04] px-8 py-4 active:bg-white/[0.08]">
-                    <Text className="text-base font-medium text-white">
-                      View work <Text className="text-orange-400">→</Text>
-                    </Text>
-                  </View>
-                </Pressable>
-              </Link>
-            </View>
-
-            {/* Credit — subtle, trustworthy */}
-            <Text
-              className="mt-8 text-center text-sm tracking-wide text-white/45 md:mt-10">
-              Sevket Aydogdu · React Native & Expo · Turkey
+      <Frame className="mt-14 md:mt-20">
+        <Reveal className="flex-row flex-wrap gap-y-6">
+          <View className="w-full gap-1 md:w-1/4">
+            <Text className={type.label}>Currently</Text>
+            <Text className={type.body}>
+              {site.current.position},{'\n'}
+              {site.current.company}
             </Text>
           </View>
-        </View>
-      </View>
+          <View className="w-full gap-1 md:w-1/4">
+            <Text className={type.label}>Before</Text>
+            <Text className={type.body}>UX/UI designer, then{'\n'}React Native since 2020</Text>
+          </View>
+          <View className="w-full gap-1 md:w-1/2">
+            <Text className={type.label}>Good at</Text>
+            <Text className={cn(type.body, 'max-w-md')}>
+              App architecture from zero, white-label and multi-tenant apps, store releases, and the
+              small interaction details that make an app feel native.
+            </Text>
+          </View>
+        </Reveal>
+      </Frame>
 
-      {/* ——— Trust bar (Sourceful: "Trusted by...") ——— */}
-      <View className="border-y border-white/5 bg-white/[0.02] py-6 md:py-8">
-        <View className="section-container">
-          <Text className="text-center text-sm font-medium text-white/60 md:text-base">
-            Trusted by teams building the next generation of apps
-          </Text>
-          <Text className="mt-2 text-center text-sm text-white/40">
-            4+ years experience · 5+ apps shipped · React Native · Expo · TypeScript
-          </Text>
-        </View>
-      </View>
+      {/* ——— Featured work ——— */}
+      <Frame className="mt-28 md:mt-40">
+        <SectionLabel aside="2 of 5">Featured work</SectionLabel>
+        <Reveal className="mt-6">
+          <ZikirmatikCase />
+        </Reveal>
+        <Reveal className="mt-6">
+          <PoliticcaCase />
+        </Reveal>
+      </Frame>
 
-      {/* ——— Create everything you need (Sourceful-style feature grid) ——— */}
-      <View className="section-container-wide py-20 md:py-28">
-        <Text className="section-heading text-center">
-          Everything you need to ship apps
-        </Text>
-        <Text className="section-subline mx-auto mt-3 max-w-2xl text-center">
-          From idea to App Store and Play Store — one place, one codebase.
-        </Text>
-        <View className="mt-12 gap-6 md:flex-row md:flex-wrap md:gap-6">
-          {featureCards.map((card) => (
-            <View
-              key={card.title}
-              className="flex-1 min-w-0 rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:min-w-[260px] md:max-w-[calc(50%-0.75rem)] lg:max-w-[calc(25%-0.75rem)]">
-              <Text className="text-lg font-bold text-white">{card.title}</Text>
-              <Text className="mt-2 text-sm leading-relaxed text-white/60">{card.description}</Text>
-            </View>
-          ))}
+      {/* ——— More work ——— */}
+      <Frame className="mt-28 md:mt-40">
+        <SectionLabel aside={<InkLink href="/projects">All work</InkLink>}>More work</SectionLabel>
+        <View className="mt-2">
+          <WorkIndex items={REST} />
         </View>
-      </View>
+      </Frame>
 
-      {/* ——— 3 steps (Sourceful: "Professional visuals in 3 simple steps") ——— */}
-      <View className="border-t border-white/5 bg-white/[0.02] py-20 md:py-28">
-        <View className="section-container-wide">
-          <Text
-            className="section-heading text-center">
-            From idea to launch in 3 steps
-          </Text>
-          <Text
-            className="section-subline mx-auto mt-3 max-w-xl text-center">
-            A clear process so we ship on time and on scope.
-          </Text>
-          <View className="mt-14 gap-10 md:flex-row md:gap-8 lg:gap-12">
-            {steps.map((item, index) => (
-              <View
-                key={item.step}
-                className="flex-1 min-w-0">
-                <View className="mb-4 h-12 w-12 items-center justify-center rounded-xl bg-orange-500/20">
-                  <Text className="text-lg font-bold text-orange-400">{item.step}</Text>
-                </View>
-                <Text className="text-xl font-bold text-white">{item.title}</Text>
-                <Text className="mt-2 text-sm leading-relaxed text-white/60">
-                  {item.description}
+      {/* ——— Experience ——— */}
+      <Frame className="mt-28 md:mt-40">
+        <SectionLabel aside={<InkLink href="/aboutme">More about me</InkLink>}>
+          Experience
+        </SectionLabel>
+        <View className="mt-2">
+          {jobHistory.map((job, i) => (
+            <Reveal key={`${job.company}-${job.period}`} delay={i * 60}>
+              <View className="flex-row flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-border py-5">
+                <Text className={cn(type.meta, 'tabular w-24 md:w-40')}>
+                  {yearRange(job.period)}
+                </Text>
+                <Text className={cn(type.heading, 'flex-1 text-lg md:text-xl')}>{job.company}</Text>
+                <Text className={cn(type.meta, 'w-full pl-28 md:w-auto md:pl-0')}>
+                  {job.position}
                 </Text>
               </View>
-            ))}
-          </View>
-          <View
-            className="mt-12 flex flex-row justify-center">
-            <Link href={'/contact' as any} asChild>
-              <Pressable>
-                <Text className="text-orange-400 font-medium">Start a project →</Text>
-              </Pressable>
-            </Link>
-          </View>
-        </View>
-      </View>
-
-      {/* ——— Old way vs. my way (Sourceful-style comparison) ——— */}
-      <View className="border-t border-white/5 bg-white/[0.02] py-20 md:py-28">
-        <View className="section-container-wide">
-          <Text
-            className="section-heading text-center">
-            The old way vs. the way we work.
-          </Text>
-          <Text
-            className="section-subline mx-auto mt-3 max-w-2xl text-center">
-            Before working with a focused React Native developer, app projects were slow, expensive,
-            and hard to align. Here's how we do it now.
-          </Text>
-          <View className="mt-12 flex flex-col gap-6 md:flex-row md:gap-6">
-            {/* Left: The old way */}
-            <View
-              className="flex-1 min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-lg md:p-8">
-              <Text className="text-xl font-bold text-white">The old way</Text>
-              <Text className="mt-1 text-sm text-white/60">Here's what you often get:</Text>
-              <View className="mt-6 gap-4">
-                {[
-                  'Weeks of back-and-forth before a single line of code',
-                  'Agencies that over-scope and blow the budget',
-                  'Freelancers who disappear mid-project',
-                  'Unclear timelines and endless "we need to discuss"',
-                  'Native-only builds that double the work',
-                  'No single point of contact who actually ships',
-                ].map((item, i) => (
-                  <View key={i} className="flex-row items-start gap-3">
-                    <View className="mt-0.5 h-5 w-5 shrink-0 items-center justify-center rounded-full border border-white/30">
-                      <Text className="text-xs font-bold text-white/80">✕</Text>
-                    </View>
-                    <Text className="flex-1 text-sm leading-snug text-white/70">{item}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-            {/* Right: The Sevket way — gradient card */}
-            <View className="flex-1 min-w-0 overflow-hidden rounded-2xl border border-orange-500/20 shadow-xl md:border-orange-500/30">
-              <LinearGradient
-                colors={[
-                  'rgba(234, 88, 12, 0.18)',
-                  'rgba(234, 88, 12, 0.06)',
-                  'rgba(234, 88, 12, 0.02)',
-                ]}
-                style={{ flex: 1 }}>
-                <View className="p-6 md:p-8">
-                  <Text className="text-xl font-bold text-white">The way we work</Text>
-                  <Text className="mt-1 text-sm text-white/70">
-                    Direct collaboration, one codebase, clear scope.
-                  </Text>
-                  <View className="mt-6 gap-4">
-                    {[
-                      'Clear scope and timeline from day one',
-                      'One React Native codebase for iOS and Android',
-                      'Regular updates and a single point of contact',
-                      'Iterate in weeks, not months',
-                      'Expo and TypeScript — modern, maintainable stack',
-                      'Founder-friendly: you get someone who ships',
-                    ].map((item, i) => (
-                      <View key={i} className="flex-row items-start gap-3">
-                        <View className="mt-0.5 h-5 w-5 shrink-0 items-center justify-center rounded-full bg-orange-500/40 border border-orange-400/50">
-                          <Text className="text-xs font-bold text-white">✓</Text>
-                        </View>
-                        <Text className="flex-1 text-sm leading-snug text-white/90">{item}</Text>
-                      </View>
-                    ))}
-                  </View>
-                </View>
-              </LinearGradient>
-            </View>
-          </View>
-          <View className="mt-10 flex flex-row justify-center">
-            <Link href={'/contact' as any} asChild>
-              <Pressable>
-                <View className="rounded-full bg-orange-500 px-10 py-4">
-                  <Text className="text-base font-semibold text-white">Get in touch</Text>
-                </View>
-              </Pressable>
-            </Link>
-          </View>
-        </View>
-      </View>
-
-      {/* ——— Projects: light section, white card, 3×4 grid, gradient CTA (match design) ——— */}
-      <View className="w-full border-t border-white/5  md:py-28">
-        <View className="section-container-wide mx-auto w-full">
-          {/* Single white card: heading + subtitle + grid + CTA */}
-          <View
-            className="overflow-hidden rounded-2xl  p-8 shadow-xl md:p-10 md:rounded-[20px]"
-            style={{
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.08,
-              shadowRadius: 16,
-              elevation: 8,
-            }}>
-            <Text className="text-center text-3xl font-semibold tracking-tight   md:text-4xl">
-              Bringing your brand vision to life.
-            </Text>
-            <Text className="mt-2 text-center text-xl font-normal   md:text-2xl">
-              Exactly as you've always imagined it
-            </Text>
-
-            {/* 3×4 image grid with rounded tiles */}
-            <View className="mt-10 grid grid-cols-5 gap-4 md:mt-12 md:gap-4">
-              {featuredProjects.map((proj, index) => (
-                <View key={`${proj.id}-${proj.title}-${index}`}>
-                  <Link
-                    href={`/projects/${clearSpacesAndSpecialCharacters(proj.title)}` as any}
-                    asChild>
-                    <Pressable className="h-full">
-                      <View className="aspect-square w-full overflow-hidden rounded-2xl ">
-                        <Image
-                          source={proj.imagePath}
-                          resizeMode="cover"
-                          style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            width: '100%',
-                            height: '100%',
-                          }}
-                        />
-                      </View>
-                    </Pressable>
-                  </Link>
-                </View>
-              ))}
-            </View>
-          </View>
-        </View>
-      </View>
-
-      {/* ——— Work with a developer who ships (Sourceful: "Work with professional designers") ——— */}
-      <View className="border-t border-white/5 bg-white/[0.02] py-20 md:py-28">
-        <View className="section-container">
-          <Text className="section-heading text-center">
-            Work with a developer who ships
-          </Text>
-          <Text className="section-subline mx-auto mt-3 max-w-xl text-center">
-            No endless meetings or vague timelines. Direct collaboration, clear scope, and apps that
-            go live.
-          </Text>
-          <View className="mt-8 flex flex-row flex-wrap justify-center gap-6 md:gap-10">
-            <View className="items-center">
-              <Text className="text-3xl font-bold text-orange-400 md:text-4xl">4+</Text>
-              <Text className="text-sm text-white/50">Years experience</Text>
-            </View>
-            <View className="items-center">
-              <Text className="text-3xl font-bold text-orange-400 md:text-4xl">5+</Text>
-              <Text className="text-sm text-white/50">Apps in production</Text>
-            </View>
-          </View>
-          <View className="mt-10 flex flex-row justify-center">
-            <Link href={'/contact' as any} asChild>
-              <Pressable>
-                <View className="rounded-full bg-orange-500 px-8 py-4">
-                  <Text className="text-base font-semibold text-white">Start a project</Text>
-                </View>
-              </Pressable>
-            </Link>
-          </View>
-        </View>
-      </View>
-
-      <View className="section-container py-16 md:py-20">
-        <Text className="section-heading">
-          Previously
-        </Text>
-        <Text className="section-subline mt-3">
-          Senior React Native roles at product companies and agencies.
-        </Text>
-        <View className="mt-10 gap-8 md:flex-row md:flex-wrap md:gap-10">
-          {featuredJobs.map((job, index) => (
-            <View
-              key={`${job.company}-${index}`}
-              className="flex-1 min-w-0 md:min-w-[200px]">
-              <Text className="text-lg font-bold text-white">{job.company}</Text>
-              <Text className="mt-0.5 text-orange-400/90 font-medium">{job.position}</Text>
-              <Text className="mt-1 text-sm text-white/50">{job.period}</Text>
-            </View>
+            </Reveal>
           ))}
         </View>
-        <View className="mt-8">
-          <Link href={'/aboutme' as any} asChild>
-            <Pressable>
-              <Text className="text-orange-400 font-medium">Full story →</Text>
-            </Pressable>
-          </Link>
-        </View>
-      </View>
-
-      {/* ——— Big CTA (Sourceful: "Bringing your brand vision to life") ——— */}
-      <View className="relative overflow-hidden">
-        <LinearGradient
-          colors={['rgba(234, 88, 12, 0.14)', 'rgba(234, 88, 12, 0.05)']}
-          style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
-        />
-        <View className="section-container relative z-10 py-24 md:py-32">
-          <View className="mx-auto max-w-2xl text-center">
-            <Text className="font-display text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl">
-              Bringing your app idea to life.{' '}
-              <Text className="font-display italic text-orange-400">
-                Exactly as you've imagined it.
-              </Text>
-            </Text>
-            <Text className="mt-6 text-lg text-white/60">
-              Get in touch for a quick chat about your project.
-            </Text>
-            <View className="mt-10 flex flex-row justify-center">
-              <Link href={'/contact' as any} asChild>
-                <Pressable>
-                  <View className="rounded-full bg-orange-500 px-10 py-4">
-                    <Text className="text-base font-semibold text-white">Get in touch</Text>
-                  </View>
-                </Pressable>
-              </Link>
-            </View>
-          </View>
-        </View>
-      </View>
-
-      {/* ——— Footer CTA strip (Sourceful: "Get started today") ——— */}
-      <View className="border-t border-white/5 py-8 md:py-10">
-        <View className="section-container">
-          <View className="flex flex-row flex-wrap items-center justify-center gap-4 md:gap-6">
-            <Text className="text-center text-base font-medium text-white/80">
-              Get in touch today
-            </Text>
-            <Link href={'/contact' as any} asChild>
-              <Pressable>
-                <View className="rounded-full border border-orange-500/50 bg-orange-500/10 px-6 py-2.5">
-                  <Text className="text-sm font-semibold text-orange-400">Say hello</Text>
-                </View>
-              </Pressable>
-            </Link>
-          </View>
-          <Text className="mt-4 text-center text-xs text-white/40">
-            Sevket Aydogdu · React Native & Expo · Turkey
-          </Text>
-        </View>
-      </View>
+        <Text className={cn(type.meta, 'mt-5')}>
+          <Span>Full history on </Span>
+          <InkLink href={site.elsewhere[0].url} external>
+            LinkedIn
+          </InkLink>
+          <Span>.</Span>
+        </Text>
+      </Frame>
     </View>
   );
 }

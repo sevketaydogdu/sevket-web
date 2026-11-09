@@ -1,268 +1,166 @@
-import { AntDesign } from '@expo/vector-icons';
-import { Href, Link } from 'expo-router';
 import Head from 'expo-router/head';
 import React from 'react';
 import { Image, Pressable, View } from 'react-native';
 
-import Colors from '@/constants/Colors';
-import { socialButtons } from '@/constants/menu';
-import ExperienceSection from '../home/components/ExperienceSection';
+import { Frame, InkLink, SectionLabel, site, type, yearRange } from '@/components/site';
 import { Text } from '@/components/ui/text';
+import { jobHistory } from '@/constants/job-history';
+import { cn } from '@/lib/utils';
 
-const aboutMeText = `
-a passionate React Native developer with a love for turning ideas into reality through
-code. With over +6 years of experience in mobile development, I've had the pleasure of
-working on 10+ projects spanning various industries.
-
-
-Before delving into the world of mobile apps, I honed my skills as a UX/UI designer.
-This background has given me a unique perspective on crafting seamless user experiences
-that blend functionality with aesthetics.
-
-  Born in 1993, I'm a lifelong learner who thrives on staying ahead of the curve. I'm
-always eager to explore new technologies, push boundaries, and expand my skill set. If
-you're curious about my coding journey, you can explore my projects on GitHub.
-
-  Beyond coding, I'm a firm believer in the power of exploration. Whether it's trying out
-a new programming language, experimenting with design concepts, or pursuing
-unconventional hobbies, I'm always up for the challenge.
-
-I'm excited to connect with fellow enthusiasts, exchange ideas, and embark on new
-adventures together. Let's create something amazing!
-`;
-export const categorizedTech = {
-  framework: ['React Native', 'Expo', 'Next.js', 'React', 'Vite'],
-  development: [
-    'TypeScript',
-    'Es6',
-    'Expo',
-    'Expo Router',
-    'React Navigation',
-    'Expo Libraries',
-    'GitHub',
+export const categorizedTech: Record<string, string[]> = {
+  Core: ['React Native', 'Expo', 'Expo Router', 'TypeScript', 'React', 'Next.js', 'Vite'],
+  'State & data': [
+    'Redux Toolkit',
+    'Context API',
+    'React Query',
+    'SWR',
+    'Axios',
+    'SignalR',
+    'Firestore',
   ],
-  stateManagement: ['Redux', 'Redux Toolkit', 'Redux Persist', 'Redux Thunk', 'Context API'],
-  navigation: ['React Navigation'],
-  styling: ['StyleSheet API', 'NativeWind', 'Styled Components', 'Tamagui', 'Native Base'],
-  firebase: ['Firebase Analytics', 'Firebase Crashlytics', 'Firebase Firestore'],
-  features: ['In App Purchase', 'Reanimated', 'Monorepo'],
-  libraries: [
-    'axios',
-    'react-query',
-    'swr',
-    'microsoft/signalr',
-    'lottie',
-    'netinfo',
-    'expo vector icons',
-    'react-native-svg',
-    'react-native-svg-transformer',
+  'Interface & motion': [
+    'NativeWind',
+    'Tamagui',
+    'Styled Components',
+    'Reanimated',
+    'Gesture Handler',
+    'Lottie',
+    'FlashList',
+  ],
+  Platform: [
+    'In-app purchases',
+    'Push notifications',
+    'Apple & Google sign-in',
+    'OTA updates',
+    'Secure storage',
+    'SQLite',
     'i18n',
-    'react-native-localize',
-    'haptics',
-    'react-native-safe-area-context',
-    'react-native-reanimated',
-    'react-native-gesture-handler',
-    'async-storage',
-    'expo-secure-store',
-    'react-native-clipboard',
-    'react-native-device-info',
-    'react-native-splash-screen',
-    'react-native-webview',
-    'react-native-onesignal',
-    'react-native-firebase',
-    'yup',
-    'react-hook-form',
-    'moment',
-    'patch-package',
-    'expo-sqlite',
-    'expo-av',
-    'expo-notifications',
-    'expo-updates',
-    'signalr',
-    'flash-list',
-    'expo-share-intent',
-    'expo-linear-gradient',
-    'expo-document-picker',
-    'expo-image-picker',
-    'expo-file-system',
-    'lodash',
-    'react-native-gifted-charts',
-    'react-native-apple-authentication',
-    'react-native-google-signin',
+  ],
+  'Quality & delivery': [
+    'Jest',
+    'Maestro',
+    'Sentry',
+    'Crashlytics',
+    'Analytics',
+    'GitHub Actions',
+    'Monorepos',
   ],
 };
 
-type TechCategory = keyof typeof categorizedTech;
+function Portrait() {
+  return (
+    <Pressable accessibilityLabel={`Portrait of ${site.name}`}>
+      {({ hovered }) => (
+        <Image
+          source={require('../../../assets/images/selfie.jpeg')}
+          resizeMode="cover"
+          style={
+            {
+              width: '100%',
+              aspectRatio: 4 / 5,
+              filter: hovered ? 'grayscale(0)' : 'grayscale(1) contrast(1.05)',
+              transition: 'filter 400ms ease',
+            } as any
+          }
+        />
+      )}
+    </Pressable>
+  );
+}
 
 const AboutMeWeb = () => {
   return (
-    <View className="flex-1 section-container">
+    <View className="flex-1">
       <Head>
-        <title>About Me | Sevket Aydogdu - React Native Developer</title>
-      </Head>
-      <View
-        className="w-[256px]   px-{5} self-center"
-
-        // enterStyle={{ opacity: 0, scale: 0.5 }}
-        // exitStyle={{ opacity: 0, scale: 0.9 }}
-        // alignSelf="center"
-      >
-        <Image
-          source={require('../../../assets/images/selfie.jpeg')}
-          style={{
-            height: 256,
-            width: 256,
-            aspectRatio: 1,
-            borderRadius: 256,
-          }}
+        <title>About — Şevket Aydoğdu</title>
+        <meta
+          name="description"
+          content="Şevket Aydoğdu is a React Native developer with six years of experience and a background in UX/UI design."
         />
-      </View>
-      <View
-        className="flex-row gap-8 self-center my-8 "
-        // flexDirection="row"
-        // gap="$8"
-        // f={1}
-        // my="$6"
-        // alignSelf="center"
-        // animation="quick"
-        // enterStyle={{ opacity: 0, x: 200 }}
-        // exitStyle={{ opacity: 0, x: 200 }}
-      >
-        <View className="flex-col  items-center self-center">
-          <Text className="">Experience</Text>
-          <Text className="font-bold ">+6 Years</Text>
-        </View>
-        <View className="flex-col   self-center items-center">
-          <Text className="">Projects Done</Text>
-          <Text className="font-bold ">+10 Projects</Text>
-        </View>
-      </View>
+      </Head>
 
-      <View
-        className="flex-row gap-4 self-center my-6"
-        // ai="center"
-        // gap="$4"
-        // my="$6"
-        // alignSelf="center"
-        // $sm={{
-        //   flexDirection: 'column',
-        //   gap: '$4',
-        //   flex: 1,
-        // }}
-        // animation="quick"
-        // enterStyle={{ opacity: 0, x: -200 }}
-        // exitStyle={{ opacity: 0, x: -200 }}
-      >
-        {socialButtons.map((item, index) => {
-          return (
-            <Link
-              key={item.title}
-              href={item.href as Href}
-              asChild
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group">
-              <Pressable>
-                <View className="bg-neutral-100 dark:bg-background2 group-hover:bg-orange-950 flex-row gap-2 items-center justify-center px-4 py-2 rounded-full">
-                  <AntDesign
-                    name={item.name as any}
-                    className="text-neutral-800 dark:text-neutral-200 group-hover:text-orange-300"
-                    size={24}
-                  />
-                  <Text className="text-neutral-800 dark:text-neutral-200 group-hover:text-orange-300">
-                    {item.title}
-                  </Text>
-                </View>
-              </Pressable>
-            </Link>
-          );
-        })}
-      </View>
-      <View
-        className="flex-col gap-4 self-center justify-start  mt-5 "
-        // mt="$5"
-        // gap="$4"
-        // jc="flex-start"
-        // fd="row"
-        // $md={{
-        //   fd: 'column',
-        // }}
-        // animation="quick"
-        // enterStyle={{ opacity: 0, y: 200 }}
-        // exitStyle={{ opacity: 0, y: 200 }}
-      >
-        <View
-          className="flex-col gap-4 self-center"
-          // f={1}
-          // alignItems="center"
-          // alignSelf="center"
-          // $md={{
-          //   w: '100%',
-          //   px: '$5',
-          // }}
-        >
-          <Text className="text-center text-xl ">
-            Welcome to my corner of the web! {`\n`}I'm{' '}
-            <Text className="color-orange-500 font-bold">Sevket Aydogdu,{`\n`}</Text>
-            {aboutMeText}
-          </Text>
-          <Link href="/contact" asChild>
-            <Pressable className="self-center">
-              {({ hovered }) => (
-                <Text
-                  className=" self-center text-lg"
-                  style={{
-                    backgroundColor: hovered ? Colors.dark.white[200] : Colors.dark.orange[200],
-                    padding: 10,
-                    borderRadius: 10,
-                    color: Colors.dark.black[200],
-                    fontWeight: 'bold',
-                    marginTop: 20,
-                    cursor: 'pointer',
-                  }}>
-                  Hire Me
-                </Text>
-              )}
-            </Pressable>
-          </Link>
-          <ExperienceSection />
-          <Text className="title-h2 mt-12">Used Tech.</Text>
-          <View
-            // f={1} width="100%" flexGrow={1}
-            className="flex-col gap-4 self-center flex-grow items-center ">
-            {Object.keys(categorizedTech).map((key) => {
-              return (
-                <View key={key} className="mt-4 gap-4  items-center justify-center">
-                  <Text className="text-center font-bold text-2xl   ">
-                    {key.charAt(0).toUpperCase() + key.slice(1)}
-                  </Text>
-                  <View
-                    className="flex-row gap-2 self-center flex-wrap items-center justify-center"
-                    // gap="$2"
-                    // flexWrap="wrap"
-                    // justifyContent="center"
-                    // $md={{
-                    //   gap: '$1',
-                    // }}
-                  >
-                    {categorizedTech[key as TechCategory].map((item) => {
-                      return (
-                        <View
-                          key={item}
-                          className="dark:bg-background2 bg-neutral-100 rounded-full px-4 py-3 items-center justify-self-center">
-                          <Text key={item} className="text-center ">
-                            {item}
-                          </Text>
-                        </View>
-                      );
-                    })}
-                  </View>
-                </View>
-              );
-            })}
+      <Frame className="pt-6 md:pt-16">
+        <Text className={cn(type.statement, 'max-w-[24ch]')}>
+          Designer first, developer second — and still convinced the best apps come from caring
+          about both.
+        </Text>
+      </Frame>
+
+      <Frame className="mt-20 md:mt-32">
+        <View className="gap-12 lg:flex-row lg:gap-10">
+          <View className="w-full max-w-sm lg:w-[30%] lg:max-w-none">
+            <Portrait />
+            <Text className={cn(type.label, 'mt-3')}>Hover for colour.</Text>
+          </View>
+
+          <View className="flex-1 gap-6 lg:pl-[8%]">
+            <Text className={type.prose}>
+              I started out designing interfaces, then moved into building them. Since 2020 I've
+              worked almost entirely in React Native, shipping more than ten apps to the App Store
+              and Google Play — social platforms, live sports, utilities and white-label products
+              that generate several branded apps from one codebase.
+            </Text>
+            <Text className={type.prose}>
+              The design background still decides how I work. Flows before screens, screens before
+              polish, and nothing goes out until it feels right in the hand. I like owning the whole
+              path: architecture, state and data, CI, store releases, and the monitoring that keeps
+              an app healthy once real people use it.
+            </Text>
+            <Text className={type.prose}>
+              Right now I'm at {site.current.company}, rebuilding a family of apps into one
+              multi-tenant React Native codebase. Side projects live on{' '}
+              <InkLink href={site.elsewhere[1].url} external>
+                GitHub
+              </InkLink>
+              , and the best way to reach me is <InkLink href="/contact">by email</InkLink>.
+            </Text>
           </View>
         </View>
-      </View>
+      </Frame>
+
+      {/* ——— Experience ——— */}
+      <Frame className="mt-28 md:mt-40">
+        <SectionLabel aside={`Since 2020`}>Experience</SectionLabel>
+        {jobHistory.map((job) => (
+          <View
+            key={`${job.company}-${job.period}`}
+            className="gap-4 border-b border-border py-10 lg:flex-row lg:gap-10">
+            <View className="gap-1 lg:w-[30%]">
+              <Text className={cn(type.meta, 'tabular')}>{yearRange(job.period)}</Text>
+              <Text className={type.heading}>{job.company}</Text>
+              <Text className={type.meta}>{job.position}</Text>
+            </View>
+            <View className="flex-1 gap-3 lg:pl-[8%]">
+              {job.description
+                .split('\n')
+                .map((line) => line.replace(/^•\s*/, '').trim())
+                .filter(Boolean)
+                .map((line) => (
+                  <Text key={line.slice(0, 24)} className={cn(type.body, 'max-w-2xl')}>
+                    {line}
+                  </Text>
+                ))}
+            </View>
+          </View>
+        ))}
+      </Frame>
+
+      {/* ——— Toolkit ——— */}
+      <Frame className="mt-28 md:mt-40">
+        <SectionLabel>Toolkit</SectionLabel>
+        <View className="mt-8 flex-row flex-wrap gap-y-10">
+          {Object.entries(categorizedTech).map(([group, items]) => (
+            <View key={group} className="w-1/2 gap-2 pr-6 md:w-1/3 lg:w-1/5">
+              <Text className={type.label}>{group}</Text>
+              {items.map((item) => (
+                <Text key={item} className={type.body}>
+                  {item}
+                </Text>
+              ))}
+            </View>
+          ))}
+        </View>
+      </Frame>
     </View>
   );
 };
