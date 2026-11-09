@@ -1,5 +1,3 @@
-import { ScrollViewStyleReset } from 'expo-router/html';
-
 // This file is web-only and used to configure the root HTML for every
 // web page during static rendering.
 // The contents of this function only run in Node.js environments and
@@ -20,10 +18,9 @@ export default function Root({ children }: { children: React.ReactNode }) {
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1.00001,viewport-fit=cover"
         />
         {/* 
-          Disable body scrolling on web. This makes ScrollView components work closer to how they do on native. 
-          However, body scrolling is often nice to have for mobile web. If you want to enable it, remove this line.
+          Using native document scroll (single scrollbar). ScrollViewStyleReset removed to avoid double scrollbar.
         */}
-        <ScrollViewStyleReset />
+        {/* <ScrollViewStyleReset /> */}
 
         {/* Using raw CSS styles as an escape-hatch to ensure the background color never flickers in dark-mode. */}
         <style dangerouslySetInnerHTML={{ __html: responsiveBackground }} />
@@ -35,28 +32,27 @@ export default function Root({ children }: { children: React.ReactNode }) {
 }
 
 const responsiveBackground = `
+html {
+  height: 100%;
+}
 body {
-  background-color: #fff;
-  overflow-y: scroll; 
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 100%;
 }
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #000;
-  }
-
-  /* Dark mode scrollbar styles */
-  body::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  body::-webkit-scrollbar-track {
-    background: #333;
-  }
-
-  body::-webkit-scrollbar-thumb {
-    background-color: #666;
-    border-radius: 6px;
-    border: 3px solid #333;
+    background-color: #0a0a0a;
   }
 }
 `;
+
+// const responsiveBackground = `
+// body {
+//   background-color: #fff;
+// }
+// @media (prefers-color-scheme: dark) {
+//   body {
+//     background-color: #000;
+//   }
+// }`;

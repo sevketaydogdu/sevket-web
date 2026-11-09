@@ -1,20 +1,69 @@
-import { Redirect } from 'expo-router';
+import Head from 'expo-router/head';
 import React from 'react';
-import { View, Text } from 'tamagui';
 
-import { detectDeviceOS } from '@/utils/detectDeviceOS';
+import ContactItems, { ContactItemAllProps } from './components/contact-items';
+import { View } from 'react-native';
+import { Text } from '@/components/ui/text';
 
+const contactItems: ContactItemAllProps[] = [
+  {
+    label: 'Email',
+    text: 'sevketaydogdu34@gmail.com',
+    type: 'copy',
+  },
+  {
+    type: 'link',
+    text: 'LinkedIn',
+    url: 'https://www.linkedin.com/in/sevketaydogdu/',
+    iconName: 'linkedin-square',
+  },
+  {
+    type: 'link',
+    text: 'X (Twitter)',
+    url: 'https://www.x.com/sevketaydogdu/',
+    iconName: 'twitter',
+  },
+];
 const WebContactScreen = () => {
-  const device = detectDeviceOS();
-
-  if (device === 'Apple') {
-    return (
-      <Redirect href="https://apps.apple.com/app/zikirmatik-kolay-kullan%C4%B1m/id6450431673" />
-    );
-  }
   return (
-    <View>
-      <Text>WebContactScreen</Text>
+    <View className="flex-1 h-screen-safe  ">
+      <View className="h-full mt-8">
+        <Head>
+          <title>Contact me | Sevket Aydogdu - React Native Developer</title>
+        </Head>
+
+        <View
+          className="flex-col flex-1 h-full"
+          // $gtLg={{
+          //   flexDirection: 'column',
+          // }}
+        >
+          <View className="">
+            <Text
+              className="text-3xl  font-bold text-center "
+              // textAlign="center"
+              // $md={{
+              //   fontSize: 20,
+              //   lineHeight: 24,
+              // }}
+              allowFontScaling>
+              You Can Reach Me from these adresses
+            </Text>
+          </View>
+          <View className="flex-1 gap-4 mt-8">
+            {contactItems.map((item, index) => (
+              <ContactItems key={index} {...item} />
+            ))}
+            {/* <ContactItems label="Email" text="sevketaydogdu34@gmail.com" type="copy" />
+          <ContactItems
+            text="LinkedIn"
+            type="link"
+            url="https://www.linkedin.com/in/sevketaydogdu/"
+            iconName="linkedin"
+          /> */}
+          </View>
+        </View>
+      </View>
     </View>
   );
 };

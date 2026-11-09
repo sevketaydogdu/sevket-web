@@ -1,16 +1,10 @@
-import SHeader from '@/components/customHeader';
 import { Stack } from 'expo-router';
 import React from 'react';
-import { SafeAreaView } from 'react-native';
-import { Text } from 'tamagui';
+import { SafeAreaView, Text } from 'react-native';
 const NativeContactScreen = () => {
   return (
     <>
-      <Stack.Screen
-        options={{
-          header: () => <SHeader />,
-        }}
-      />
+      <Stack.Screen options={{}} />
       <SafeAreaView>
         <Text>NativeContactScreen</Text>
       </SafeAreaView>
