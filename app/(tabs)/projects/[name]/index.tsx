@@ -1,14 +1,17 @@
 import { Href, Link, useLocalSearchParams } from 'expo-router';
 import Head from 'expo-router/head';
 import React from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 
 import { Frame, InkLink, SectionLabel, Span, type } from '@/components/site';
+import { Phone, Reveal } from '@/components/site/devices';
 import {
   IconField,
   kindOf,
   platformsOf,
   projectHref,
+  screensOf,
+  tintOf,
 } from '@/components/site/projects';
 import { Text } from '@/components/ui/text';
 import { projects } from '@/constants/projects';
@@ -59,7 +62,8 @@ const ProjectDetailScreen = () => {
       <Frame className="gap-6 pt-6 md:pt-16">
         <Text className={type.title}>Not found</Text>
         <Text className={type.prose}>
-          There's no project called “{String(name)}”. <InkLink href="/projects">See all work</InkLink>.
+          There's no project called “{String(name)}”.{' '}
+          <InkLink href="/projects">See all work</InkLink>.
         </Text>
       </Frame>
     );
@@ -76,6 +80,7 @@ const ProjectDetailScreen = () => {
   const paragraphs = toParagraphs(project.description);
   const stack = project.technicalDetails.map((t) => t.trim()).filter(Boolean);
   const next = projects[(index + 1) % projects.length];
+  const screens = screensOf(project);
 
   return (
     <View className="flex-1">
@@ -94,7 +99,33 @@ const ProjectDetailScreen = () => {
       </Frame>
 
       <Frame className="mt-14 md:mt-20">
-        <IconField project={project} iconSize={176} className="aspect-[16/9] md:aspect-[21/9]" />
+        {screens ? (
+          <View
+            className="overflow-hidden rounded-[28px]"
+            style={{ backgroundColor: tintOf(project) }}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                gap: 24,
+                paddingHorizontal: 40,
+                paddingTop: 40,
+                paddingBottom: screens.partial ? 0 : 40,
+              }}
+              style={{ scrollSnapType: 'x mandatory', marginBottom: screens.partial ? -90 : 0 } as any}>
+              {screens.items.map((s, i) => (
+                <Reveal key={s.caption} delay={i * 90} distance={48} style={{ scrollSnapAlign: 'center' } as any}>
+                  <Text className="mb-4 font-body text-sm" style={{ color: 'rgba(255,255,255,0.72)' }}>
+                    {String(i + 1).padStart(2, '0')} {s.caption}
+                  </Text>
+                  <Phone source={s.source} aspect={screens.aspect} width={250} />
+                </Reveal>
+              ))}
+            </ScrollView>
+          </View>
+        ) : (
+          <IconField project={project} iconSize={176} className="aspect-[16/9] md:aspect-[21/9] rounded-[28px]" />
+        )}
       </Frame>
 
       <Frame className="mt-14 md:mt-20">

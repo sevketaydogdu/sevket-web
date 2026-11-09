@@ -1,6 +1,13 @@
 import { Href, Link, usePathname } from 'expo-router';
 import React from 'react';
-import { Linking, Pressable, Text as RNText, View, type TextProps, type ViewProps } from 'react-native';
+import {
+  Linking,
+  Pressable,
+  Text as RNText,
+  View,
+  type TextProps,
+  type ViewProps,
+} from 'react-native';
 
 import { Text } from '@/components/ui/text';
 import { useTheme } from '@/contexts/ThemeContext';

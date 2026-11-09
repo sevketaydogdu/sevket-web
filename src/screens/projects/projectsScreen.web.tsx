@@ -22,8 +22,8 @@ const ProjectsScreenWeb = () => {
       <Frame className="pt-6 md:pt-16">
         <Text className={type.title}>Work</Text>
         <Text className={cn(type.prose, 'mt-8 max-w-xl text-muted')}>
-          A selection of apps I've designed and built. Most run on iOS, Android and the web from
-          one React Native codebase; a couple are private client work.
+          A selection of apps I've designed and built. Most run on iOS, Android and the web from one
+          React Native codebase; a couple are private client work.
         </Text>
       </Frame>
 
@@ -31,7 +31,9 @@ const ProjectsScreenWeb = () => {
         <SectionLabel aside={`${projects.length} projects`}>Index</SectionLabel>
         <View className="mt-8 flex-row flex-wrap gap-x-[4%] gap-y-14">
           {projects.map((project) => (
-            <View key={`${project.id}-${project.title}`} className="w-full md:w-[48%] lg:w-[30.66%]">
+            <View
+              key={`${project.id}-${project.title}`}
+              className="w-full md:w-[48%] lg:w-[30.66%]">
               <ProjectTile project={project} />
             </View>
           ))}

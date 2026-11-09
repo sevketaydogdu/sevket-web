@@ -32,8 +32,8 @@ const WebContactScreen = () => {
               tell me about it.
             </Text>
             <Text className={cn(type.prose, 'max-w-xl text-muted')}>
-              A few lines are enough: what you're building, where it needs to run, and roughly
-              when. I'll reply with questions or next steps.
+              A few lines are enough: what you're building, where it needs to run, and roughly when.
+              I'll reply with questions or next steps.
             </Text>
 
             <View className="mt-8 flex-row flex-wrap gap-y-8">

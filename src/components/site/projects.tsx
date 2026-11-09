@@ -64,14 +64,14 @@ export function IconField({
  * Work index: a typographic list on the left, a sticky preview field on the
  * right that follows whichever row is hovered (desktop only).
  */
-export function WorkIndex() {
+export function WorkIndex({ items = projects }: { items?: Project[] }) {
   const [active, setActive] = React.useState(0);
-  const current = projects[active];
+  const current = items[active] ?? items[0];
 
   return (
     <View className="lg:flex-row lg:gap-10">
       <View className="flex-1">
-        {projects.map((project, i) => (
+        {items.map((project, i) => (
           <Link key={`${project.id}-${project.title}`} href={projectHref(project)} asChild>
             <Pressable accessibilityRole="link" onHoverIn={() => setActive(i)}>
               {({ hovered }) => (
@@ -110,7 +110,7 @@ export function WorkIndex() {
           <View className="mt-3 flex-row justify-between">
             <Text className={type.label}>{current.title}</Text>
             <Text className={cn(type.label, 'tabular')}>
-              {String(active + 1).padStart(2, '0')}/{String(projects.length).padStart(2, '0')}
+              {String(active + 1).padStart(2, '0')}/{String(items.length).padStart(2, '0')}
             </Text>
           </View>
         </View>
@@ -151,3 +151,33 @@ export function ProjectTile({ project }: { project: Project }) {
     </Link>
   );
 }
+
+export type Screen = { source: any; caption: string };
+
+/** Cropped App Store screens (assets/images/screens). Politicca crops stop mid-screen. */
+export const SCREENS: Record<string, { aspect: number; partial: boolean; items: Screen[] }> = {
+  'Easy Dhikr: Zikirmatik': {
+    aspect: 442 / 966,
+    partial: false,
+    items: [
+      { source: require('../../../assets/images/screens/zikirmatik-4.jpg'), caption: 'Counter' },
+      { source: require('../../../assets/images/screens/zikirmatik-5.jpg'), caption: 'Dhikr list' },
+      { source: require('../../../assets/images/screens/zikirmatik-6.jpg'), caption: 'New dhikr' },
+      { source: require('../../../assets/images/screens/zikirmatik-7.jpg'), caption: 'Settings' },
+      { source: require('../../../assets/images/screens/zikirmatik-3.jpg'), caption: 'Theme' },
+      { source: require('../../../assets/images/screens/zikirmatik-2.jpg'), caption: 'Language' },
+    ],
+  },
+  Politicca: {
+    aspect: 426 / 771,
+    partial: true,
+    items: [
+      { source: require('../../../assets/images/screens/politicca-1.jpg'), caption: 'Feed' },
+      { source: require('../../../assets/images/screens/politicca-2.jpg'), caption: 'News' },
+      { source: require('../../../assets/images/screens/politicca-3.jpg'), caption: 'Donations' },
+      { source: require('../../../assets/images/screens/politicca-4.jpg'), caption: 'Messages' },
+      { source: require('../../../assets/images/screens/politicca-5.jpg'), caption: 'Profile' },
+    ],
+  },
+};
+export const screensOf = (project: Project) => SCREENS[project.title];

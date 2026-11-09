@@ -102,15 +102,17 @@ const AboutMeWeb = () => {
             </Text>
             <Text className={type.prose}>
               The design background still decides how I work. Flows before screens, screens before
-              polish, and nothing goes out until it feels right in the hand. I like owning the
-              whole path: architecture, state and data, CI, store releases, and the monitoring that
-              keeps an app healthy once real people use it.
+              polish, and nothing goes out until it feels right in the hand. I like owning the whole
+              path: architecture, state and data, CI, store releases, and the monitoring that keeps
+              an app healthy once real people use it.
             </Text>
             <Text className={type.prose}>
-              Right now I'm at {site.current.company}, rebuilding a family of apps into one multi-tenant React Native codebase.
-              Side projects live on <InkLink href={site.elsewhere[1].url} external>GitHub</InkLink>
-              , and the best way to reach me is{' '}
-              <InkLink href="/contact">by email</InkLink>.
+              Right now I'm at {site.current.company}, rebuilding a family of apps into one
+              multi-tenant React Native codebase. Side projects live on{' '}
+              <InkLink href={site.elsewhere[1].url} external>
+                GitHub
+              </InkLink>
+              , and the best way to reach me is <InkLink href="/contact">by email</InkLink>.
             </Text>
           </View>
         </View>
