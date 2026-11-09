@@ -1,49 +1,27 @@
-import { AntDesign } from '@expo/vector-icons';
-import { Href, Link } from 'expo-router';
 import Head from 'expo-router/head';
 import React from 'react';
 import { Image, Pressable, View } from 'react-native';
 
-import {
-  ButtonLink,
-  Container,
-  Eyebrow,
-  Reveal,
-  SectionHeader,
-  Span,
-  Tag,
-  siteFacts,
-  type,
-  useSiteColors,
-} from '@/components/site';
+import { Frame, InkLink, SectionLabel, site, type, yearRange } from '@/components/site';
 import { Text } from '@/components/ui/text';
 import { jobHistory } from '@/constants/job-history';
-import { socialButtons } from '@/constants/menu';
 import { cn } from '@/lib/utils';
-
-const bio = [
-  "I'm a React Native developer who turns ideas into apps people actually use. Over the last six years I've shipped more than ten of them — social platforms, live sports, utilities and multi-tenant white-label products — to the App Store and Google Play.",
-  'Before writing mobile code I worked as a UX/UI designer. That background still shapes how I build: flows first, details second, and nothing ships until it feels right in the hand.',
-  "I like owning the whole path — architecture, state and data, CI, store releases and the monitoring that keeps an app healthy after launch. Most of my side projects live on GitHub if you'd like to see how I work.",
-];
 
 export const categorizedTech: Record<string, string[]> = {
   Core: ['React Native', 'Expo', 'Expo Router', 'TypeScript', 'React', 'Next.js', 'Vite'],
   'State & data': [
     'Redux Toolkit',
-    'Redux Persist',
     'Context API',
     'React Query',
     'SWR',
     'Axios',
     'SignalR',
-    'Firebase Firestore',
+    'Firestore',
   ],
-  'UI & motion': [
+  'Interface & motion': [
     'NativeWind',
     'Tamagui',
     'Styled Components',
-    'StyleSheet API',
     'Reanimated',
     'Gesture Handler',
     'Lottie',
@@ -51,11 +29,10 @@ export const categorizedTech: Record<string, string[]> = {
   ],
   Platform: [
     'In-app purchases',
-    'Expo Notifications',
-    'OneSignal',
+    'Push notifications',
     'Apple & Google sign-in',
-    'Expo Updates',
-    'Secure Store',
+    'OTA updates',
+    'Secure storage',
     'SQLite',
     'i18n',
   ],
@@ -64,34 +41,30 @@ export const categorizedTech: Record<string, string[]> = {
     'Maestro',
     'Sentry',
     'Crashlytics',
-    'Firebase Analytics',
+    'Analytics',
     'GitHub Actions',
     'Monorepos',
-    'patch-package',
   ],
 };
 
-function SocialLink({ item }: { item: (typeof socialButtons)[number] }) {
-  const colors = useSiteColors();
+function Portrait() {
   return (
-    <Link href={item.href as Href} asChild target="_blank" rel="noopener noreferrer">
-      <Pressable accessibilityRole="link">
-        {({ hovered }) => (
-          <View
-            className={cn(
-              'flex-row items-center gap-2 rounded-full border border-border px-4 py-2.5 transition-colors duration-200',
-              hovered && 'border-orange-500/60'
-            )}>
-            <AntDesign
-              name={item.name}
-              size={16}
-              color={hovered ? colors.accent : colors.fg}
-            />
-            <Text className="font-heading text-sm text-foreground">{item.title}</Text>
-          </View>
-        )}
-      </Pressable>
-    </Link>
+    <Pressable accessibilityLabel={`Portrait of ${site.name}`}>
+      {({ hovered }) => (
+        <Image
+          source={require('../../../assets/images/selfie.jpeg')}
+          resizeMode="cover"
+          style={
+            {
+              width: '100%',
+              aspectRatio: 4 / 5,
+              filter: hovered ? 'grayscale(0)' : 'grayscale(1) contrast(1.05)',
+              transition: 'filter 400ms ease',
+            } as any
+          }
+        />
+      )}
+    </Pressable>
   );
 }
 
@@ -99,122 +72,93 @@ const AboutMeWeb = () => {
   return (
     <View className="flex-1">
       <Head>
-        <title>About Me | Sevket Aydogdu - React Native Developer</title>
+        <title>About — Şevket Aydoğdu</title>
         <meta
           name="description"
-          content="Sevket Aydogdu is a senior React Native developer with six years of experience shipping cross-platform mobile apps."
+          content="Şevket Aydoğdu is a React Native developer with six years of experience and a background in UX/UI design."
         />
       </Head>
 
-      {/* ——— Intro ——— */}
-      <Container className="pb-20 pt-10 md:pb-28 md:pt-20">
-        <View className="gap-12 lg:flex-row lg:items-start lg:gap-16">
-          <View className="flex-1 gap-8">
-            <Reveal>
-              <Eyebrow label="About" />
-            </Reveal>
-            <Reveal delay={80}>
-              <Text className={type.h1}>
-                Hi, I'm Sevket.{' '}
-                <Span className="text-muted">I make apps feel at home on every platform.</Span>
-              </Text>
-            </Reveal>
-            <Reveal delay={160} className="gap-5">
-              {bio.map((p) => (
-                <Text key={p.slice(0, 16)} className={type.lead}>
-                  {p}
-                </Text>
-              ))}
-            </Reveal>
-            <Reveal delay={240} className="flex-row flex-wrap items-center gap-3">
-              <ButtonLink href="/contact">Work with me</ButtonLink>
-              {socialButtons.map((item) => (
-                <SocialLink key={item.title} item={item} />
-              ))}
-            </Reveal>
+      <Frame className="pt-6 md:pt-16">
+        <Text className={cn(type.statement, 'max-w-[24ch]')}>
+          Designer first, developer second — and still convinced the best apps come from caring
+          about both.
+        </Text>
+      </Frame>
+
+      <Frame className="mt-20 md:mt-32">
+        <View className="gap-12 lg:flex-row lg:gap-10">
+          <View className="w-full max-w-sm lg:w-[30%] lg:max-w-none">
+            <Portrait />
+            <Text className={cn(type.label, 'mt-3')}>Hover for colour.</Text>
           </View>
 
-          <Reveal delay={120} className="w-full max-w-sm self-center lg:w-[340px] lg:self-start">
-            <View className="overflow-hidden rounded-[2rem] border border-border bg-card">
-              <Image
-                source={require('../../../assets/images/selfie.jpeg')}
-                resizeMode="cover"
-                style={{ width: '100%', aspectRatio: 4 / 5 }}
-                accessibilityLabel="Portrait of Sevket Aydogdu"
-              />
-              <View className="flex-row">
-                {siteFacts.stats.slice(0, 2).map((stat, i) => (
-                  <View
-                    key={stat.label}
-                    className={cn('flex-1 gap-1 p-5', i > 0 && 'border-l border-border')}>
-                    <Text className="font-display text-3xl text-foreground">{stat.value}</Text>
-                    <Text className={type.small}>{stat.label}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          </Reveal>
+          <View className="flex-1 gap-6 lg:pl-[8%]">
+            <Text className={type.prose}>
+              I started out designing interfaces, then moved into building them. Since 2020 I've
+              worked almost entirely in React Native, shipping more than ten apps to the App Store
+              and Google Play — social platforms, live sports, utilities and white-label products
+              that generate several branded apps from one codebase.
+            </Text>
+            <Text className={type.prose}>
+              The design background still decides how I work. Flows before screens, screens before
+              polish, and nothing goes out until it feels right in the hand. I like owning the
+              whole path: architecture, state and data, CI, store releases, and the monitoring that
+              keeps an app healthy once real people use it.
+            </Text>
+            <Text className={type.prose}>
+              Right now I'm at {site.current.company}, rebuilding a family of apps into one multi-tenant React Native codebase.
+              Side projects live on <InkLink href={site.elsewhere[1].url} external>GitHub</InkLink>
+              , and the best way to reach me is{' '}
+              <InkLink href="/contact">by email</InkLink>.
+            </Text>
+          </View>
         </View>
-      </Container>
+      </Frame>
 
       {/* ——— Experience ——— */}
-      <Container>
-        <View className="border-t border-border py-20 md:py-28">
-          <SectionHeader index="01" label="Career" title="Experience" />
-          <View className="mt-12">
-            {jobHistory.map((job, i) => (
-              <View
-                key={`${job.company}-${job.period}`}
-                className="gap-4 border-t border-border py-10 md:flex-row md:gap-10">
-                <View className="gap-2 md:w-60">
-                  <Text className={cn(type.mono, i === 0 && type.accent)}>
-                    {job.period.replace(/\s+/g, ' ')}
+      <Frame className="mt-28 md:mt-40">
+        <SectionLabel aside={`Since 2020`}>Experience</SectionLabel>
+        {jobHistory.map((job) => (
+          <View
+            key={`${job.company}-${job.period}`}
+            className="gap-4 border-b border-border py-10 lg:flex-row lg:gap-10">
+            <View className="gap-1 lg:w-[30%]">
+              <Text className={cn(type.meta, 'tabular')}>{yearRange(job.period)}</Text>
+              <Text className={type.heading}>{job.company}</Text>
+              <Text className={type.meta}>{job.position}</Text>
+            </View>
+            <View className="flex-1 gap-3 lg:pl-[8%]">
+              {job.description
+                .split('\n')
+                .map((line) => line.replace(/^•\s*/, '').trim())
+                .filter(Boolean)
+                .map((line) => (
+                  <Text key={line.slice(0, 24)} className={cn(type.body, 'max-w-2xl')}>
+                    {line}
                   </Text>
-                  <Text className="font-heading text-lg text-foreground">{job.company}</Text>
-                </View>
-                <View className="flex-1 gap-3">
-                  <Text className={cn(type.h3, type.accent)}>{job.position}</Text>
-                  {job.description
-                    .split('\n')
-                    .map((line) => line.replace(/^•\s*/, '').trim())
-                    .filter(Boolean)
-                    .map((line) => (
-                      <Text key={line.slice(0, 24)} className={type.body}>
-                        {line}
-                      </Text>
-                    ))}
-                </View>
-              </View>
-            ))}
+                ))}
+            </View>
           </View>
-        </View>
-      </Container>
+        ))}
+      </Frame>
 
       {/* ——— Toolkit ——— */}
-      <Container className="pb-24 md:pb-32">
-        <View className="border-t border-border pt-20 md:pt-28">
-          <SectionHeader
-            index="02"
-            label="Toolkit"
-            title="What I build with"
-            description="The stack I reach for most, grouped by the job it does."
-          />
-          <View className="mt-12">
-            {Object.entries(categorizedTech).map(([group, items]) => (
-              <View
-                key={group}
-                className="gap-4 border-t border-border py-8 md:flex-row md:items-start md:gap-10">
-                <Text className={cn(type.mono, 'md:w-60 md:pt-2')}>{group}</Text>
-                <View className="flex-1 flex-row flex-wrap gap-2">
-                  {items.map((item) => (
-                    <Tag key={item}>{item}</Tag>
-                  ))}
-                </View>
-              </View>
-            ))}
-          </View>
+      <Frame className="mt-28 md:mt-40">
+        <SectionLabel>Toolkit</SectionLabel>
+        <View className="mt-8 flex-row flex-wrap gap-y-10">
+          {Object.entries(categorizedTech).map(([group, items]) => (
+            <View key={group} className="w-1/2 gap-2 pr-6 md:w-1/3 lg:w-1/5">
+              <Text className={type.label}>{group}</Text>
+              {items.map((item) => (
+                <Text key={item} className={type.body}>
+                  {item}
+                </Text>
+              ))}
+            </View>
+          ))}
         </View>
-      </Container>
+      </Frame>
     </View>
   );
 };

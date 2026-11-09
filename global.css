@@ -4,36 +4,28 @@
 
 /* NativeWind theme: semantic colors (used by bg-background, bg-card, etc.) */
 :root {
-  --color-background: #fafafa;
-  --color-card: #ffffff;
-  --color-foreground: #171717;
-  --color-muted: #525252;
-  --color-border: #e5e5e5;
-  /* Hero SVG gradient blobs (layout) — light mode */
-  --hero-paint0-start: #fdba74;
-  --hero-paint0-end: #fed7aa;
-  --hero-paint1-0: #fb923c;
-  --hero-paint1-50: #fdba74;
-  --hero-paint1-100: #ffedd5;
-  --hero-blob-opacity: 0.35;
+  /* Paper & ink */
+  --color-background: #f2f1ec;
+  --color-card: #e8e6df;
+  --color-foreground: #161615;
+  --color-muted: #6f6d67;
+  --color-border: rgba(22, 22, 21, 0.14);
+  --color-signal: #e5400e;
+  --hero-blob-opacity: 0;
 }
 html.dark {
-  --color-background: rgb(10, 10, 10);
-  --color-card: #141414;
-  --color-foreground: #fafafa;
-  --color-muted: #a3a3a3;
-  --color-border: rgba(255, 255, 255, 0.1);
-  /* Hero SVG gradient blobs — dark mode (softer, glow-friendly on dark bg) */
-  --hero-paint0-start: #ea580c;
-  --hero-paint0-end: #7c2d12;
-  --hero-paint1-0: #fb923c;
-  --hero-paint1-50: #c2410c;
-  --hero-paint1-100: #431407;
-  --hero-blob-opacity: 0.28;
+  --color-background: #0e0e0d;
+  --color-card: #181816;
+  --color-foreground: #ebe9e3;
+  --color-muted: #8c8a83;
+  --color-border: rgba(235, 233, 227, 0.13);
+  --color-signal: #ff5a26;
+  --hero-blob-opacity: 0;
 }
 
 ::selection {
-  background: rgba(249, 115, 22, 0.35);
+  background: var(--color-signal);
+  color: #fff;
 }
 
 html {
@@ -54,42 +46,27 @@ body {
 
 /* Scrollbar styling on body (main viewport scrollbar) */
 body::-webkit-scrollbar {
-  width: 14px;
+  width: 10px;
 }
 body::-webkit-scrollbar-track {
-  background: rgba(243, 244, 246, 0.9);
+  background: transparent;
   border-radius: 10px;
   margin: 6px 4px;
 }
 body::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #fb923c 0%, #ea580c 100%);
+  background: var(--color-border);
   border-radius: 10px;
-  border: 3px solid rgba(243, 244, 246, 0.9);
+  border: 2px solid transparent;
+  background-clip: padding-box;
   min-height: 40px;
 }
 body::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #fdba74 0%, #f97316 100%);
+  background: var(--color-muted);
 }
 body::-webkit-scrollbar-corner {
   background: transparent;
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 28vh;
-  background: radial-gradient(
-    ellipse 90% 70% at 50% 0%,
-    rgba(251, 146, 60, 0.08) 0%,
-    rgba(234, 88, 12, 0.03) 45%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: 1;
-}
 
 /* Scrollbar on layout scroll container (above navbar) — always visible */
 .main-scroll,
@@ -97,31 +74,32 @@ body::before {
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-gutter: stable;
-  scrollbar-width: auto;
-  scrollbar-color: #ea580c rgba(243, 244, 246, 0.9);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
 }
 .main-scroll::-webkit-scrollbar,
 [data-scroll-root='main']::-webkit-scrollbar {
-  width: 14px;
+  width: 10px;
   -webkit-appearance: none;
   appearance: none;
 }
 .main-scroll::-webkit-scrollbar-track,
 [data-scroll-root='main']::-webkit-scrollbar-track {
-  background: rgba(243, 244, 246, 0.9);
+  background: transparent;
   border-radius: 10px;
   margin: 6px 4px;
 }
 .main-scroll::-webkit-scrollbar-thumb,
 [data-scroll-root='main']::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #fb923c 0%, #ea580c 100%);
+  background: var(--color-border);
   border-radius: 10px;
-  border: 3px solid rgba(243, 244, 246, 0.9);
+  border: 2px solid transparent;
+  background-clip: padding-box;
   min-height: 40px;
 }
 .main-scroll::-webkit-scrollbar-thumb:hover,
 [data-scroll-root='main']::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #fdba74 0%, #f97316 100%);
+  background: var(--color-muted);
 }
 .main-scroll::-webkit-scrollbar-corner,
 [data-scroll-root='main']::-webkit-scrollbar-corner {
@@ -130,26 +108,18 @@ body::before {
 
 /* Dark mode — body uses var(--color-background) from html.dark above */
 
-html.dark body::before {
-  background: radial-gradient(
-    ellipse 90% 70% at 50% 0%,
-    rgba(251, 146, 60, 0.12) 0%,
-    rgba(234, 88, 12, 0.04) 45%,
-    transparent 70%
-  );
-}
 
 html.dark .main-scroll,
 html.dark [data-scroll-root='main'] {
-  scrollbar-color: #ea580c rgba(23, 23, 23, 0.95);
+  scrollbar-color: var(--color-border) transparent;
 }
 html.dark .main-scroll::-webkit-scrollbar-track,
 html.dark [data-scroll-root='main']::-webkit-scrollbar-track {
-  background: rgba(23, 23, 23, 0.95);
+  background: transparent;
 }
 html.dark .main-scroll::-webkit-scrollbar-thumb,
 html.dark [data-scroll-root='main']::-webkit-scrollbar-thumb {
-  border-color: rgb(23, 23, 23);
+  border-color: transparent;
 }
 /* Safe area insets (notch, home indicator) — use with viewport-fit=cover in meta viewport for PWA/mobile */
 .safe-area-top {
@@ -192,4 +162,20 @@ html.dark [data-scroll-root='main']::-webkit-scrollbar-thumb {
   .section-subline {
     @apply mt-3 text-base text-white/60 md:text-lg;
   }
+}
+
+/* Text links: hairline underline that turns signal on hover */
+.ink-link {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--color-border);
+  transition: color 160ms ease, text-decoration-color 160ms ease;
+}
+.ink-link:hover {
+  color: var(--color-signal);
+  text-decoration-color: var(--color-signal);
+}
+.tabular {
+  font-variant-numeric: tabular-nums;
 }

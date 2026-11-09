@@ -1,4 +1,3 @@
-import { Feather } from '@expo/vector-icons';
 import { Href, Link } from 'expo-router';
 import React from 'react';
 import { Image, Pressable, View } from 'react-native';
@@ -8,124 +7,144 @@ import { projects } from '@/constants/projects';
 import { cn } from '@/lib/utils';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
 
-import { Tag, type, useSiteColors } from './index';
+import { type } from './index';
 
-type Project = (typeof projects)[number];
+export type Project = (typeof projects)[number];
 
 export const projectHref = (project: Project) =>
   `/projects/${clearSpacesAndSpecialCharacters(project.title)}` as Href;
 
-const pad = (n: number) => String(n).padStart(2, '0');
+/** Field color each app icon sits on — taken from the icon itself. */
+const TINTS: Record<string, string> = {
+  'X - UI Clone': '#d9d6ce',
+  'Easy Dhikr: Zikirmatik': '#06210a',
+  Politicca: '#0d3a8c',
+  SkorSever: '#0b1830',
+  Botanik: '#2e7a33',
+};
+export const tintOf = (project: Project) => TINTS[project.title] ?? '#1c1c1a';
 
-const tagsOf = (project: Project, max: number) =>
-  project.technicalDetails
-    .map((t) => t.trim())
-    .filter(Boolean)
-    .slice(0, max);
+export function platformsOf(project: Project): string[] {
+  const l: { apple?: string; google?: string; web?: string; github?: string } =
+    project.storeLinks ?? {};
+  const out: string[] = [];
+  if (l.apple) out.push('iOS');
+  if (l.google) out.push('Android');
+  if (l.web) out.push('Web');
+  if (!out.length) out.push('Private');
+  return out;
+}
 
-/** Editorial list row: index · logo · title/subtitle · tags · arrow. */
-export function ProjectRow({ project, index }: { project: Project; index: number }) {
-  const colors = useSiteColors();
-  const tags = tagsOf(project, 3);
+export const kindOf = (project: Project) => project.subtitle.replace(/^with\s+/i, 'Built with ');
+
+/** Square colored field with the app icon centred — the only "image" treatment on the site. */
+export function IconField({
+  project,
+  iconSize = 112,
+  className,
+}: {
+  project: Project;
+  iconSize?: number;
+  className?: string;
+}) {
+  return (
+    <View
+      className={cn('aspect-square w-full items-center justify-center overflow-hidden', className)}
+      style={{ backgroundColor: tintOf(project) }}>
+      <Image
+        source={project.imagePath}
+        resizeMode="cover"
+        style={{ width: iconSize, height: iconSize, borderRadius: iconSize * 0.225 }}
+      />
+    </View>
+  );
+}
+
+/**
+ * Work index: a typographic list on the left, a sticky preview field on the
+ * right that follows whichever row is hovered (desktop only).
+ */
+export function WorkIndex() {
+  const [active, setActive] = React.useState(0);
+  const current = projects[active];
+
+  return (
+    <View className="lg:flex-row lg:gap-10">
+      <View className="flex-1">
+        {projects.map((project, i) => (
+          <Link key={`${project.id}-${project.title}`} href={projectHref(project)} asChild>
+            <Pressable accessibilityRole="link" onHoverIn={() => setActive(i)}>
+              {({ hovered }) => (
+                <View className="flex-row items-center gap-4 border-b border-border py-5 md:py-6">
+                  <Image
+                    source={project.imagePath}
+                    resizeMode="cover"
+                    className="lg:hidden"
+                    style={{ width: 44, height: 44, borderRadius: 10 }}
+                  />
+                  <Text
+                    className={cn(
+                      type.heading,
+                      'flex-1 transition-colors duration-150 md:flex-none md:w-[42%]',
+                      hovered && 'text-signal'
+                    )}
+                    numberOfLines={1}>
+                    {project.title}
+                  </Text>
+                  <Text className={cn(type.meta, 'hidden flex-1 md:flex')} numberOfLines={1}>
+                    {kindOf(project)}
+                  </Text>
+                  <Text className={cn(type.meta, 'tabular text-right md:w-36')}>
+                    {platformsOf(project).join(', ')}
+                  </Text>
+                </View>
+              )}
+            </Pressable>
+          </Link>
+        ))}
+      </View>
+
+      <View className="hidden w-[30%] lg:flex">
+        <View className="sticky top-8">
+          <IconField project={current} iconSize={120} />
+          <View className="mt-3 flex-row justify-between">
+            <Text className={type.label}>{current.title}</Text>
+            <Text className={cn(type.label, 'tabular')}>
+              {String(active + 1).padStart(2, '0')}/{String(projects.length).padStart(2, '0')}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+/** Tile for the Work page grid. */
+export function ProjectTile({ project }: { project: Project }) {
   return (
     <Link href={projectHref(project)} asChild>
       <Pressable accessibilityRole="link">
         {({ hovered }) => (
-          <View
-            className={cn(
-              'flex-row items-center gap-4 border-b border-border py-5 transition-colors duration-200 md:gap-6 md:py-6',
-              hovered && 'bg-orange-500/[0.04]'
-            )}>
-            <Text className={cn(type.mono, 'hidden w-8 md:flex', hovered && type.accent)}>
-              {pad(index + 1)}
-            </Text>
-            <Image
-              source={project.imagePath}
-              resizeMode="cover"
-              style={{ width: 56, height: 56, borderRadius: 14 }}
-            />
-            <View className="min-w-0 flex-1 gap-1">
+          <View>
+            <View className="overflow-hidden">
+              <View
+                className="transition-transform duration-500 ease-out"
+                style={{ transform: [{ scale: hovered ? 1.03 : 1 }] }}>
+                <IconField project={project} iconSize={128} />
+              </View>
+            </View>
+            <View className="mt-4 flex-row items-baseline justify-between gap-4">
               <Text
                 className={cn(
-                  'font-heading text-lg text-foreground transition-colors md:text-xl',
-                  hovered && type.accent
-                )}
-                numberOfLines={1}>
+                  type.heading,
+                  'transition-colors duration-150',
+                  hovered && 'text-signal'
+                )}>
                 {project.title}
               </Text>
-              <Text className={type.small} numberOfLines={1}>
-                {project.subtitle}
-              </Text>
+              <Text className={cn(type.meta, 'text-right')}>{platformsOf(project).join(', ')}</Text>
             </View>
-            <View className="hidden flex-row gap-2 lg:flex">
-              {tags.map((t) => (
-                <Tag key={t}>{t}</Tag>
-              ))}
-            </View>
-            <View
-              className={cn(
-                'h-10 w-10 items-center justify-center rounded-full border border-border transition-all duration-200',
-                hovered && 'border-orange-500 bg-orange-500'
-              )}>
-              <Feather
-                name="arrow-up-right"
-                size={18}
-                color={hovered ? '#ffffff' : colors.fg}
-              />
-            </View>
-          </View>
-        )}
-      </Pressable>
-    </Link>
-  );
-}
-
-/** Grid card used on the Projects page. */
-export function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const colors = useSiteColors();
-  const tags = tagsOf(project, 4);
-  return (
-    <Link href={projectHref(project)} asChild>
-      <Pressable accessibilityRole="link" className="h-full">
-        {({ hovered }) => (
-          <View
-            className={cn(
-              'h-full gap-6 rounded-3xl border border-border bg-card p-6 transition-all duration-300 md:p-8',
-              hovered && 'border-orange-500/50 shadow-2xl shadow-orange-500/10'
-            )}
-            style={{ transform: [{ translateY: hovered ? -4 : 0 }] }}>
-            <View className="flex-row items-start justify-between">
-              <Image
-                source={project.imagePath}
-                resizeMode="cover"
-                style={{ width: 72, height: 72, borderRadius: 18 }}
-              />
-              <Text className={cn(type.mono, hovered && type.accent)}>{pad(index + 1)}</Text>
-            </View>
-            <View className="flex-1 gap-2">
-              <Text className={cn('font-heading text-2xl text-foreground', hovered && type.accent)}>
-                {project.title}
-              </Text>
-              <Text className={type.body}>{project.subtitle}</Text>
-            </View>
-            {tags.length ? (
-              <View className="flex-row flex-wrap gap-2">
-                {tags.map((t) => (
-                  <Tag key={t}>{t}</Tag>
-                ))}
-              </View>
-            ) : null}
-            <View className="flex-row items-center gap-2 border-t border-border pt-5">
-              <Text className={cn('font-heading text-sm', hovered ? type.accent : 'text-foreground')}>
-                View case study
-              </Text>
-              <Feather
-                name="arrow-right"
-                size={16}
-                color={hovered ? colors.accent : colors.fg}
-                style={{ transform: [{ translateX: hovered ? 4 : 0 }] }}
-              />
-            </View>
+            <Text className={cn(type.meta, 'mt-1')}>{kindOf(project)}</Text>
           </View>
         )}
       </Pressable>

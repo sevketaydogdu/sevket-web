@@ -1,11 +1,15 @@
-import { Feather } from '@expo/vector-icons';
 import { Href, Link, useLocalSearchParams } from 'expo-router';
 import Head from 'expo-router/head';
 import React from 'react';
-import { Image, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
-import { ButtonLink, Container, Reveal, Tag, type, useSiteColors } from '@/components/site';
-import { projectHref } from '@/components/site/projects';
+import { Frame, InkLink, SectionLabel, Span, type } from '@/components/site';
+import {
+  IconField,
+  kindOf,
+  platformsOf,
+  projectHref,
+} from '@/components/site/projects';
 import { Text } from '@/components/ui/text';
 import { projects } from '@/constants/projects';
 import { cn } from '@/lib/utils';
@@ -32,40 +36,12 @@ function toParagraphs(text?: string) {
     .filter(Boolean);
 }
 
-function BackLink() {
-  const colors = useSiteColors();
+function Meta({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <Link href={'/projects' as Href} asChild>
-      <Pressable accessibilityRole="link" className="self-start">
-        {({ hovered }) => (
-          <View className="flex-row items-center gap-2">
-            <Feather
-              name="arrow-left"
-              size={16}
-              color={hovered ? colors.accent : colors.muted}
-              style={{ transform: [{ translateX: hovered ? -3 : 0 }] }}
-            />
-            <Text className={cn(type.mono, hovered && type.accent)}>All projects</Text>
-          </View>
-        )}
-      </Pressable>
-    </Link>
-  );
-}
-
-function StoreBadge({ href, source, label }: { href: string; source: any; label: string }) {
-  return (
-    <Link href={href as Href} asChild target="_blank" rel="noopener noreferrer">
-      <Pressable accessibilityRole="link" accessibilityLabel={label}>
-        {({ hovered }) => (
-          <Image
-            source={source}
-            style={{ width: 135, height: 40, opacity: hovered ? 0.85 : 1 }}
-            resizeMode="contain"
-          />
-        )}
-      </Pressable>
-    </Link>
+    <View className="gap-1 border-t border-border py-4">
+      <Text className={type.label}>{label}</Text>
+      <Text className={type.body}>{children}</Text>
+    </View>
   );
 }
 
@@ -80,132 +56,101 @@ const ProjectDetailScreen = () => {
 
   if (!project) {
     return (
-      <Container className="items-start gap-6 py-24">
-        <Text className={type.h1}>Project not found</Text>
-        <Text className={type.lead}>There's no project called “{String(name)}”.</Text>
-        <ButtonLink href="/projects">Back to projects</ButtonLink>
-      </Container>
+      <Frame className="gap-6 pt-6 md:pt-16">
+        <Text className={type.title}>Not found</Text>
+        <Text className={type.prose}>
+          There's no project called “{String(name)}”. <InkLink href="/projects">See all work</InkLink>.
+        </Text>
+      </Frame>
     );
   }
 
   const links: { apple?: string; google?: string; web?: string; github?: string } =
     project.storeLinks ?? {};
+  const linkList = [
+    links.apple && { label: 'App Store', url: links.apple },
+    links.google && { label: 'Google Play', url: links.google },
+    links.web && { label: 'Website', url: links.web },
+    links.github && { label: 'Source', url: links.github },
+  ].filter(Boolean) as { label: string; url: string }[];
   const paragraphs = toParagraphs(project.description);
   const stack = project.technicalDetails.map((t) => t.trim()).filter(Boolean);
   const next = projects[(index + 1) % projects.length];
-  const hasLinks = links.apple || links.google || links.web || links.github;
 
   return (
     <View className="flex-1">
       <Head>
-        <title>{project.title} | Sevket Aydogdu - React Native Developer</title>
+        <title>{`${project.title} — Şevket Aydoğdu`}</title>
         <meta name="description" content={project.description ?? project.subtitle} />
       </Head>
 
-      <Container className="pb-24 pt-10 md:pb-32 md:pt-16">
-        <BackLink />
+      <Frame className="pt-6 md:pt-16">
+        <Text className={type.label}>
+          <InkLink href="/projects">Work</InkLink>
+          <Span> / {String(index + 1).padStart(2, '0')}</Span>
+        </Text>
+        <Text className={cn(type.title, 'mt-6')}>{project.title}</Text>
+        <Text className={cn(type.prose, 'mt-6 text-muted')}>{kindOf(project)}</Text>
+      </Frame>
 
-        {/* ——— Header ——— */}
-        <Reveal className="mt-10 gap-8 md:flex-row md:items-center md:gap-10">
-          <Image
-            source={project.imagePath}
-            resizeMode="cover"
-            style={{ width: 112, height: 112, borderRadius: 28 }}
-          />
-          <View className="flex-1 gap-3">
-            <Text className={cn(type.mono, type.accent)}>
-              Project {String(index + 1).padStart(2, '0')}
-            </Text>
-            <Text className={type.h1}>{project.title}</Text>
-            <Text className={type.lead}>{project.subtitle}</Text>
+      <Frame className="mt-14 md:mt-20">
+        <IconField project={project} iconSize={176} className="aspect-[16/9] md:aspect-[21/9]" />
+      </Frame>
+
+      <Frame className="mt-14 md:mt-20">
+        <View className="gap-12 lg:flex-row lg:gap-10">
+          <View className="lg:w-[30%]">
+            <Meta label="Platforms">{platformsOf(project).join(', ')}</Meta>
+            {stack.length ? <Meta label="Stack">{stack.join(', ')}</Meta> : null}
+            {linkList.length ? (
+              <Meta label="Links">
+                {linkList.map((l, i) => (
+                  <Span key={l.label}>
+                    {i > 0 ? ', ' : ''}
+                    <InkLink href={l.url} external>
+                      {l.label}
+                    </InkLink>
+                  </Span>
+                ))}
+              </Meta>
+            ) : null}
           </View>
-        </Reveal>
 
-        {hasLinks ? (
-          <Reveal delay={100} className="mt-10 flex-row flex-wrap items-center gap-3">
-            {links.apple ? (
-              <StoreBadge
-                href={links.apple}
-                label="Download on the App Store"
-                source={require('../../../../assets/images/appleBadge.png')}
-              />
-            ) : null}
-            {links.google ? (
-              <StoreBadge
-                href={links.google}
-                label="Get it on Google Play"
-                source={require('../../../../assets/images/googlebadge.png')}
-              />
-            ) : null}
-            {links.web ? (
-              <ButtonLink href={links.web} variant="ghost" external icon="globe">
-                Live site
-              </ButtonLink>
-            ) : null}
-            {links.github ? (
-              <ButtonLink href={links.github} variant="ghost" external icon="github">
-                Source code
-              </ButtonLink>
-            ) : null}
-          </Reveal>
-        ) : null}
-
-        {/* ——— Body ——— */}
-        <View className="mt-16 gap-12 border-t border-border pt-12 lg:flex-row lg:gap-16">
-          <Reveal delay={160} className="flex-1 gap-6">
-            <Text className={type.mono}>Overview</Text>
+          <View className="flex-1 gap-6 lg:pl-[8%]">
             {paragraphs.length ? (
               paragraphs.map((p) => (
-                <Text key={p.slice(0, 32)} className={cn(type.body, 'text-lg')}>
+                <Text key={p.slice(0, 32)} className={cn(type.prose, 'max-w-2xl')}>
                   {p}
                 </Text>
               ))
             ) : (
-              <Text className={cn(type.body, 'text-lg')}>
-                {project.subtitle}. A detailed case study is on its way.
+              <Text className={cn(type.prose, 'max-w-2xl text-muted')}>
+                Client work under NDA — happy to talk through it on a call.
               </Text>
             )}
-          </Reveal>
-
-          {stack.length ? (
-            <Reveal delay={220} className="gap-4 lg:w-80">
-              <Text className={type.mono}>Stack</Text>
-              <View className="flex-row flex-wrap gap-2">
-                {stack.map((item) => (
-                  <Tag key={item}>{item}</Tag>
-                ))}
-              </View>
-            </Reveal>
-          ) : null}
+          </View>
         </View>
+      </Frame>
 
-        {/* ——— Next ——— */}
-        {next && next !== project ? (
+      {next && next !== project ? (
+        <Frame className="mt-28 md:mt-40">
+          <SectionLabel>Next</SectionLabel>
           <Link href={projectHref(next)} asChild>
-            <Pressable accessibilityRole="link" className="mt-20">
+            <Pressable accessibilityRole="link" className="mt-4 self-start">
               {({ hovered }) => (
-                <View className="flex-row items-center gap-5 border-t border-border pt-10">
-                  <View className="flex-1 gap-2">
-                    <Text className={type.mono}>Next project</Text>
-                    <Text
-                      className={cn(
-                        'font-heading text-2xl text-foreground md:text-3xl',
-                        hovered && type.accent
-                      )}>
-                      {next.title}
-                    </Text>
-                  </View>
-                  <Image
-                    source={next.imagePath}
-                    resizeMode="cover"
-                    style={{ width: 64, height: 64, borderRadius: 16 }}
-                  />
-                </View>
+                <Text
+                  className={cn(
+                    type.title,
+                    'transition-colors duration-150',
+                    hovered && 'text-signal'
+                  )}>
+                  {next.title}
+                </Text>
               )}
             </Pressable>
           </Link>
-        ) : null}
-      </Container>
+        </Frame>
+      ) : null}
     </View>
   );
 };
