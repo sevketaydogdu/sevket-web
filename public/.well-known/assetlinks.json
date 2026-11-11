@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.antiquemedia.zikirmatik",
+      "sha256_cert_fingerprints": [
+        "25:BC:FA:26:3B:D8:4A:3B:B8:22:92:CC:53:76:17:AD:BB:D7:10:DC:7C:95:76:29:7C:7A:3C:C3:35:1D:7B:E2"
+      ]
+    }
+  }
+]
