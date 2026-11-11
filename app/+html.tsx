@@ -13,9 +13,12 @@ export default function Root({ children }: { children: React.ReactNode }) {
           However this does reduce built-in accessibility. If you want to enable scaling, use this instead:
             <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         */}
-        <meta
-          name="viewport"
-          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1.00001,viewport-fit=cover"
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap"
         />
         {/* 
           Using native document scroll (single scrollbar). ScrollViewStyleReset removed to avoid double scrollbar.
@@ -38,11 +41,12 @@ html {
 body {
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-gutter: stable;
   min-height: 100%;
 }
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #0a0a0a;
+    background-color: #0b0b0b;
   }
 }
 `;
