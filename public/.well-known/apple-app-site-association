@@ -1,0 +1,10 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["T28UFY9U46.com.antiquemedia.zikirmatik"],
+        "components": [{ "/": "/zikirmatik/c/*", "comment": "Zikirmatik circle invites" }]
+      }
+    ]
+  }
+}
