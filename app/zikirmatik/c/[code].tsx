@@ -89,7 +89,9 @@ export default function CircleInvitePage() {
     code: string;
     lang?: string;
   }>();
-  const code = String(rawCode ?? '').trim().toUpperCase();
+  const code = String(rawCode ?? '')
+    .trim()
+    .toUpperCase();
 
   // Language and OS are read after hydration so the static HTML stays stable.
   const [lang, setLang] = useState<Lang>('en');
@@ -122,9 +124,15 @@ export default function CircleInvitePage() {
     <View style={styles.page}>
       <Head>
         <title>Dhikr circle invite · Easy Dhikr</title>
-        <meta name="description" content="Join a dhikr circle and count together toward a shared goal." />
+        <meta
+          name="description"
+          content="Join a dhikr circle and count together toward a shared goal."
+        />
         <meta property="og:title" content="You're invited to a dhikr circle" />
-        <meta property="og:description" content="Count together toward a shared goal with Easy Dhikr." />
+        <meta
+          property="og:description"
+          content="Count together toward a shared goal with Easy Dhikr."
+        />
         <meta name="robots" content="noindex" />
       </Head>
       <View style={[styles.card, rtl && styles.rtl]}>
@@ -146,8 +154,7 @@ export default function CircleInvitePage() {
             key={s.key}
             onPress={() => go(s.url)}
             style={styles.primaryBtn}
-            accessibilityRole="link"
-          >
+            accessibilityRole="link">
             <Text style={styles.primaryText}>{s.label}</Text>
           </Pressable>
         ))}
@@ -156,8 +163,7 @@ export default function CircleInvitePage() {
           <Pressable
             onPress={() => go(APP_SCHEME + encodeURIComponent(code))}
             style={styles.secondaryBtn}
-            accessibilityRole="link"
-          >
+            accessibilityRole="link">
             <Text style={styles.secondaryText}>{t.open}</Text>
           </Pressable>
         )}
@@ -209,7 +215,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.08)',
   },
   copyText: { color: '#7fd8a1', fontSize: 14, fontWeight: '600' },
-  primaryBtn: { backgroundColor: GREEN, borderRadius: 999, paddingVertical: 16, alignItems: 'center' },
+  primaryBtn: {
+    backgroundColor: GREEN,
+    borderRadius: 999,
+    paddingVertical: 16,
+    alignItems: 'center',
+  },
   primaryText: { color: '#fff', fontSize: 17, fontWeight: '700' },
   secondaryBtn: { paddingVertical: 12, alignItems: 'center' },
   secondaryText: { color: '#7fd8a1', fontSize: 15, fontWeight: '600' },
