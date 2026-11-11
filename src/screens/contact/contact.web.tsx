@@ -12,7 +12,7 @@ const WebContactScreen = () => {
         <title>Contact — Şevket Aydoğdu</title>
         <meta
           name="description"
-          content="Get in touch with Şevket Aydoğdu about a React Native or Expo project."
+          content="Get in touch with Şevket Aydoğdu about a React Native, Expo, React or Next.js project."
         />
       </Head>
 

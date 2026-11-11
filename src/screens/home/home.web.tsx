@@ -2,7 +2,17 @@ import Head from 'expo-router/head';
 import React from 'react';
 import { View } from 'react-native';
 
-import { Column, Enter, Experience, InkLink, Section, Wide, site, type } from '@/components/site';
+import {
+  Column,
+  Enter,
+  Experience,
+  InkLink,
+  Row,
+  Section,
+  Wide,
+  site,
+  type,
+} from '@/components/site';
 import { ProjectCard, ProjectRow, screensOf } from '@/components/site/projects';
 import { Text } from '@/components/ui/text';
 import { projects } from '@/constants/projects';
@@ -15,10 +25,10 @@ export default function WebHomeScreen() {
   return (
     <View className="flex-1">
       <Head>
-        <title>Şevket Aydoğdu — React Native developer</title>
+        <title>Şevket Aydoğdu — React Native &amp; web developer</title>
         <meta
           name="description"
-          content="Şevket Aydoğdu designs and builds mobile apps with React Native and Expo for iOS, Android and the web."
+          content="Şevket Aydoğdu designs and builds mobile apps with React Native and Expo, and web apps with React, Next.js and Vite."
         />
       </Head>
 
@@ -32,9 +42,9 @@ export default function WebHomeScreen() {
 
         <Enter step={1} className="mt-8 gap-4">
           <Text className={type.body}>
-            I design and build mobile apps with React Native and Expo — one codebase for iOS,
-            Android and the web. I started out as a UX/UI designer, and I still care most about how
-            an app feels in the hand.
+            I design and build apps for phones and the web — mobile with React Native and Expo, web
+            with React, Next.js and Vite, all in TypeScript. I started out as a UX/UI designer, and
+            I still care most about how a product feels to use.
           </Text>
           <Text className={type.body}>
             Right now I'm a senior React Native developer at {site.current.company}, rebuilding a
@@ -70,6 +80,12 @@ export default function WebHomeScreen() {
               <ProjectRow key={p.title} project={p} />
             ))}
           </View>
+        </Section>
+
+        <Section title="Stack" className="mt-20 md:mt-24">
+          <Row label="Mobile">React Native, Expo, Expo Router, Reanimated</Row>
+          <Row label="Web">React, Next.js, Vite, Tailwind CSS</Row>
+          <Row label="Shared">TypeScript, Redux, React Query, monorepos</Row>
         </Section>
 
         <Section title="Experience" className="mt-20 md:mt-24">

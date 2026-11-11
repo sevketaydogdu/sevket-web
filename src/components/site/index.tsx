@@ -23,7 +23,7 @@ export const type = {
 
 export const site = {
   name: 'Şevket Aydoğdu',
-  role: 'React Native developer',
+  role: 'React Native & web developer',
   email: 'sevketaydogdu34@gmail.com',
   current: jobHistory[0],
   elsewhere: [

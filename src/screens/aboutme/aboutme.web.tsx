@@ -7,7 +7,9 @@ import { Text } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 
 export const categorizedTech: Record<string, string[]> = {
-  Core: ['React Native', 'Expo', 'Expo Router', 'TypeScript', 'React', 'Next.js', 'Vite'],
+  Mobile: ['React Native', 'Expo', 'Expo Router', 'EAS'],
+  Web: ['React', 'Next.js', 'Vite', 'Tailwind CSS', 'react-native-web'],
+  Language: ['TypeScript', 'JavaScript'],
   'State & data': [
     'Redux Toolkit',
     'Context API',
@@ -53,7 +55,7 @@ const AboutMeWeb = () => {
         <title>About — Şevket Aydoğdu</title>
         <meta
           name="description"
-          content="Şevket Aydoğdu is a React Native developer with a background in UX/UI design."
+          content="Şevket Aydoğdu is a React Native and web developer — React, Next.js, Vite — with a background in UX/UI design."
         />
       </Head>
 
@@ -83,10 +85,10 @@ const AboutMeWeb = () => {
 
         <Enter step={2} className="mt-10 gap-4">
           <Text className={type.body}>
-            I started out designing interfaces, then moved into building them. Since 2020 I've
-            worked almost entirely in React Native, shipping apps to the App Store and Google Play —
-            social platforms, live sports, utilities and white-label products that generate several
-            branded apps from one codebase.
+            I started out designing interfaces, then moved into building them. Since 2020 I've built
+            with React Native and React: mobile apps for the App Store and Google Play, and web apps
+            with Next.js and Vite. Social platforms, live sports, utilities, and white-label
+            products that generate several branded apps from one codebase.
           </Text>
           <Text className={type.body}>
             The design background still decides how I work. Flows before screens, screens before

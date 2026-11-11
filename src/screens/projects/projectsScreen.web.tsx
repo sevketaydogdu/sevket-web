@@ -15,7 +15,7 @@ const ProjectsScreenWeb = () => {
         <title>Work — Şevket Aydoğdu</title>
         <meta
           name="description"
-          content="Selected React Native and Expo projects by Şevket Aydoğdu for iOS, Android and the web."
+          content="Selected mobile and web projects by Şevket Aydoğdu, built with React Native, Expo, React and Next.js."
         />
       </Head>
 
@@ -25,8 +25,8 @@ const ProjectsScreenWeb = () => {
             Work
           </Text>
           <Text className={cn(type.muted, 'mt-1')}>
-            Apps I've designed and built. Most run on iOS, Android and the web from one React Native
-            codebase; a couple are private client work.
+            Mobile and web apps I've designed and built — React Native and Expo on phones, React and
+            Next.js on the web. A couple are private client work.
           </Text>
         </Enter>
       </Column>
