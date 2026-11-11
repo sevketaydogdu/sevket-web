@@ -4,28 +4,66 @@
 
 /* NativeWind theme: semantic colors (used by bg-background, bg-card, etc.) */
 :root {
-  /* Paper & ink */
-  --color-background: #f2f1ec;
-  --color-card: #e8e6df;
-  --color-foreground: #161615;
-  --color-muted: #6f6d67;
-  --color-border: rgba(22, 22, 21, 0.14);
-  --color-signal: #e5400e;
+  --color-background: #fcfcfc;
+  --color-surface: #f2f2f1;
+  --color-foreground: #111111;
+  --color-muted: #6b6b6b;
+  --color-border: #ebebeb;
+  --color-line: #cfcfcf;
+  --color-signal: #0a6cff;
+  --color-card: #f2f2f1;
+  --screen-shadow: 0 0 0 1px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04),
+    0 28px 56px -20px rgba(0, 0, 0, 0.22);
+  --icon-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 12px 32px -12px rgba(0, 0, 0, 0.28);
   --hero-blob-opacity: 0;
 }
 html.dark {
-  --color-background: #0e0e0d;
-  --color-card: #181816;
-  --color-foreground: #ebe9e3;
-  --color-muted: #8c8a83;
-  --color-border: rgba(235, 233, 227, 0.13);
-  --color-signal: #ff5a26;
+  --color-background: #0b0b0b;
+  --color-surface: #161616;
+  --color-foreground: #ececec;
+  --color-muted: #8e8e8e;
+  --color-border: #1f1f1f;
+  --color-line: #3a3a3a;
+  --color-signal: #5b9dff;
+  --color-card: #161616;
+  --screen-shadow: 0 0 0 1px rgba(255, 255, 255, 0.09), 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 28px 56px -20px rgba(0, 0, 0, 0.7);
+  --icon-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 12px 32px -12px rgba(0, 0, 0, 0.8);
   --hero-blob-opacity: 0;
 }
 
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* One-time entrance: content settles in, staggered by inline animation-delay */
+@keyframes settle {
+  from { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+.enter {
+  animation: settle 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+    animation-delay: 0ms !important;
+  }
+}
+
 ::selection {
-  background: var(--color-signal);
-  color: #fff;
+  background: var(--color-foreground);
+  color: var(--color-background);
 }
 
 html {
@@ -38,6 +76,8 @@ html {
 body {
   overflow-y: auto !important;
   overflow-x: hidden !important;
+  /* Always reserve the scrollbar's space so short and long pages share one width */
+  scrollbar-gutter: stable;
   position: relative;
   min-height: 100%;
   height: 100%;
@@ -164,17 +204,16 @@ html.dark [data-scroll-root='main']::-webkit-scrollbar-thumb {
   }
 }
 
-/* Text links: hairline underline that turns signal on hover */
+/* Text links: hairline underline that darkens on hover */
 .ink-link {
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-  text-decoration-color: var(--color-border);
-  transition: color 160ms ease, text-decoration-color 160ms ease;
+  text-underline-offset: 0.22em;
+  text-decoration-color: var(--color-line);
+  transition: text-decoration-color 150ms ease, color 150ms ease;
 }
 .ink-link:hover {
-  color: var(--color-signal);
-  text-decoration-color: var(--color-signal);
+  text-decoration-color: var(--color-foreground);
 }
 .tabular {
   font-variant-numeric: tabular-nums;
