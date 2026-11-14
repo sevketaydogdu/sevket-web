@@ -4,11 +4,11 @@ import {
   Image,
   Pressable,
   View,
-  useWindowDimensions,
   type ImageSourcePropType,
 } from 'react-native';
 
 import { Text } from '@/components/ui/text';
+import { useViewportWidth } from '@/hooks/useViewportWidth';
 import { projects } from '@/constants/projects';
 import { cn } from '@/lib/utils';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
@@ -126,17 +126,12 @@ export function Screen({
 }
 
 export function useCompact() {
-  const { width } = useWindowDimensions();
-  return width < 768;
+  return useViewportWidth() < 768;
 }
 
-/**
- * Width of a card inside <Wide> (max 1080, px-4 / md:px-6). Derived from the
- * window so the first render is already the right size — no layout jump.
- */
+/** Width of a card inside <Wide> (max 1080, px-4 / md:px-6), derived from the window. */
 function useCardWidth() {
-  const { width } = useWindowDimensions();
-  if (!width) return 1032; // static render: assume desktop
+  const width = useViewportWidth();
   return Math.min(width, 1080) - (width >= 768 ? 48 : 32);
 }
 

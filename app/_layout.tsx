@@ -56,7 +56,9 @@ function installWebAppearanceBridge() {
   };
 
   Appearance.getColorScheme = (): ColorSchemeName => {
-    const systemValue = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const systemValue = window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
     const userValue = document.documentElement.getAttribute('data-theme');
     return (userValue && userValue !== 'null' ? userValue : systemValue) as ColorSchemeName;
   };

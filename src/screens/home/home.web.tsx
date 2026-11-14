@@ -1,6 +1,8 @@
 import { Href, Link } from 'expo-router';
 import React from 'react';
-import { Image, Pressable, View, useWindowDimensions } from 'react-native';
+import { Image, Pressable, View } from 'react-native';
+
+import { useViewportWidth } from '@/hooks/useViewportWidth';
 
 import {
   ArrowDisc,
@@ -218,8 +220,7 @@ function RoundButton({
 }
 
 function Work() {
-  const { width } = useWindowDimensions();
-  const vw = width || 1280;
+  const vw = useViewportWidth();
   const slideW = Math.round(Math.min(vw < 640 ? vw * 0.82 : vw * 0.42, 440));
   const gap = vw < 640 ? 14 : 24;
   const track = React.useRef<View>(null);
