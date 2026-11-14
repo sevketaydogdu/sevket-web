@@ -130,16 +130,34 @@ export function useCompact() {
   return width < 768;
 }
 
+/**
+ * Width of a card inside <Wide> (max 1080, px-4 / md:px-6). Derived from the
+ * window so the first render is already the right size — no layout jump.
+ */
+function useCardWidth() {
+  const { width } = useWindowDimensions();
+  if (!width) return 1032; // static render: assume desktop
+  return Math.min(width, 1080) - (width >= 768 ? 48 : 32);
+}
+
+/** Desktop proportions; everything scales down from these. */
+const STAGE = { height: 540, gap: 28, sink: 52, step: 30 };
+
 /** Three screens rising out of the bottom edge of a soft card; they lift on hover. */
 function ShotStage({ set, hovered }: { set: ShotSet; hovered: boolean }) {
-  const compact = useCompact();
-  const height = compact ? 300 : 540;
-  const w = compact ? (set.partial ? 124 : 112) : set.partial ? 250 : 232;
-  const gap = compact ? 12 : 28;
+  const cardW = useCardWidth();
+  const maxW = set.partial ? 250 : 232;
+  // Three screens + two gaps take ~88% of the card at most, so the trio
+  // always sits fully inside it with a little air on each side.
+  const span = 3 + (2 * STAGE.gap) / maxW;
+  const w = Math.round(Math.min(maxW, (cardW * 0.88) / span));
+  const s = w / maxW;
+  const height = Math.round(STAGE.height * s);
+  const gap = Math.round(STAGE.gap * s);
   const screenH = w / set.aspect;
   // Full screens sink below the edge; partial crops sit exactly on it.
-  const sink = set.partial ? 0 : compact ? 22 : 52;
-  const step = compact ? 14 : 30;
+  const sink = set.partial ? 0 : STAGE.sink * s;
+  const step = STAGE.step * s;
 
   return (
     <View className="flex-row items-end justify-center" style={{ height, gap }}>
@@ -152,7 +170,7 @@ function ShotStage({ set, hovered }: { set: ShotSet; hovered: boolean }) {
               {
                 height: screenH,
                 marginBottom: -(sink + (centre ? 0 : step)),
-                transform: [{ translateY: hovered ? -8 : 0 }],
+                transform: [{ translateY: hovered ? -8 * s : 0 }],
                 transitionProperty: 'transform',
                 transitionDuration: '700ms',
                 transitionTimingFunction: EASE,
@@ -174,10 +192,11 @@ function ShotStage({ set, hovered }: { set: ShotSet; hovered: boolean }) {
 
 /** App icon centred on a soft card. */
 function IconStage({ project, hovered }: { project: Project; hovered: boolean }) {
-  const compact = useCompact();
-  const size = compact ? 72 : 104;
+  const cardW = useCardWidth();
+  const s = Math.max(0.6, Math.min(1, cardW / 1032));
+  const size = Math.round(104 * Math.max(0.75, s));
   return (
-    <View className="items-center justify-center" style={{ height: compact ? 220 : 380 }}>
+    <View className="items-center justify-center" style={{ height: Math.round(380 * s) }}>
       <View
         style={
           {
@@ -214,7 +233,7 @@ export function ProjectCard({ project }: { project: Project }) {
                 <IconStage project={project} hovered={hovered} />
               )}
             </View>
-            <View className="mt-4 gap-0.5 px-1 md:flex-row md:items-baseline md:justify-between md:gap-8">
+            <View className="mt-4 gap-0.5 px-2 md:flex-row md:items-baseline md:justify-between md:gap-8 md:px-1">
               <Text className={cn(type.body, 'flex-1')}>
                 <Text className={type.strong}>{nameOf(project)}</Text>
                 <Text className={type.muted}>
@@ -239,7 +258,7 @@ export function ProjectRow({ project }: { project: Project }) {
         {({ hovered }) => (
           <View
             className={cn(
-              'flex-row items-center gap-4 rounded-[14px] px-3 py-3 transition-colors duration-150',
+              'flex-row items-start gap-4 rounded-[14px] px-3 py-3 sm:items-center transition-colors duration-150',
               hovered ? 'bg-surface' : 'bg-transparent'
             )}>
             <Image
@@ -258,7 +277,7 @@ export function ProjectRow({ project }: { project: Project }) {
               <Text className={type.strong} numberOfLines={1}>
                 {nameOf(project)}
               </Text>
-              <Text className={type.muted} numberOfLines={1}>
+              <Text className={type.muted} numberOfLines={2}>
                 {lineOf(project)}
               </Text>
             </View>

@@ -66,101 +66,39 @@ html {
   color: var(--color-background);
 }
 
+/*
+ * Document scroll: the page itself scrolls (not body or a nested view), so
+ * mobile browsers keep native behaviour — collapsing address bar, pull to
+ * refresh, momentum, tap-status-bar-to-top.
+ */
 html {
-  overflow: hidden;
-  height: 100%;
   scroll-behavior: smooth;
+  background-color: var(--color-background);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
-
-/* Body is the scroll container; background follows NativeWind theme */
 body {
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  /* Always reserve the scrollbar's space so short and long pages share one width */
-  scrollbar-gutter: stable;
-  position: relative;
   min-height: 100%;
-  height: 100%;
+  overflow-x: clip;
   background-color: var(--color-background);
 }
-
-/* Scrollbar styling on body (main viewport scrollbar) */
-body::-webkit-scrollbar {
-  width: 10px;
-}
-body::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 10px;
-  margin: 6px 4px;
-}
-body::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 10px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-  min-height: 40px;
-}
-body::-webkit-scrollbar-thumb:hover {
-  background: var(--color-muted);
-}
-body::-webkit-scrollbar-corner {
-  background: transparent;
+#root {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-
-/* Scrollbar on layout scroll container (above navbar) — always visible */
-.main-scroll,
-[data-scroll-root='main'] {
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-gutter: stable;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-border) transparent;
-}
-.main-scroll::-webkit-scrollbar,
-[data-scroll-root='main']::-webkit-scrollbar {
-  width: 10px;
-  -webkit-appearance: none;
-  appearance: none;
-}
-.main-scroll::-webkit-scrollbar-track,
-[data-scroll-root='main']::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 10px;
-  margin: 6px 4px;
-}
-.main-scroll::-webkit-scrollbar-thumb,
-[data-scroll-root='main']::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 10px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-  min-height: 40px;
-}
-.main-scroll::-webkit-scrollbar-thumb:hover,
-[data-scroll-root='main']::-webkit-scrollbar-thumb:hover {
-  background: var(--color-muted);
-}
-.main-scroll::-webkit-scrollbar-corner,
-[data-scroll-root='main']::-webkit-scrollbar-corner {
-  background: transparent;
+/* Styled scrollbar and reserved gutter only where a pointer scrollbar exists.
+   Touch devices use overlay scrollbars; reserving a gutter there pushes the
+   whole layout 10px off-centre. */
+@media (hover: hover) and (pointer: fine) {
+  html {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line) transparent;
+  }
 }
 
-/* Dark mode — body uses var(--color-background) from html.dark above */
-
-
-html.dark .main-scroll,
-html.dark [data-scroll-root='main'] {
-  scrollbar-color: var(--color-border) transparent;
-}
-html.dark .main-scroll::-webkit-scrollbar-track,
-html.dark [data-scroll-root='main']::-webkit-scrollbar-track {
-  background: transparent;
-}
-html.dark .main-scroll::-webkit-scrollbar-thumb,
-html.dark [data-scroll-root='main']::-webkit-scrollbar-thumb {
-  border-color: transparent;
-}
 /* Safe area insets (notch, home indicator) — use with viewport-fit=cover in meta viewport for PWA/mobile */
 .safe-area-top {
   padding-top: env(safe-area-inset-top, 0px);

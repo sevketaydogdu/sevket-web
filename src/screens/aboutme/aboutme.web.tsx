@@ -68,19 +68,25 @@ const AboutMeWeb = () => {
         </Enter>
 
         <Enter step={1} className="mt-10">
-          <Image
-            source={require('../../../assets/images/selfie.jpeg')}
-            accessibilityLabel={`Portrait of ${site.name}`}
-            resizeMode="cover"
+          {/* The ratio lives on a wrapper: RN-web lets the image's intrinsic
+              height win over aspectRatio on narrow screens. */}
+          <View
+            className="rounded-[16px] sm:rounded-[20px]"
             style={
               {
                 width: '100%',
                 aspectRatio: 3 / 2,
-                borderRadius: 20,
+                overflow: 'hidden',
                 boxShadow: '0 0 0 1px var(--color-border)',
               } as any
-            }
-          />
+            }>
+            <Image
+              source={require('../../../assets/images/selfie.jpeg')}
+              accessibilityLabel={`Portrait of ${site.name}`}
+              resizeMode="cover"
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+            />
+          </View>
         </Enter>
 
         <Enter step={2} className="mt-10 gap-4">

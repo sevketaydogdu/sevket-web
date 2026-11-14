@@ -134,7 +134,7 @@ export function Section({
   );
 }
 
-/** Label / value row used for metadata and contact details. */
+/** Label / value row used for metadata and contact details. Stacks on phones. */
 export function Row({
   label,
   children,
@@ -145,9 +145,9 @@ export function Row({
   className?: string;
 }) {
   return (
-    <View className={cn('flex-row gap-6 py-1.5', className)}>
-      <Text className={cn(type.muted, 'w-24 shrink-0 md:w-32')}>{label}</Text>
-      <Text className={cn(type.body, 'flex-1')}>{children}</Text>
+    <View className={cn('py-2 sm:flex-row sm:gap-6 sm:py-1.5', className)}>
+      <Text className={cn(type.muted, 'sm:w-32 sm:shrink-0')}>{label}</Text>
+      <Text className={cn(type.body, 'sm:flex-1')}>{children}</Text>
     </View>
   );
 }
@@ -207,13 +207,15 @@ export function SiteHeader() {
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 
   return (
-    <Column className="pt-6 md:pt-10">
-      <View className="flex-row items-center justify-between">
+    <Column className="pt-4 sm:pt-6 md:pt-10">
+      {/* Phones: name on its own line, nav + theme toggle below it.
+          sm and up: one line, name left, nav right. */}
+      <View className="sm:flex-row sm:items-center sm:justify-between">
         {pathname === '/' ? (
-          <View />
+          <View className="hidden sm:flex" />
         ) : (
           <Link href={'/' as Href} asChild>
-            <Pressable accessibilityRole="link" accessibilityLabel="Home" className="py-2">
+            <Pressable accessibilityRole="link" accessibilityLabel="Home" className="self-start py-2">
               {({ hovered }) => (
                 <Text
                   className={cn(
@@ -235,7 +237,7 @@ export function SiteHeader() {
             onPress={toggleColorScheme}
             accessibilityRole="button"
             accessibilityLabel={colorScheme === 'dark' ? 'Use light theme' : 'Use dark theme'}
-            className="-mr-2 h-9 w-9 items-center justify-center">
+            className="-mr-2 ml-auto h-11 w-11 items-center justify-center sm:ml-0 sm:h-9 sm:w-9">
             {({ hovered }) => (
               <View
                 className={cn(
@@ -259,7 +261,7 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   return (
-    <Column className="mt-28 pb-16 md:mt-36">
+    <Column className="mt-24 pb-12 sm:mt-28 sm:pb-16 md:mt-36">
       <View className="border-t border-border pt-6">
         <Text className={type.muted}>
           Reach me at{' '}
