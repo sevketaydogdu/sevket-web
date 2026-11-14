@@ -15,6 +15,8 @@ export default function Root({ children }: { children: React.ReactNode }) {
         */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#f5efe4" />
+        {/* Google Search Console ownership (URL-prefix property https://sevketaydogdu.com/). */}
+        <meta name="google-site-verification" content="Tz0n3F4sORm2Dcg0Z_xriH6kj_I9cTG9W7kO-YqsPw0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
