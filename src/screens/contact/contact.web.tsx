@@ -1,27 +1,25 @@
-import Head from 'expo-router/head';
 import React from 'react';
 import { View } from 'react-native';
 
-import { Column, Enter, InkLink, Row, Section, site, type } from '@/components/site';
+import { Column, Enter, InkLink, Row, Section, site, type, PageTitle } from '@/components/site';
+import { Seo } from '@/components/site/Seo';
 import { Text } from '@/components/ui/text';
+import { cn } from '@/lib/utils';
 
 const WebContactScreen = () => {
   return (
     <View className="flex-1">
-      <Head>
-        <title>Contact — Şevket Aydoğdu</title>
-        <meta
-          name="description"
-          content="Get in touch with Şevket Aydoğdu about a React Native, Expo, React or Next.js project."
-        />
-      </Head>
+      <Seo
+        title="Contact — Şevket Aydoğdu"
+        description="Get in touch with Şevket Aydoğdu about a React Native, Expo, React or Next.js project."
+      />
 
-      <Column className="pt-16 md:pt-28">
+      <Column className="pt-10 sm:pt-16 md:pt-24">
         <Enter>
-          <Text role="heading" aria-level="1" className={type.strong}>
-            Contact
+          <PageTitle>Contact</PageTitle>
+          <Text className={cn(type.muted, 'mt-5 text-[17px]')}>
+            New apps, existing ones, or an extra pair of hands.
           </Text>
-          <Text className={type.muted}>New apps, existing ones, or an extra pair of hands.</Text>
         </Enter>
 
         <Enter step={1} className="mt-8">

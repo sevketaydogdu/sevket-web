@@ -14,11 +14,12 @@ export default function Root({ children }: { children: React.ReactNode }) {
             <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#f5efe4" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@96,88,800&family=Geist:wght@300..700&display=swap"
         />
         {/* 
           Using native document scroll (single scrollbar). ScrollViewStyleReset removed to avoid double scrollbar.
@@ -38,11 +39,11 @@ const responsiveBackground = `
 body {
   margin: 0;
   overflow-x: clip;
-  background-color: #fcfcfc;
+  background-color: #f5efe4;
 }
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #0b0b0b;
+    background-color: #16100f;
   }
 }
 `;

@@ -3,32 +3,43 @@
 @tailwind utilities;
 
 /* NativeWind theme: semantic colors (used by bg-background, bg-card, etc.) */
+/*
+ * Warm paper palette. Cream stock, deep oxblood ink, and one effect colour:
+ * the iridescent soap-film gradient used on the bubble and the pill rims.
+ */
 :root {
-  --color-background: #fcfcfc;
-  --color-surface: #f2f2f1;
-  --color-foreground: #111111;
-  --color-muted: #6b6b6b;
-  --color-border: #ebebeb;
-  --color-line: #cfcfcf;
-  --color-signal: #0a6cff;
-  --color-card: #f2f2f1;
-  --screen-shadow: 0 0 0 1px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04),
-    0 28px 56px -20px rgba(0, 0, 0, 0.22);
-  --icon-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 12px 32px -12px rgba(0, 0, 0, 0.28);
+  --color-background: #f5efe4;
+  --color-surface: #ebe2d3;
+  --color-foreground: #2a1215;
+  --color-muted: #7d6a64;
+  --color-border: #e2d7c6;
+  --color-line: #c9b9a6;
+  --color-signal: #2a1215;
+  --color-card: #fbf7f0;
+  --color-paper: #fbf7f0;
+  --color-on-photo: #f8f1e5;
+  --iri: #ff9fd2, #ffd27a, #b8f5a8, #83e3ff, #9fb2ff, #d6a2ff, #ff9fd2;
+  --screen-shadow: 0 0 0 1px rgba(42, 18, 21, 0.08), 0 2px 4px rgba(42, 18, 21, 0.05),
+    0 28px 56px -20px rgba(42, 18, 21, 0.3);
+  --icon-shadow: 0 0 0 1px rgba(42, 18, 21, 0.06), 0 14px 32px -12px rgba(42, 18, 21, 0.35);
+  --card-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 30px 60px -30px rgba(42, 18, 21, 0.45);
   --hero-blob-opacity: 0;
 }
 html.dark {
-  --color-background: #0b0b0b;
-  --color-surface: #161616;
-  --color-foreground: #ececec;
-  --color-muted: #8e8e8e;
-  --color-border: #1f1f1f;
-  --color-line: #3a3a3a;
-  --color-signal: #5b9dff;
-  --color-card: #161616;
-  --screen-shadow: 0 0 0 1px rgba(255, 255, 255, 0.09), 0 2px 4px rgba(0, 0, 0, 0.3),
-    0 28px 56px -20px rgba(0, 0, 0, 0.7);
-  --icon-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 12px 32px -12px rgba(0, 0, 0, 0.8);
+  --color-background: #16100f;
+  --color-surface: #221a18;
+  --color-foreground: #f4eadb;
+  --color-muted: #a8968c;
+  --color-border: #2c2220;
+  --color-line: #4a3c37;
+  --color-signal: #f4eadb;
+  --color-card: #1d1614;
+  --color-paper: #1d1614;
+  --color-on-photo: #f8f1e5;
+  --screen-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 28px 56px -20px rgba(0, 0, 0, 0.75);
+  --icon-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 14px 32px -12px rgba(0, 0, 0, 0.85);
+  --card-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.8);
   --hero-blob-opacity: 0;
 }
 
@@ -155,4 +166,176 @@ body {
 }
 .tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/* ───────────────────────── Expressive layer ───────────────────────── */
+
+/* Poster type: heavy, tight, uppercase. */
+.poster {
+  font-family: 'Bricolage Grotesque', 'Geist', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+/* Hollow letters. The fill is the page colour painted over a double-width
+   stroke, which hides the font's internal overlap contours (T, H, E…). */
+.poster-outline {
+  color: var(--color-background) !important;
+  -webkit-text-stroke: 3px var(--color-foreground);
+  paint-order: stroke fill;
+}
+
+/* The rotating angle every iridescent surface shares. */
+@property --iri-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: true;
+}
+@keyframes iri-spin {
+  to { --iri-angle: 360deg; }
+}
+
+/* Soap bubble — transparent film, thin rainbow rim, two specular glints.
+   It drifts on its own and leans toward the pointer (--mx / --my). */
+.bubble-wrap {
+  position: absolute;
+  pointer-events: none;
+  transform: translate3d(calc(var(--mx, 0) * 18px), calc(var(--my, 0) * 18px), 0);
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bubble {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  animation: bubble-drift 9s ease-in-out infinite, bubble-wobble 5.5s ease-in-out infinite;
+  -webkit-backdrop-filter: saturate(1.3) brightness(1.03);
+  backdrop-filter: saturate(1.3) brightness(1.03);
+  background:
+    radial-gradient(circle at 50% 50%, transparent 60%, rgba(255, 255, 255, 0.07) 68%, rgba(255, 255, 255, 0.22) 72%);
+  box-shadow:
+    inset 0 0 22px rgba(255, 255, 255, 0.28),
+    inset -10px -14px 30px rgba(255, 190, 120, 0.12),
+    0 18px 50px -20px rgba(42, 18, 21, 0.35);
+}
+.bubble::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 4px;
+  background: conic-gradient(from var(--iri-angle), var(--iri));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  filter: blur(3px) saturate(1.3);
+  opacity: 0.75;
+  mix-blend-mode: screen;
+  animation: iri-spin 7s linear infinite;
+}
+.bubble::after {
+  content: '';
+  position: absolute;
+  top: 13%;
+  left: 19%;
+  width: 22%;
+  height: 11%;
+  border-radius: 50%;
+  transform: rotate(-32deg);
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 70%);
+  box-shadow: 120px 150px 0 -8px rgba(255, 255, 255, 0.12);
+}
+@keyframes bubble-drift {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(6px, -10px); }
+  66% { transform: translate(-7px, 5px); }
+}
+@keyframes bubble-wobble {
+  0%, 100% { border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; }
+  50% { border-radius: 52% 48% 49% 51% / 48% 52% 50% 50%; }
+}
+
+/* Pill with an iridescent rim. */
+.iri-pill.iri-pill {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(var(--color-paper), var(--color-paper)) padding-box,
+    conic-gradient(from var(--iri-angle), var(--iri)) border-box;
+  animation: iri-spin 6s linear infinite;
+  box-shadow: 0 10px 24px -14px rgba(42, 18, 21, 0.55);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.iri-pill.iri-pill:hover { transform: translateY(-2px) scale(1.03); }
+.iri-pill.iri-pill:active { transform: scale(0.97); }
+
+/* Thin iridescent hairline under a heading or around a card on hover. */
+.iri-ring.iri-ring {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--color-paper), var(--color-paper)) padding-box,
+    linear-gradient(var(--color-border), var(--color-border)) border-box;
+  transition: background 300ms ease;
+}
+.iri-ring.iri-ring:hover {
+  background:
+    linear-gradient(var(--color-paper), var(--color-paper)) padding-box,
+    conic-gradient(from var(--iri-angle), var(--iri)) border-box;
+  animation: iri-spin 6s linear infinite;
+}
+
+/* Photo card: a soft fade at the top so the name reads on any photo. */
+.photo-scrim::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 38%;
+  background: linear-gradient(180deg, rgba(42, 18, 21, 0.42), rgba(42, 18, 21, 0));
+  pointer-events: none;
+}
+.photo-scrim-bottom::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 35%;
+  background: linear-gradient(0deg, rgba(42, 18, 21, 0.45), rgba(42, 18, 21, 0));
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Horizontal ticker. Content is duplicated once; -50% loops seamlessly. */
+.marquee-track.marquee-track {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+.marquee:hover .marquee-track.marquee-track { animation-play-state: paused; }
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* Carousel: native horizontal scroll with snap, no visible bar. */
+.snap-x.snap-x {
+  scroll-snap-type: x mandatory;
+  overflow-x: auto;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.snap-x::-webkit-scrollbar { display: none; }
+.snap-start { scroll-snap-align: start; }
+
+/* Sticky glass nav. */
+.glass {
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  background-color: color-mix(in srgb, var(--color-paper) 72%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble, .bubble::before, .iri-pill, .marquee-track { animation: none !important; }
+  .bubble-wrap { transition: none; transform: none; }
 }

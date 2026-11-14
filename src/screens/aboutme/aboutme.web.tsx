@@ -1,8 +1,18 @@
-import Head from 'expo-router/head';
 import React from 'react';
 import { Image, View } from 'react-native';
 
-import { Column, Enter, Experience, InkLink, Row, Section, site, type } from '@/components/site';
+import {
+  Column,
+  Enter,
+  Experience,
+  InkLink,
+  Row,
+  Section,
+  site,
+  type,
+  PageTitle,
+} from '@/components/site';
+import { Seo } from '@/components/site/Seo';
 import { Text } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 
@@ -51,20 +61,17 @@ export const categorizedTech: Record<string, string[]> = {
 const AboutMeWeb = () => {
   return (
     <View className="flex-1">
-      <Head>
-        <title>About — Şevket Aydoğdu</title>
-        <meta
-          name="description"
-          content="Şevket Aydoğdu is a React Native and web developer — React, Next.js, Vite — with a background in UX/UI design."
-        />
-      </Head>
+      <Seo
+        title="About — Şevket Aydoğdu"
+        description="Şevket Aydoğdu is a React Native and web developer — React, Next.js, Vite — with a background in UX/UI design."
+      />
 
-      <Column className="pt-16 md:pt-28">
+      <Column className="pt-10 sm:pt-16 md:pt-24">
         <Enter>
-          <Text role="heading" aria-level="1" className={type.strong}>
-            About
+          <PageTitle>About</PageTitle>
+          <Text className={cn(type.muted, 'mt-5 text-[17px]')}>
+            Designer first, developer second.
           </Text>
-          <Text className={type.muted}>Designer first, developer second.</Text>
         </Enter>
 
         <Enter step={1} className="mt-10">

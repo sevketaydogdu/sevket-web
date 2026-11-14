@@ -1,22 +1,18 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Slot, SplashScreen, usePathname } from 'expo-router';
+import { Slot, usePathname } from 'expo-router';
 import Head from 'expo-router/head';
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  Appearance,
-  ColorSchemeName,
-  Platform,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React from 'react';
+import { Appearance, ColorSchemeName, Platform, useColorScheme } from 'react-native';
 
-import { DarkTheme } from '@/constants/navigatiorTheme';
+import {
+  OG_IMAGE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+  SOCIAL_PROFILES,
+  absoluteUrl,
+} from '@/constants/site';
 import { ThemeProvider as NavThemeProvider } from '@/contexts/ThemeContext';
-import { useScrollToTopOnNavigate } from '@/hooks/useScrollToTopOnNavigate';
+import { useScrollRestoration } from '@/hooks/useScrollRestoration';
 import '../global.css';
 
 export {
@@ -25,143 +21,115 @@ export {
 } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: '(tabs)',
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+// Routes that must not appear in search results or carry a canonical URL.
+const NOINDEX_PREFIXES = ['/zikirmatik/c/', '/modal', '/_sitemap', '/+not-found'];
+
+const PERSON_JSON_LD = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE_NAME,
+  url: SITE_URL,
+  image: OG_IMAGE,
+  jobTitle: 'React Native & Web Developer',
+  description: SITE_DESCRIPTION,
+  sameAs: SOCIAL_PROFILES,
+  knowsAbout: ['React Native', 'Expo', 'React', 'Next.js', 'TypeScript', 'UI/UX design'],
+});
+
+/**
+ * Bridge react-native Appearance to the `data-theme` attribute on <html>.
+ * Browser-only: static rendering runs in Node, where touching window would throw
+ * and leave every prerendered page empty.
+ */
+function installWebAppearanceBridge() {
+  if (Platform.OS !== 'web' || typeof window === 'undefined') return;
+  if ((Appearance as any).__webBridgeInstalled) return;
+  (Appearance as any).__webBridgeInstalled = true;
+
+  Appearance.setColorScheme = (scheme) => {
+    if (scheme) {
+      document.documentElement.setAttribute('data-theme', scheme);
+    }
+  };
+
+  Appearance.getColorScheme = (): ColorSchemeName => {
+    const systemValue = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const userValue = document.documentElement.getAttribute('data-theme');
+    return (userValue && userValue !== 'null' ? userValue : systemValue) as ColorSchemeName;
+  };
+
+  Appearance.addChangeListener = (listener) => {
+    const systemValueListener = (e: { matches: boolean }): void => {
+      const newSystemValue: ColorSchemeName = e.matches ? 'dark' : 'light';
+      const userValue = document.documentElement.getAttribute('data-theme');
+      listener({
+        colorScheme:
+          userValue && userValue !== 'null' ? (userValue as ColorSchemeName) : newSystemValue,
+      });
+    };
+    const systemValue = window.matchMedia('(prefers-color-scheme: dark)');
+    systemValue.addEventListener('change', systemValueListener);
+
+    // Listen for changes of user set value
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.attributeName === 'data-theme') {
+          listener({ colorScheme: Appearance.getColorScheme() });
+        }
+      }
+    });
+    observer.observe(document.documentElement, { attributes: true });
+
+    return {
+      remove() {
+        systemValue.removeEventListener('change', systemValueListener);
+        observer.disconnect();
+      },
+    };
+  };
+}
+
+function SiteHead({ pathname }: { pathname: string }) {
+  const noindex = NOINDEX_PREFIXES.some((p) => pathname.startsWith(p)) || pathname.includes('[');
+  const url = absoluteUrl(pathname);
+  return (
+    <Head>
+      {/* Defaults; pages override title/description/og:* through <Seo />. */}
+      <title>{`${SITE_NAME} — React Native & web developer`}</title>
+      <meta name="description" content={SITE_DESCRIPTION} />
+      <meta property="og:site_name" content={SITE_NAME} />
+      <meta property="og:type" content="website" />
+      <meta property="og:locale" content="en_US" />
+      <meta property="og:image" content={OG_IMAGE} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@sevketaydogdu" />
+      <meta name="twitter:image" content={OG_IMAGE} />
+      {noindex ? null : <link rel="canonical" href={url} />}
+      {noindex ? null : <meta property="og:url" content={url} />}
+      {noindex ? <meta name="robots" content="noindex, follow" /> : null}
+      {pathname === '/' ? <script type="application/ld+json">{PERSON_JSON_LD}</script> : null}
+    </Head>
+  );
+}
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    SatoshiBlack: require('../assets/fonts/Satoshi-Black.ttf'),
-    SatoshiRegular: require('../assets/fonts/Satoshi-Regular.ttf'),
-    SatoshiBold: require('../assets/fonts/Satoshi-Bold.ttf'),
-    SatoshiLight: require('../assets/fonts/Satoshi-Light.ttf'),
-    SatoshiVariable: require('../assets/fonts/Satoshi-Variable.ttf'),
-    ...FontAwesome.font,
-  });
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+  installWebAppearanceBridge();
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return (
-      <View className="flex-1 bg-background items-center justify-center">
-        <ActivityIndicator />
-      </View>
-    );
-  }
-
-  return <InnerRootLayout />;
-}
-const InnerRootLayout = () => {
   const colorScheme = useColorScheme();
   const pathname = usePathname();
 
-  // Web: scroll to top on every route change (document is the scroll container)
-  useScrollToTopOnNavigate();
-  useEffect(() => {
-    if (Platform.OS !== 'web' || typeof window === 'undefined') return;
-    const t = setTimeout(() => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    }, 120);
-    return () => clearTimeout(t);
-  }, [pathname]);
+  // Web: new pages start at the top; back/forward restores the previous scroll position.
+  useScrollRestoration(pathname);
 
-  if (Platform.OS === 'web') {
-    Appearance.setColorScheme = (scheme) => {
-      if (scheme) {
-        document.documentElement.setAttribute('data-theme', scheme);
-      }
-    };
-
-    Appearance.getColorScheme = (): ColorSchemeName => {
-      const systemValue = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light';
-      const userValue = document.documentElement.getAttribute('data-theme');
-      return (userValue && userValue !== 'null' ? userValue : systemValue) as ColorSchemeName;
-    };
-
-    Appearance.addChangeListener = (listener) => {
-      // Listen for changes of system value
-      interface ColorSchemeChangeListener {
-        (event: { colorScheme: ColorSchemeName }): void;
-      }
-
-      interface SystemValueListenerEvent {
-        matches: boolean;
-      }
-
-      const systemValueListener = (e: SystemValueListenerEvent): void => {
-        const newSystemValue: ColorSchemeName = e.matches ? 'dark' : 'light';
-        const userValue = document.documentElement.getAttribute('data-theme');
-        listener({
-          colorScheme:
-            userValue && userValue !== 'null' ? (userValue as ColorSchemeName) : newSystemValue,
-        });
-      };
-      const systemValue = window.matchMedia('(prefers-color-scheme: dark)');
-      systemValue.addEventListener('change', systemValueListener);
-
-      // Listen for changes of user set value
-      const observer = new MutationObserver((mutationsList) => {
-        for (const mutation of mutationsList) {
-          if (mutation.attributeName === 'data-theme') {
-            listener({ colorScheme: Appearance.getColorScheme() });
-          }
-        }
-      });
-      observer.observe(document.documentElement, { attributes: true });
-
-      function remove(): void {
-        systemValue.removeEventListener('change', systemValueListener);
-        observer.disconnect();
-      }
-
-      return { remove };
-    };
-  }
   return (
     <NavThemeProvider>
-      <NavigationThemeProvider
-        value={{
-          ...DarkTheme,
-          colors: {
-            ...DarkTheme.colors,
-            // background: '#f11111',
-            background: 'rgb(10, 10, 10)',
-            card: 'rgb(10, 10, 10)',
-            // card: '#f11111',
-            text: 'rgb(250, 250, 250)',
-          },
-        }}>
-        <Slot
-          screenOptions={{
-            colorScheme: colorScheme,
-          }}
-          // screenOptions={({ route }) => ({
-          //   title: route.name,
-
-          // })}
-        />
-        {/* <>
-              <StatusBar style="light" />
-              <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-              </Stack>
-              </> */}
-      </NavigationThemeProvider>
+      <SiteHead pathname={pathname} />
+      <Slot screenOptions={{ colorScheme }} />
     </NavThemeProvider>
   );
-};
+}

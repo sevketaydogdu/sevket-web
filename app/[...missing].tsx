@@ -1,12 +1,14 @@
 import { Link, Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
 
+import { Seo } from '../src/components/site/Seo';
 import { Text, View } from '../src/components/Themed';
 
 export default function NotFoundScreen() {
   return (
     <>
       <Stack.Screen options={{ title: 'Oops!' }} />
+      <Seo title="Page not found — Şevket Aydoğdu" description="This page doesn't exist." noindex />
       <View style={styles.container}>
         <Text style={styles.title}>This screen doesn't exist.</Text>
 

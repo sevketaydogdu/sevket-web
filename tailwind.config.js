@@ -35,6 +35,7 @@ module.exports = {
         border: 'var(--color-border)',
         signal: 'var(--color-signal)',
         surface: 'var(--color-surface)',
+        paper: 'var(--color-paper)',
         line: 'var(--color-line)',
         selected: '#131212',
         background2: '#1A1A1A',

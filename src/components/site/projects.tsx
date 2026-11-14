@@ -144,13 +144,24 @@ function useCardWidth() {
 const STAGE = { height: 540, gap: 28, sink: 52, step: 30 };
 
 /** Three screens rising out of the bottom edge of a soft card; they lift on hover. */
-function ShotStage({ set, hovered }: { set: ShotSet; hovered: boolean }) {
-  const cardW = useCardWidth();
+function ShotStage({
+  set,
+  hovered,
+  width,
+  fill = 0.88,
+}: {
+  set: ShotSet;
+  hovered: boolean;
+  width?: number;
+  fill?: number;
+}) {
+  const windowCardW = useCardWidth();
+  const cardW = width ?? windowCardW;
   const maxW = set.partial ? 250 : 232;
   // Three screens + two gaps take ~88% of the card at most, so the trio
   // always sits fully inside it with a little air on each side.
   const span = 3 + (2 * STAGE.gap) / maxW;
-  const w = Math.round(Math.min(maxW, (cardW * 0.88) / span));
+  const w = Math.round(Math.min(maxW, (cardW * fill) / span));
   const s = w / maxW;
   const height = Math.round(STAGE.height * s);
   const gap = Math.round(STAGE.gap * s);
@@ -278,6 +289,112 @@ export function ProjectRow({ project }: { project: Project }) {
                 {nameOf(project)}
               </Text>
               <Text className={type.muted} numberOfLines={2}>
+                {lineOf(project)}
+              </Text>
+            </View>
+          </View>
+        )}
+      </Pressable>
+    </Link>
+  );
+}
+
+/** Card colour per project — the app's own world, not the site's. */
+const TINT: Record<string, { bg: string; ink: 'light' | 'dark' }> = {
+  'Easy Dhikr: Zikirmatik': { bg: '#1f3a28', ink: 'light' },
+  Politicca: { bg: '#dde4f2', ink: 'dark' },
+  'X - UI Clone': { bg: '#0f0f10', ink: 'light' },
+  SkorSever: { bg: '#18233f', ink: 'light' },
+  Botanik: { bg: '#dcebd2', ink: 'dark' },
+};
+
+/** Carousel slide: tinted media panel on top, caption on paper below. */
+export function ProjectSlide({
+  project,
+  width,
+  index,
+}: {
+  project: Project;
+  width: number;
+  index: number;
+}) {
+  const set = screensOf(project);
+  const tint = TINT[project.title] ?? { bg: 'var(--color-surface)', ink: 'dark' as const };
+  const mediaH = Math.round(width * 1.02);
+  return (
+    <Link href={projectHref(project)} asChild>
+      <Pressable
+        accessibilityRole="link"
+        accessibilityLabel={`${nameOf(project)} — case study`}
+        className="snap-start"
+        style={{ width } as any}>
+        {({ hovered }) => (
+          <View
+            className="overflow-hidden rounded-[28px] bg-paper"
+            style={
+              {
+                boxShadow: 'var(--card-shadow)',
+                transform: [{ translateY: hovered ? -6 : 0 }],
+                transitionProperty: 'transform',
+                transitionDuration: '600ms',
+                transitionTimingFunction: EASE,
+              } as any
+            }>
+            <View
+              className="relative overflow-hidden"
+              style={{ height: mediaH, backgroundColor: tint.bg } as any}>
+              <Text
+                className={cn(
+                  'poster absolute left-5 top-4 text-[64px] opacity-[0.16]',
+                  tint.ink === 'light' ? 'text-white' : 'text-black'
+                )}>
+                {String(index + 1).padStart(2, '0')}
+              </Text>
+              <View
+                className={cn(
+                  'absolute right-4 top-5 z-[2] rounded-full px-3 py-1',
+                  tint.ink === 'light' ? 'bg-white/10' : 'bg-black/5'
+                )}>
+                <Text
+                  className={cn(
+                    'font-body text-[12px] font-semibold tracking-[0.01em]',
+                    tint.ink === 'light' ? 'text-white/80' : 'text-black/60'
+                  )}>
+                  {platformLabel(project)}
+                </Text>
+              </View>
+              <View className="absolute inset-x-0 bottom-0">
+                {set ? (
+                  <ShotStage set={set} hovered={hovered} width={width} fill={0.96} />
+                ) : (
+                  <View className="items-center justify-center" style={{ height: mediaH }}>
+                    <View
+                      style={
+                        {
+                          borderRadius: 30,
+                          boxShadow: 'var(--icon-shadow)',
+                          transform: [
+                            { translateY: hovered ? -8 : 0 },
+                            { rotate: hovered ? '-6deg' : '0deg' },
+                          ],
+                          transitionProperty: 'transform',
+                          transitionDuration: '700ms',
+                          transitionTimingFunction: EASE,
+                        } as any
+                      }>
+                      <Image
+                        source={project.imagePath}
+                        resizeMode="cover"
+                        style={{ width: 120, height: 120, borderRadius: 30 }}
+                      />
+                    </View>
+                  </View>
+                )}
+              </View>
+            </View>
+            <View className="px-5 pb-5 pt-4">
+              <Text className="poster text-[30px] text-foreground">{nameOf(project)}</Text>
+              <Text className={cn(type.muted, 'mt-2')} numberOfLines={2}>
                 {lineOf(project)}
               </Text>
             </View>

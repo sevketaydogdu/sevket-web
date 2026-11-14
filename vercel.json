@@ -1,5 +1,5 @@
 {
-  "buildCommand": "expo export -p web",
+  "buildCommand": "expo export -p web && node scripts/postbuild.mjs",
   "outputDirectory": "dist",
   "devCommand": "expo",
   "cleanUrls": true,
@@ -8,10 +8,6 @@
     {
       "source": "/zikirmatik/c/:code",
       "destination": "/zikirmatik/c/[code]"
-    },
-    {
-      "source": "/:path*",
-      "destination": "/"
     }
   ],
   "headers": [
@@ -23,6 +19,25 @@
           "value": "application/json"
         }
       ]
+    },
+    {
+      "source": "/_expo/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
-  ]
+  ],
+  "trailingSlash": false
 }

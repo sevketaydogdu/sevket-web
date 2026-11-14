@@ -12,14 +12,15 @@
     "android": "yarn expo run:android",
     "ios": "yarn expo run:ios",
     "web": "expo start --web -c",
-    "reinstall": "rm -rf node_modules && rm -rf yarn.lock && rm -rf .expo &&rm -rf .tamagui && yarn install"
+    "reinstall": "rm -rf node_modules && rm -rf yarn.lock && rm -rf .expo &&rm -rf .tamagui && yarn install",
+    "build": "expo export -p web && node scripts/postbuild.mjs"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
-    "@react-navigation/native": "^6.0.2",
+    "@react-navigation/native": "^7.0.14",
     "@rn-primitives/slot": "^1.2.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "class-variance-authority": "^0.7.1",

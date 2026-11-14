@@ -1,9 +1,18 @@
-import { Link, useLocalSearchParams } from 'expo-router';
-import Head from 'expo-router/head';
+import { Link, router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
-import { Column, Enter, InkLink, Row, Section, Span, Wide, type } from '@/components/site';
+import {
+  Column,
+  Enter,
+  InkLink,
+  Row,
+  Section,
+  Span,
+  Wide,
+  type,
+  PageTitle,
+} from '@/components/site';
 import {
   ProjectCard,
   Screen,
@@ -14,16 +23,12 @@ import {
   screensOf,
   useCompact,
 } from '@/components/site/projects';
+import { Seo } from '@/components/site/Seo';
 import { Text } from '@/components/ui/text';
+import { goBackOr } from '@/hooks/useScrollRestoration';
 import { projects } from '@/constants/projects';
 import { cn } from '@/lib/utils';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
-
-export async function generateStaticParams(): Promise<Record<string, string>[]> {
-  return projects.map((project) => ({
-    name: clearSpacesAndSpecialCharacters(project.title),
-  }));
-}
 
 /** Split the free-form description into paragraphs; drop emoji-led checklist lines. */
 function toParagraphs(text?: string) {
@@ -71,13 +76,9 @@ const ProjectDetailScreen = () => {
   const index = projects.findIndex((p) => clearSpacesAndSpecialCharacters(p.title) === name);
   const project = projects[index];
 
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') window.scrollTo(0, 0);
-  }, [name]);
-
   if (!project) {
     return (
-      <Column className="pt-16 md:pt-28">
+      <Column className="pt-10 sm:pt-16 md:pt-24">
         <Text className={type.strong}>Not found</Text>
         <Text className={type.muted}>
           There's no project called “{String(name)}”.{' '}
@@ -101,31 +102,34 @@ const ProjectDetailScreen = () => {
 
   return (
     <View className="flex-1">
-      <Head>
-        <title>{`${nameOf(project)} — Şevket Aydoğdu`}</title>
-        <meta name="description" content={lineOf(project)} />
-      </Head>
+      <Seo title={`${nameOf(project)} — Şevket Aydoğdu`} description={lineOf(project)} />
 
-      <Column className="pt-16 md:pt-28">
+      <Column className="pt-10 sm:pt-16 md:pt-24">
         <Enter>
-          <Link href="/projects" asChild>
-            <Pressable accessibilityRole="link" className="mb-8 self-start">
-              {({ hovered }) => (
-                <Text
-                  className={cn(
-                    type.muted,
-                    'transition-colors duration-150',
-                    hovered && 'text-foreground'
-                  )}>
-                  ← Work
-                </Text>
-              )}
-            </Pressable>
-          </Link>
-          <Text role="heading" aria-level="1" className={type.strong}>
-            {nameOf(project)}
-          </Text>
-          <Text className={type.muted}>{lineOf(project)}</Text>
+          {/* A real <a href="/projects"> for crawlers and new-tab clicks; a plain click goes
+              back in history so the previous page keeps its scroll position. */}
+          <Pressable
+            accessibilityRole="link"
+            {...({ href: '/projects' } as object)}
+            onPress={(e: any) => {
+              if (e?.metaKey || e?.ctrlKey || e?.shiftKey || e?.altKey || e?.button) return;
+              e?.preventDefault?.();
+              goBackOr(() => router.push('/projects'));
+            }}
+            className="mb-8 self-start">
+            {({ hovered }) => (
+              <Text
+                className={cn(
+                  type.muted,
+                  'transition-colors duration-150',
+                  hovered && 'text-foreground'
+                )}>
+                ← Work
+              </Text>
+            )}
+          </Pressable>
+          <PageTitle>{nameOf(project)}</PageTitle>
+          <Text className={cn(type.muted, 'mt-5 text-[17px]')}>{lineOf(project)}</Text>
         </Enter>
 
         <Enter step={1} className="mt-8">
