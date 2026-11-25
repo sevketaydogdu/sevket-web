@@ -6,12 +6,6 @@ const MAILTO = `mailto:${EMAIL}`;
 const thirdPartyLinks = [
   [{ text: 'Google Privacy Policy', url: 'https://policies.google.com/privacy' }],
   [{ text: 'Firebase Privacy and Security', url: 'https://firebase.google.com/support/privacy' }],
-  [
-    {
-      text: 'How Google uses information from apps that use its services (AdMob)',
-      url: 'https://policies.google.com/technologies/partner-sites',
-    },
-  ],
   [{ text: 'RevenueCat Privacy Policy', url: 'https://www.revenuecat.com/privacy' }],
   [{ text: 'Apple Privacy Policy', url: 'https://www.apple.com/legal/privacy/' }],
 ];
@@ -20,7 +14,7 @@ export const privacySections: LegalSection[] = [
   {
     lang: 'en',
     title: 'Zikirmatik (Easy Dhikr) Privacy Policy',
-    lastUpdated: 'Last updated: 8 November 2026',
+    lastUpdated: 'Last updated: 25 November 2026',
     blocks: [
       {
         type: 'p',
@@ -55,14 +49,19 @@ export const privacySections: LegalSection[] = [
         type: 'p',
         text: 'We use Firebase Analytics to understand how the App is used (for example, screens viewed, app version, device type and approximate region) so we can fix problems and improve features.',
       },
-      { type: 'h3', text: 'Advertising (Google AdMob)' },
+      { type: 'h3', text: 'No advertising' },
+      {
+        type: 'p',
+        text: 'The App shows no ads and contains no advertising SDK. We do not use your advertising identifier (IDFA or Android Advertising ID).',
+      },
+      { type: 'h3', text: 'Location, prayer times and Qibla' },
       {
         type: 'ul',
         items: [
-          'The free version of the App shows ads served by Google AdMob.',
-          'AdMob may use your device advertising identifier (Advertising ID on Android, IDFA on iOS) and similar data to show and measure ads. Personalised ads are only used with your consent.',
-          'Where required (for example in the EEA, UK and Switzerland), we show a Google User Messaging Platform (UMP) consent form. On iOS, the App asks for permission through Apple’s App Tracking Transparency (ATT) prompt before the IDFA can be used.',
-          'You can change your ad consent choices at any time in the App under Settings > Ad privacy options. On iOS you can also change tracking permission in the device Settings > Privacy & Security > Tracking.',
+          'Prayer times, the adhan, Ramadan (suhoor and iftar) times, the prayer and Ramadan widgets and the Qibla direction use your device location only if you allow it. The times and the Qibla direction are calculated on your device; your coordinates are not sent to our servers.',
+          'To name your city and district, the App uses your operating system’s geocoding service (Apple on iOS, Google on Android), which receives your coordinates under its own privacy policy.',
+          'In Turkey, to show the official Diyanet prayer times, the App sends only your district code (for example the code for one Istanbul district) to the prayer-times service ezanvakti.emushaf.net. Your coordinates are not sent to it.',
+          'You can turn off location access at any time in your device settings; the dhikr counter keeps working without it.',
         ],
       },
       { type: 'h3', text: 'Subscriptions (RevenueCat)' },
@@ -76,7 +75,7 @@ export const privacySections: LegalSection[] = [
         items: [
           'To provide the App’s features: saving and syncing your dhikr lists and counts, and running shared rooms.',
           'To provide and verify premium subscriptions.',
-          'To show ads in the free version, in line with your consent choices.',
+          'To show prayer times, the adhan and Ramadan times for your location.',
           'To analyse usage, fix bugs and improve the App.',
           'To keep the App secure and prevent abuse.',
         ],
@@ -84,7 +83,7 @@ export const privacySections: LegalSection[] = [
       { type: 'h2', text: '4. Sharing and sale of data' },
       {
         type: 'p',
-        text: 'We do not sell your personal data. We share data only with the service providers listed above (Google/Firebase, Google AdMob, RevenueCat, Apple and Google as store and sign-in providers), who process it to provide their services, or when required by law.',
+        text: 'We do not sell your personal data. We share data only with the service providers listed above (Google/Firebase, RevenueCat, the prayer-times service ezanvakti.emushaf.net (district code only), Apple and Google as store and sign-in providers), who process it to provide their services, or when required by law.',
       },
       { type: 'h2', text: '5. Data retention and deletion' },
       {
@@ -136,7 +135,7 @@ export const privacySections: LegalSection[] = [
   {
     lang: 'tr',
     title: 'Zikirmatik (Kolay Zikir) Gizlilik Politikası',
-    lastUpdated: 'Son güncelleme: 8 Kasım 2026',
+    lastUpdated: 'Son güncelleme: 25 Kasım 2026',
     blocks: [
       {
         type: 'p',
@@ -170,14 +169,19 @@ export const privacySections: LegalSection[] = [
         type: 'p',
         text: 'Sorunları gidermek ve özellikleri geliştirmek amacıyla Uygulamanın nasıl kullanıldığını (ör. görüntülenen ekranlar, uygulama sürümü, cihaz türü ve yaklaşık bölge) anlamak için Firebase Analytics kullanırız.',
       },
-      { type: 'h3', text: 'Reklamlar (Google AdMob)' },
+      { type: 'h3', text: 'Reklam yok' },
+      {
+        type: 'p',
+        text: 'Uygulama reklam göstermez ve reklam SDK’sı içermez. Reklam kimliğinizi (IDFA veya Android Reklam Kimliği) kullanmayız.',
+      },
+      { type: 'h3', text: 'Konum, namaz vakitleri ve kıble' },
       {
         type: 'ul',
         items: [
-          'Uygulamanın ücretsiz sürümünde Google AdMob tarafından sunulan reklamlar gösterilir.',
-          'AdMob, reklamları göstermek ve ölçmek için cihazınızın reklam kimliğini (Android’de Reklam Kimliği, iOS’ta IDFA) ve benzeri verileri kullanabilir. Kişiselleştirilmiş reklamlar yalnızca onayınızla kullanılır.',
-          'Gerekli olduğu yerlerde (ör. AEA, Birleşik Krallık ve İsviçre) Google User Messaging Platform (UMP) onay formu gösterilir. iOS’ta IDFA kullanılmadan önce Apple’ın Uygulama Takibi Şeffaflığı (ATT) izni istenir.',
-          'Reklam onayı tercihlerinizi istediğiniz zaman Uygulamada Ayarlar > Reklam gizlilik seçenekleri bölümünden değiştirebilirsiniz. iOS’ta takip iznini ayrıca cihazın Ayarlar > Gizlilik ve Güvenlik > Takip bölümünden değiştirebilirsiniz.',
+          'Namaz vakitleri, ezan, Ramazan (sahur ve iftar) vakitleri, namaz vakti ve Ramazan widget’ları ve kıble yönü, yalnızca izin verirseniz cihazınızın konumunu kullanır. Vakitler ve kıble yönü cihazınızda hesaplanır; koordinatlarınız sunucularımıza gönderilmez.',
+          'Şehir ve ilçenizi bulmak için Uygulama, işletim sisteminizin konum adı servisini (iOS’ta Apple, Android’de Google) kullanır; bu servis koordinatlarınızı kendi gizlilik politikasına göre alır.',
+          'Türkiye’de resmi Diyanet vakitlerini göstermek için Uygulama, vakit servisine (ezanvakti.emushaf.net) yalnızca ilçe kodunuzu gönderir. Koordinatlarınız bu servise gönderilmez.',
+          'Konum iznini istediğiniz zaman cihaz ayarlarından kapatabilirsiniz; zikir sayacı konum olmadan da çalışır.',
         ],
       },
       { type: 'h3', text: 'Abonelikler (RevenueCat)' },
@@ -191,7 +195,7 @@ export const privacySections: LegalSection[] = [
         items: [
           'Uygulama özelliklerini sunmak: zikir listelerinizi ve sayaçlarınızı kaydetmek ve eşitlemek, ortak halkaları çalıştırmak.',
           'Premium abonelikleri sağlamak ve doğrulamak.',
-          'Ücretsiz sürümde, onay tercihlerinize uygun şekilde reklam göstermek.',
+          'Konumunuza göre namaz vakitlerini, ezanı ve Ramazan vakitlerini göstermek.',
           'Kullanımı analiz etmek, hataları gidermek ve Uygulamayı geliştirmek.',
           'Uygulamanın güvenliğini sağlamak ve kötüye kullanımı önlemek.',
         ],
@@ -199,7 +203,7 @@ export const privacySections: LegalSection[] = [
       { type: 'h2', text: '4. Paylaşım ve veri satışı' },
       {
         type: 'p',
-        text: 'Kişisel verilerinizi satmayız. Verileri yalnızca yukarıda belirtilen hizmet sağlayıcılarla (Google/Firebase, Google AdMob, RevenueCat ve mağaza ve giriş sağlayıcısı olarak Apple ve Google), hizmetlerini sunmaları amacıyla veya yasal zorunluluk hâlinde paylaşırız.',
+        text: 'Kişisel verilerinizi satmayız. Verileri yalnızca yukarıda belirtilen hizmet sağlayıcılarla (Google/Firebase, RevenueCat, vakit servisi ezanvakti.emushaf.net (yalnızca ilçe kodu) ve mağaza ve giriş sağlayıcısı olarak Apple ve Google), hizmetlerini sunmaları amacıyla veya yasal zorunluluk hâlinde paylaşırız.',
       },
       { type: 'h2', text: '5. Saklama süresi ve silme' },
       {
