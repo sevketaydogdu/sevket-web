@@ -4,6 +4,17 @@ import { StyleSheet } from 'react-native';
 import { Seo } from '../src/components/site/Seo';
 import { Text, View } from '../src/components/Themed';
 
+import { pageMetadata } from '@/constants/seo';
+
+export function generateMetadata() {
+  return pageMetadata({
+    path: '/404',
+    title: 'Page not found — Şevket Aydoğdu',
+    description: "This page doesn't exist.",
+    noindex: true,
+  });
+}
+
 export default function NotFoundScreen() {
   return (
     <>

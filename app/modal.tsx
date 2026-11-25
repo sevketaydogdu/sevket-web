@@ -4,6 +4,15 @@ import { Platform, StyleSheet } from 'react-native';
 import EditScreenInfo from '../src/components/EditScreenInfo';
 import { Text, View } from '../src/components/Themed';
 
+import { pageMetadata } from '@/constants/seo';
+
+export function generateMetadata() {
+  return pageMetadata({
+    path: '/modal',
+    noindex: true,
+  });
+}
+
 export default function ModalScreen() {
   return (
     <View style={styles.container}>

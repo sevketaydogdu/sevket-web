@@ -3,14 +3,7 @@ import Head from 'expo-router/head';
 import React from 'react';
 import { Appearance, ColorSchemeName, Platform, useColorScheme } from 'react-native';
 
-import {
-  OG_IMAGE,
-  SITE_DESCRIPTION,
-  SITE_NAME,
-  SITE_URL,
-  SOCIAL_PROFILES,
-  absoluteUrl,
-} from '@/constants/site';
+import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, absoluteUrl } from '@/constants/site';
 import { ThemeProvider as NavThemeProvider } from '@/contexts/ThemeContext';
 import { useScrollRestoration } from '@/hooks/useScrollRestoration';
 import '../global.css';
@@ -21,23 +14,11 @@ export {
 } from 'expo-router';
 
 export const unstable_settings = {
-  initialRouteName: '(tabs)',
+  anchor: '(tabs)',
 };
 
 // Routes that must not appear in search results or carry a canonical URL.
 const NOINDEX_PREFIXES = ['/zikirmatik/c/', '/modal', '/_sitemap', '/+not-found'];
-
-const PERSON_JSON_LD = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: SITE_NAME,
-  url: SITE_URL,
-  image: OG_IMAGE,
-  jobTitle: 'React Native & Web Developer',
-  description: SITE_DESCRIPTION,
-  sameAs: SOCIAL_PROFILES,
-  knowsAbout: ['React Native', 'Expo', 'React', 'Next.js', 'TypeScript', 'UI/UX design'],
-});
 
 /**
  * Bridge react-native Appearance to the `data-theme` attribute on <html>.
@@ -114,7 +95,6 @@ function SiteHead({ pathname }: { pathname: string }) {
       {noindex ? null : <link rel="canonical" href={url} />}
       {noindex ? null : <meta property="og:url" content={url} />}
       {noindex ? <meta name="robots" content="noindex, follow" /> : null}
-      {pathname === '/' ? <script type="application/ld+json">{PERSON_JSON_LD}</script> : null}
     </Head>
   );
 }

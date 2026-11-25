@@ -30,6 +30,7 @@ import { projects } from '@/constants/projects';
 import { cn } from '@/lib/utils';
 import { clearSpacesAndSpecialCharacters } from '@/utils/dekete-special-characters';
 
+
 /** Split the free-form description into paragraphs; drop emoji-led checklist lines. */
 function toParagraphs(text?: string) {
   if (!text) return [];

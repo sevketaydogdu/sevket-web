@@ -14,7 +14,7 @@ export async function generateStaticParams(): Promise<Record<string, string>[]> 
 
 export const unstable_settings = {
   // Ensure that reloading on a project keeps the projects index underneath.
-  initialRouteName: 'index',
+  anchor: 'index',
 };
 
 // The back link now lives inside the detail page so it follows the page layout and theme.
