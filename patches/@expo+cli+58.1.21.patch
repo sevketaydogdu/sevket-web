@@ -1,0 +1,15 @@
+diff --git a/node_modules/@expo/cli/build/src/start/server/metro/resolveLoader.js b/node_modules/@expo/cli/build/src/start/server/metro/resolveLoader.js
+index a01fb38..3ff3fa8 100644
+--- a/node_modules/@expo/cli/build/src/start/server/metro/resolveLoader.js
++++ b/node_modules/@expo/cli/build/src/start/server/metro/resolveLoader.js
+@@ -44,7 +44,9 @@ function fromRuntimeManifestRoute(pathname, route, options) {
+         return null;
+     }
+     // Find the server manifest route that matches this context key
+-    const serverManifestRoute = options.serverManifest.htmlRoutes.find((r)=>r.file === contextKey);
++    // Routes expanded by generateStaticParams share one file; pick the entry for this pathname.
++    const candidates = options.serverManifest.htmlRoutes.filter((r)=>r.file === contextKey);
++    const serverManifestRoute = candidates.find((r)=>r.namedRegex.test(pathname)) ?? candidates[0];
+     if (!serverManifestRoute) {
+         return null;
+     }

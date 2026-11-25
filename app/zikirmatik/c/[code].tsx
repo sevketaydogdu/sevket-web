@@ -3,6 +3,26 @@ import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { pageMetadata } from '@/constants/seo';
+
+export function generateMetadata() {
+  const meta = pageMetadata({
+    path: '/zikirmatik/c',
+    title: 'Dhikr circle invite · Easy Dhikr',
+    description: 'Join a dhikr circle and count together toward a shared goal.',
+    noindex: true,
+  });
+  return {
+    ...meta,
+    robots: 'noindex',
+    openGraph: {
+      ...meta.openGraph,
+      title: "You're invited to a dhikr circle",
+      description: 'Count together toward a shared goal with Easy Dhikr.',
+    },
+  };
+}
+
 // Landing page for Zikirmatik circle invites: https://sevketaydogdu.com/zikirmatik/c/<code>
 // With the app installed, iOS Universal Links / Android App Links open the app
 // directly and this page is never shown. Without it, the visitor gets the store
